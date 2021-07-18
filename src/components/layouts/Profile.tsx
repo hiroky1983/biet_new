@@ -24,7 +24,7 @@ export const Profile: FC = () => {
           </div>
         </div>
       </div>
-      <div className="justify-center box-border my-4 mx-8">
+      <div className="justify-center box-border my-4 mx-14">
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut odit
           impedit at, optio voluptatibus aspernatur sint commodi consequatur quo
