@@ -2,9 +2,6 @@ import React, { FC } from "react";
 import "tailwindcss/tailwind.css";
 import Image from "next/image";
 
-
-import { FaHandshake } from "react-icons/fa";
-
 export const Header: FC = () => {
   return (
     <div className="flex justify-center">
