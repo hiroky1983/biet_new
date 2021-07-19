@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import "tailwindcss/tailwind.css";
 
-import { AiTwotoneHome, AiFillQuestionCircle } from "react-icons/ai";
+import { AiTwotoneHome, AiFillQuestionCircle, AiOutlineSearch } from "react-icons/ai";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { HiOutlineBookOpen } from "react-icons/hi";
 
@@ -12,7 +12,7 @@ const FOOTERITEMS = [
   },
   {
     element: <BsFillChatDotsFill className=" w-8 h-8 m-auto" />,
-    description: "つぶやく",
+    description: "ひとこと",
   },
   {
     element: <AiFillQuestionCircle className=" w-8 h-8 m-auto" />,
@@ -21,6 +21,10 @@ const FOOTERITEMS = [
   {
     element: <HiOutlineBookOpen className=" w-8 h-8 m-auto" />,
     description: "ブログ",
+  },
+  {
+    element: <AiOutlineSearch className=" w-8 h-8 m-auto" />,
+    description: "探す",
   },
 ];
 
