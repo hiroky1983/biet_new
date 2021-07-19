@@ -10,13 +10,16 @@ export default function Home() {
     <div>
       <Head>
         <title>biet-new</title>
-        <meta name="Connect with people who are dating foreigners " content="Connect for SNS" />
+        <meta
+          name="Connect with people who are dating foreigners "
+          content="Connect for SNS"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <Profile />
-      <ContentsLayout />
-      <FooterMenu />
+        <Header />
+        <Profile />
+        <ContentsLayout />
+        <FooterMenu />
     </div>
   );
 }
