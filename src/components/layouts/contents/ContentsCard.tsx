@@ -33,11 +33,6 @@ export const ContentsCard: FC = () => {
             <p className="text-xs mt-2 text-gray-700 font-hairline">Shares</p>
           </div>
         </div>
-        <div className="mt-6">
-          <button className="rounded shadow-md w-full items-center  bg-blue-500 px-4 py-2 text-white hover:bg-blue-400">
-            Follow
-          </button>
-        </div>
       </div>
     </div>
   );
