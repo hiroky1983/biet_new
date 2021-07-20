@@ -17,17 +17,17 @@ const FOOTERITEMS = [
     description: "ホーム",
   },
   {
-    href: "/",
+    href: "/word",
     element: <BsFillChatDotsFill className=" w-8 h-8 m-auto" />,
     description: "ひとこと",
   },
   {
-    href: "/",
+    href: "/question",
     element: <AiFillQuestionCircle className=" w-8 h-8 m-auto" />,
     description: "質問",
   },
   {
-    href: "/",
+    href: "/blog",
     element: <HiOutlineBookOpen className=" w-8 h-8 m-auto" />,
     description: "ブログ",
   },
