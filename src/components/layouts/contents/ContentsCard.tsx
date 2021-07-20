@@ -5,7 +5,7 @@ import Image from "next/image";
 export const ContentsCard: FC = () => {
   return (
     <div className="flex justify-center">
-      <div className="bg-white shadow p-4 rounded lg:w-64">
+      <div className="bg-white shadow-lg p-4 rounded-2xl w-60">
         <div className="text-center mt-4">
           <p className="text-gray-600 font-bold">Name</p>
           <p className="text-sm font-hairline text-gray-600 mt-1">Subtitle</p>
