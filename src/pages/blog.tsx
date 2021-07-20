@@ -17,8 +17,7 @@ const Blog: FC = () => {
       </Head>
       <Header />
       <div className="h-screen">
-
-      <p>工事中・・・</p>
+        <p>工事中・・・</p>
       </div>
       <FooterMenu />
     </div>

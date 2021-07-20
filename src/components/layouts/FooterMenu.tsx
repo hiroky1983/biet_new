@@ -31,11 +31,6 @@ const FOOTERITEMS = [
     element: <HiOutlineBookOpen className=" w-8 h-8 m-auto" />,
     description: "ブログ",
   },
-  {
-    href: "/",
-    element: <AiOutlineSearch className=" w-8 h-8 m-auto" />,
-    description: "探す",
-  },
 ];
 
 export const FooterMenu: FC = () => {
@@ -47,9 +42,7 @@ export const FooterMenu: FC = () => {
           return (
             <Link href={item.href} key={item.href}>
               <a>
-                <div
-                  className="cursor-pointer box-border m-auto text-blue-500 hover:text-blue-400"
-                >
+                <div className="cursor-pointer box-border m-auto text-blue-500 hover:text-blue-400">
                   {item.element}
                   <p className="sm:hidden">{item.description}</p>
                 </div>

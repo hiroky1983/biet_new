@@ -14,7 +14,7 @@ export const ContentsLayout: FC = () => {
         <ContentsCard />
       </div>
       <div className="my-10 justify-center items-center">
-        <Link  href="/word">
+        <Link href="/word">
           <a>
             <PrimaryButton>もっと見る</PrimaryButton>
           </a>
@@ -26,7 +26,7 @@ export const ContentsLayout: FC = () => {
         <ContentsCard />
       </div>
       <div className="my-10 justify-center items-center">
-      <Link  href="/question">
+        <Link href="/question">
           <a>
             <PrimaryButton>もっと見る</PrimaryButton>
           </a>
@@ -37,7 +37,7 @@ export const ContentsLayout: FC = () => {
         <ContentsCard />
       </div>
       <div className="my-10 justify-center items-center">
-      <Link  href="/blog">
+        <Link href="/blog">
           <a>
             <PrimaryButton>もっと見る</PrimaryButton>
           </a>

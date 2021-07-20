@@ -7,11 +7,11 @@ export const Header: FC = () => {
     <div className="flex justify-center">
       <div className="p-6 cursor-pointer">
         <Image
-         src="/img/biet-new.png"
-         className="cursor-pointer"
-         width={420}
-         height={80}
-         alt="Avatar"
+          src="/img/biet-new.png"
+          className="cursor-pointer"
+          width={420}
+          height={80}
+          alt="Avatar"
         />
       </div>
     </div>
