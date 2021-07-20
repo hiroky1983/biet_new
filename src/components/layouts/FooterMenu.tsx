@@ -51,7 +51,7 @@ export const FooterMenu: FC = () => {
                   className="cursor-pointer box-border m-auto text-blue-500 hover:text-blue-400"
                 >
                   {item.element}
-                  <p>{item.description}</p>
+                  <p className="sm:hidden">{item.description}</p>
                 </div>
               </a>
             </Link>
