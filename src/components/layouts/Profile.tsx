@@ -16,16 +16,16 @@ export const Profile: FC = () => {
             alt="Avatar"
           />
           <div className="">
-            <p>hirocky1983</p>
+            <p className="text-gray-700">hirocky1983</p>
             <br />
-            <p>
+            <p className="text-gray-700">
               <span>🚹</span>　　　　#ベトナム人と交際中
             </p>
           </div>
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
-        <p>
+        <p className="text-gray-700">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut odit
           impedit at, optio voluptatibus aspernatur sint commodi consequatur quo
           vitae, mollitia id reprehenderit assumenda minus. Qui recusandae nobis
