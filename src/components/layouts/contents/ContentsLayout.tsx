@@ -7,7 +7,7 @@ import { ContentsCard } from "./ContentsCard";
 export const ContentsLayout: FC = () => {
   return (
     <div>
-      <h1 className="px-14 py-4 font">#最新のつぶやき</h1>
+      <h1 className="px-14 py-4 font-bold text-xl">#最新のつぶやき</h1>
       <div className="flex  flex-wrap mx-6 gap-x-3">
         <ContentsCard />
         <div className="hidden lg:flex">
@@ -24,7 +24,7 @@ export const ContentsLayout: FC = () => {
           </a>
         </Link>
       </div>
-      <h1 className="px-14 py-4 font">#質問を見る</h1>
+      <h1 className="px-14 py-4 font-bold text-xl">#質問を見る</h1>
       <div className="flex  flex-wrap mx-6 gap-x-3">
         <ContentsCard />
         <div className="hidden lg:flex">
@@ -41,7 +41,7 @@ export const ContentsLayout: FC = () => {
           </a>
         </Link>
       </div>
-      <h1 className="px-14 py-4 font">#最新のブログ</h1>
+      <h1 className="px-14 py-4 font-bold text-xl">#最新のブログ</h1>
       <div className="flex  flex-wrap mx-6 gap-x-3">
         <ContentsCard />
         <div className="hidden lg:flex">
