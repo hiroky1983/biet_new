@@ -2,15 +2,11 @@ import React, { FC } from "react";
 import "tailwindcss/tailwind.css";
 import Link from "next/link";
 
-import {
-  AiTwotoneHome,
-  AiFillQuestionCircle,
-  AiOutlineSearch,
-} from "react-icons/ai";
+import { AiTwotoneHome, AiFillQuestionCircle } from "react-icons/ai";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { HiOutlineBookOpen } from "react-icons/hi";
 
-const FOOTERITEMS = [
+export const FOOTERITEMS = [
   {
     href: "/",
     element: <AiTwotoneHome className=" w-8 h-8 m-auto" />,
@@ -33,7 +29,7 @@ const FOOTERITEMS = [
   },
 ];
 
-export const FooterMenu: FC = () => {
+export const MobileFooterMenu: FC = () => {
   return (
     <>
       <div className="border border-gray-300"></div>
