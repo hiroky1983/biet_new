@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { FC } from "react";
 import "tailwindcss/tailwind.css";
-import { FooterMenu } from "../components/layouts/FooterMenu";
-import { Header } from "../components/layouts/Header";
+import { BrowserFooterMenu } from "../components/layouts/BrowserFooterMenu";
+import { MobileFooterMenu } from "../components/layouts/MobileFooterMenu";
 
 const Question: FC = () => {
   return (
@@ -15,12 +15,17 @@ const Question: FC = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       <div className="h-screen">
         <p>工事中・・・</p>
       </div>
-      <FooterMenu />
-    </div>
+      <div className="flex">
+        <div className="flex lg:hidden">
+          <BrowserFooterMenu />
+        </div>
+      </div>
+      <div className="hidden lg:block">
+        <MobileFooterMenu />
+      </div>    </div>
   );
 };
 
