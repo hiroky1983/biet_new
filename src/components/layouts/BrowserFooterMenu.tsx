@@ -20,7 +20,6 @@ export const BrowserFooterMenu: FC = () => {
           );
         })}
       </div>
-      {/* <div className="border border-gray-300"></div> */}
     </>
   );
 };

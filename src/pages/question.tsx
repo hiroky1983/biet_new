@@ -19,11 +19,11 @@ const Question: FC = () => {
         <p>工事中・・・</p>
       </div>
       <div className="flex">
-        <div className="flex lg:hidden">
+      <div className="hidden lg:flex">
           <BrowserFooterMenu />
         </div>
       </div>
-      <div className="hidden lg:block">
+      <div className="block lg:hidden">
         <MobileFooterMenu />
       </div>    </div>
   );

@@ -19,7 +19,7 @@ export default function Home() {
       </Head>
       <Header />
       <div className="flex">
-        <div className="flex lg:hidden">
+        <div className="hidden lg:flex">
           <BrowserFooterMenu />
         </div>
         <div className="flex-col">
@@ -27,7 +27,7 @@ export default function Home() {
           <ContentsLayout />
         </div>
       </div>
-      <div className="hidden lg:block">
+      <div className="block lg:hidden">
         <MobileFooterMenu />
       </div>
     </div>
