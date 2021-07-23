@@ -1,10 +1,11 @@
 import Head from "next/head";
-import { FC } from "react";
+import { VFC } from "react";
 import "tailwindcss/tailwind.css";
-import { BrowserFooterMenu } from "../components/layouts/BrowserFooterMenu";
-import { MobileFooterMenu } from "../components/layouts/MobileFooterMenu";
+import { BrowserFooterMenu } from "../components/layouts/footer/BrowserFooterMenu";
+import { MobileFooterMenu } from "../components/layouts/footer/MobileFooterMenu";
+import { SubHeader } from "../components/layouts/header/SubHeader";
 
-const Blog: FC = () => {
+const Blog: VFC = () => {
   return (
     <div>
       <Head>
@@ -15,6 +16,7 @@ const Blog: FC = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <SubHeader title="Blog" />
       <div className="h-screen">
         <p>工事中・・・</p>
       </div>
