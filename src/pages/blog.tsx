@@ -17,11 +17,8 @@ const Blog: VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SubHeader title="Blog" />
-      <div className="h-screen">
-        <p>工事中・・・</p>
-      </div>
       <div className="flex">
-      <div className="hidden lg:flex">
+        <div className="hidden lg:flex">
           <BrowserFooterMenu />
         </div>
       </div>

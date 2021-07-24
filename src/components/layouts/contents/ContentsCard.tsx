@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export const ContentsCard: VFC = () => {
   return (
-    <div className="flex justify-center">
-      <div className="bg-white shadow-lg p-4 rounded-2xl w-60 hover:bg-opacity-30 cursor-pointer">
+    <div className="flex justify-center hover:translate-x-1">
+      <div className="bg-white shadow-lg p-4 rounded-2xl w-60 cursor-pointer ">
         <div className="text-center mt-4">
           <p className="text-gray-600 font-bold">Name</p>
           <p className="text-sm font-hairline text-gray-600 mt-1">Subtitle</p>

@@ -6,7 +6,7 @@ import "tailwindcss/tailwind.css";
 export const Profile: FC = () => {
   return (
     <>
-      <div className="flex justify-center ">
+      <div className="mx-14">
         <div className="flex">
           <Image
             src="/img/avatar.png"
@@ -15,7 +15,7 @@ export const Profile: FC = () => {
             height={70}
             alt="Avatar"
           />
-          <div className="">
+          <div className="mx-6">
             <p className="text-gray-700">hirocky1983</p>
             <br />
             <p className="text-gray-700">

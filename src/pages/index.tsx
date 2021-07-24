@@ -6,7 +6,7 @@ import { Header } from "../components/layouts/header/Header";
 import { Profile } from "../components/layouts/Profile";
 import { BrowserFooterMenu } from "../components/layouts/footer/BrowserFooterMenu";
 
-export default function Home(): JSX.Element{
+export default function Home(): JSX.Element {
   return (
     <div>
       <Head>

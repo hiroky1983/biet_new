@@ -17,18 +17,15 @@ const Question: VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SubHeader title="Question" />
-
-      <div className="h-screen">
-        <p>工事中・・・</p>
-      </div>
       <div className="flex">
-      <div className="hidden lg:flex">
+        <div className="hidden lg:flex">
           <BrowserFooterMenu />
         </div>
       </div>
       <div className="block lg:hidden">
         <MobileFooterMenu />
-      </div>    </div>
+      </div>
+    </div>
   );
 };
 
