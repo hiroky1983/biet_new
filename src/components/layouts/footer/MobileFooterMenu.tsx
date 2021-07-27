@@ -13,11 +13,6 @@ export const FOOTERITEMS = [
     description: "ホーム",
   },
   {
-    href: "/word",
-    element: <BsFillChatDotsFill className=" w-8 h-8 m-auto" />,
-    description: "ひとこと",
-  },
-  {
     href: "/question",
     element: <AiFillQuestionCircle className=" w-8 h-8 m-auto" />,
     description: "質問",

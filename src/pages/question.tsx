@@ -7,7 +7,7 @@ import { SubHeader } from "../components/layouts/header/SubHeader";
 
 const Question: VFC = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Head>
         <title>biet-new</title>
         <meta
@@ -20,6 +20,7 @@ const Question: VFC = () => {
       <div className="flex">
         <div className="hidden lg:flex">
           <BrowserFooterMenu />
+          
         </div>
       </div>
       <div className="block lg:hidden">

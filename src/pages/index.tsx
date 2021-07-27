@@ -8,10 +8,11 @@ import { BrowserFooterMenu } from "../components/layouts/footer/BrowserFooterMen
 
 export default function Home(): JSX.Element {
   return (
-    <div>
+    <div className="min-h-screen">
       <Head>
         <title>biet-new</title>
         <meta
+          lang="ja"
           name="Connect with people who are dating foreigners "
           content="Connect for SNS"
         />

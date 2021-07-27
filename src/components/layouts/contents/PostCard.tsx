@@ -1,5 +1,4 @@
 import React, { VFC } from "react";
-// import "tailwindcss/tailwind.css";
 
 export const PostCard: VFC = () => {
   return (
