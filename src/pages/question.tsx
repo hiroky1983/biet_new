@@ -27,7 +27,7 @@ const Question: VFC = () => {
     setValue(newValue);
   };
   return (
-    <Layout>
+    <>
       <Head>
         <title>biet-new</title>
         <meta
@@ -37,7 +37,8 @@ const Question: VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SubHeader title="Question" />
-        <div className=" w-full">
+      <Layout>
+        <div className="w-full">
           <Paper className={classes.root}>
             <Tabs
               value={value}
@@ -52,7 +53,8 @@ const Question: VFC = () => {
             <PostCard />
           </Paper>
         </div>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
