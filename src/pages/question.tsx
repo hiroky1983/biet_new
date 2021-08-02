@@ -16,12 +16,6 @@ const useStyles = makeStyles({
 });
 
 const Question: VFC = () => {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
-  };
   return (
     <>
       <Head>
@@ -35,19 +29,6 @@ const Question: VFC = () => {
       <SubHeader title="Question" />
       <Layout>
         <div className="w-full">
-          {/* <Paper className={classes.root}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              centered
-            >
-              <Tab label="質問する"></Tab>
-              <Tab label="質問を見る"></Tab>
-            </Tabs>
-            <PostCard />
-          </Paper> */}
           <TabMenu  />
         </div>
       </Layout>

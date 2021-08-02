@@ -56,11 +56,13 @@ function LinkTab(props: LinkTabProps) {
   );
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
+  },
+  line: {
+    color: "#374251",
+    boxShadow: "0 0px 0px 0px rgba(0, 0, 0, 0)",
   },
 }));
 
@@ -74,18 +76,21 @@ export const TabMenu: VFC = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static"  color="inherit"  className={classes.line}>
         <Tabs
           variant="fullWidth"
           value={value}
           onChange={handleChange}
           aria-label="nav tabs"
+          indicatorColor="primary"
         >
           <LinkTab label="質問をする" href="/drafts" {...a11yProps(0)} />
           <LinkTab label="質問を見る" href="/trash" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
+        <PostCard />
+        <PostCard />
         <PostCard />
       </TabPanel>
       <TabPanel value={value} index={1}>
