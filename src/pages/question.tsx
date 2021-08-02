@@ -1,8 +1,6 @@
 import Head from "next/head";
 import { VFC } from "react";
 import "tailwindcss/tailwind.css";
-import { BrowserFooterMenu } from "../components/layouts/footer/BrowserFooterMenu";
-import { MobileFooterMenu } from "../components/layouts/footer/MobileFooterMenu";
 import { SubHeader } from "../components/layouts/header/SubHeader";
 
 import React from "react";
@@ -16,6 +14,7 @@ import { Layout } from "../components/layouts/Layout";
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
+    boxShadow: '0 0px 0px 0px rgba(0, 0, 0, 0)',
   },
 });
 
@@ -39,7 +38,9 @@ const Question: VFC = () => {
       <SubHeader title="Question" />
       <Layout>
         <div className="w-full">
-          <Paper className={classes.root}>
+          <Paper 
+          className={classes.root}
+          >
             <Tabs
               value={value}
               onChange={handleChange}
