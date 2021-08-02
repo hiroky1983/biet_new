@@ -5,16 +5,13 @@ import { SubHeader } from "../components/layouts/header/SubHeader";
 
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import { PostCard } from "../components/layouts/contents/PostCard";
 import { Layout } from "../components/layouts/Layout";
+import { TabMenu } from "../components/layouts/contents/TabMenu";
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    boxShadow: '0 0px 0px 0px rgba(0, 0, 0, 0)',
+    boxShadow: "0 0px 0px 0px rgba(0, 0, 0, 0)",
   },
 });
 
@@ -38,9 +35,7 @@ const Question: VFC = () => {
       <SubHeader title="Question" />
       <Layout>
         <div className="w-full">
-          <Paper 
-          className={classes.root}
-          >
+          {/* <Paper className={classes.root}>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -52,7 +47,8 @@ const Question: VFC = () => {
               <Tab label="質問を見る"></Tab>
             </Tabs>
             <PostCard />
-          </Paper>
+          </Paper> */}
+          <TabMenu  />
         </div>
       </Layout>
     </>
