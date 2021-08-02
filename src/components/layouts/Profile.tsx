@@ -1,5 +1,6 @@
 import React, { VFC } from "react";
 import Image from "next/image";
+import { SecondaryButton } from "../button/SecondaryButton";
 
 import "tailwindcss/tailwind.css";
 
@@ -7,10 +8,10 @@ export const Profile: VFC = () => {
   return (
     <>
       <div className="mx-14">
-        <div className="flex">
+        <div className="flex w-full">
           <Image
             src="/img/avatar.png"
-            className="rounded-full"
+            className="rounded-full text-center"
             width={70}
             height={70}
             alt="Avatar"
@@ -21,6 +22,9 @@ export const Profile: VFC = () => {
             <p className="text-gray-700">
               <span>🚹</span>　　　　#ベトナム人と交際中
             </p>
+          </div>
+          <div className="float-right">
+            <SecondaryButton>変更</SecondaryButton>
           </div>
         </div>
       </div>
