@@ -5,10 +5,11 @@ import { MobileFooterMenu } from "../components/layouts/footer/MobileFooterMenu"
 import { Header } from "../components/layouts/header/Header";
 import { Profile } from "../components/layouts/Profile";
 import { BrowserFooterMenu } from "../components/layouts/footer/BrowserFooterMenu";
+import { Layout } from "../components/layouts/Layout";
 
 export default function Home(): JSX.Element {
   return (
-    <div className="min-h-screen">
+    <>
       <Head>
         <title>biet-new</title>
         <meta
@@ -19,18 +20,12 @@ export default function Home(): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div className="flex">
-        <div className="hidden lg:flex">
-          <BrowserFooterMenu />
-        </div>
+      <Layout>
         <div className="flex-col">
           <Profile />
           <ContentsLayout />
         </div>
-      </div>
-      <div className="block lg:hidden">
-        <MobileFooterMenu />
-      </div>
-    </div>
+      </Layout>
+    </>
   );
 }

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const Header: VFC = () => {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center ">
       <div className="p-6 cursor-pointer">
         <Image
           src="/img/biet-new.png"

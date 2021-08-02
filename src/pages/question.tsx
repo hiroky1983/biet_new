@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { PostCard } from "../components/layouts/contents/PostCard";
+import { Layout } from "../components/layouts/Layout";
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +27,7 @@ const Question: VFC = () => {
     setValue(newValue);
   };
   return (
-    <div className="min-h-screen w-full">
+    <Layout>
       <Head>
         <title>biet-new</title>
         <meta
@@ -36,11 +37,7 @@ const Question: VFC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SubHeader title="Question" />
-      <div className="flex">
-        <div className="hidden lg:flex">
-          <BrowserFooterMenu />
-        </div>
-        <div className=" w-full h-screen">
+        <div className=" w-full">
           <Paper className={classes.root}>
             <Tabs
               value={value}
@@ -55,11 +52,7 @@ const Question: VFC = () => {
             <PostCard />
           </Paper>
         </div>
-      </div>
-      <div className="block lg:hidden">
-        <MobileFooterMenu />
-      </div>
-    </div>
+    </Layout>
   );
 };
 

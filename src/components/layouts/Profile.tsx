@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import React, { VFC } from "react";
 import Image from "next/image";
 
 import "tailwindcss/tailwind.css";
 
-export const Profile: FC = () => {
+export const Profile: VFC = () => {
   return (
     <>
       <div className="mx-14">
