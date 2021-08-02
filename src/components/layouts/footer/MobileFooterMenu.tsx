@@ -35,7 +35,7 @@ export const MobileFooterMenu: VFC = () => {
               <a>
                 <div className="cursor-pointer box-border m-auto text-blue-500 hover:text-blue-400">
                   {item.element}
-                  <p className="sm:hidden">{item.description}</p>
+                  <p>{item.description}</p>
                 </div>
               </a>
             </Link>
