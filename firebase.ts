@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-const firebaseConifg = {
+const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_DOMAIN,
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE,
@@ -12,9 +12,9 @@ const firebaseConifg = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
-const firebaseApp = firebase.initializeApp(firebaseConifg);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-export const db = firebase.firestore();
+export const db = firebaseApp.firestore();
 export const auth = firebase.auth();
 export const storage = firebase.storage();
 export const provider = new firebase.auth.GoogleAuthProvider();
