@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { AiTwotoneHome, AiFillQuestionCircle } from "react-icons/ai";
 import { HiOutlineBookOpen } from "react-icons/hi";
+import { BiLogIn } from "react-icons/bi";
 
 export const FOOTERITEMS = [
   {
@@ -20,6 +21,11 @@ export const FOOTERITEMS = [
     href: "/blog",
     element: <HiOutlineBookOpen className=" w-8 h-8 m-auto" />,
     description: "ブログ",
+  },
+  {
+    href: "/auth",
+    element: <BiLogIn className=" w-8 h-8 m-auto" />,
+    description: "ログアウト",
   },
 ];
 
