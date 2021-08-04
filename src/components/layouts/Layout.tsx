@@ -1,4 +1,3 @@
-import { useRouter } from "next/dist/client/router";
 import React, { ReactNode, VFC } from "react";
 import { BrowserFooterMenu } from "./footer/BrowserFooterMenu";
 import { MobileFooterMenu } from "./footer/MobileFooterMenu";
@@ -9,7 +8,7 @@ type PROPS = {
 
 export const Layout: VFC <PROPS>= (props) => {
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen">
       <div className="flex">
         <div className="hidden lg:flex">
           <BrowserFooterMenu />

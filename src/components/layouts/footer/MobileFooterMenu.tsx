@@ -3,7 +3,6 @@ import "tailwindcss/tailwind.css";
 import Link from "next/link";
 
 import { AiTwotoneHome, AiFillQuestionCircle } from "react-icons/ai";
-import { BsFillChatDotsFill } from "react-icons/bs";
 import { HiOutlineBookOpen } from "react-icons/hi";
 
 export const FOOTERITEMS = [
