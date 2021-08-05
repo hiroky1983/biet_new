@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { InputHTMLAttributes, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Header } from "../components/layouts/header/Header";
 import { auth, provider } from "../../firebase";
@@ -10,6 +10,15 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
+  const onChangeUserId: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setUsername(e.target.value);
+    }, []);
+  const onChangePassword: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setPassword(e.target.value);
+    }, []);
+
   const login = async () => {
     try {
       await fetch(
@@ -17,7 +26,6 @@ export default function Auth() {
         {
           method: "POST",
           body: JSON.stringify({ username: username, password: password }),
-
         }
       )
         .then((res) => {
@@ -62,7 +70,7 @@ export default function Auth() {
 
   const signInGoogle = async () => {
     await auth.signInWithPopup(provider).catch((err) => alert(err.message));
-    router.push("/")
+    router.push("/");
   };
 
   return (
@@ -95,9 +103,7 @@ export default function Auth() {
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Username"
               value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
+              onChange={onChangeUserId}
             />
           </div>
           <div>
@@ -109,9 +115,7 @@ export default function Auth() {
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder="Password"
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={onChangePassword}
             />
           </div>
         </div>
