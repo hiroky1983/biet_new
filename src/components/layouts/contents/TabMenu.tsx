@@ -6,6 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { PostCard } from "./PostCard";
+import { CreateButton } from "../../button/CreateButton";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -70,13 +71,13 @@ export const TabMenu: VFC = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
   return (
     <div className={classes.root}>
-      <AppBar position="static"  color="inherit"  className={classes.line}>
+      <AppBar position="static" color="inherit" className={classes.line}>
         <Tabs
           variant="fullWidth"
           value={value}
@@ -89,12 +90,14 @@ export const TabMenu: VFC = () => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        <div className=" h-full justify-end ">
+          <CreateButton />
+        </div>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Page Two
+        <PostCard />
+        <PostCard />
+        <PostCard />
       </TabPanel>
     </div>
   );
