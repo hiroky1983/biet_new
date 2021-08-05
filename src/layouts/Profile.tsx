@@ -1,6 +1,6 @@
 import React, { VFC } from "react";
 import Image from "next/image";
-import { SecondaryButton } from "../button/SecondaryButton";
+import { SecondaryButton } from "../components/button/SecondaryButton";
 
 import "tailwindcss/tailwind.css";
 

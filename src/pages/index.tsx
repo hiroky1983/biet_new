@@ -1,9 +1,9 @@
 import Head from "next/head";
 import "tailwindcss/tailwind.css";
-import { ContentsLayout } from "../components/layouts/contents/ContentsLayout";
-import { Header } from "../components/layouts/header/Header";
-import { Profile } from "../components/layouts/Profile";
-import { Layout } from "../components/layouts/Layout";
+import { ContentsLayout } from "../layouts/contents/ContentsLayout";
+import { Header } from "../layouts/header/Header";
+import { Profile } from "../layouts/Profile";
+import { Layout } from "../layouts/Layout";
 
 export default function Home(): JSX.Element {
   return (

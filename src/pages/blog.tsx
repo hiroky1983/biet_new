@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { VFC } from "react";
 import "tailwindcss/tailwind.css";
-import { BrowserFooterMenu } from "../components/layouts/footer/BrowserFooterMenu";
-import { MobileFooterMenu } from "../components/layouts/footer/MobileFooterMenu";
-import { SubHeader } from "../components/layouts/header/SubHeader";
+import { BrowserFooterMenu } from "../layouts/footer/BrowserFooterMenu";
+import { MobileFooterMenu } from "../layouts/footer/MobileFooterMenu";
+import { SubHeader } from "../layouts/header/SubHeader";
 
 const Blog: VFC = () => {
   return (

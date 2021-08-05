@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { VFC } from "react";
 import "tailwindcss/tailwind.css";
-import { PrimaryButton } from "../../button/PrimaryButton";
+import { PrimaryButton } from "../../components/button/PrimaryButton";
 import { ContentsCard } from "./ContentsCard";
 
 const CONTENTSITEMS = [
