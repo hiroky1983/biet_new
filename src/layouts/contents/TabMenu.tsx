@@ -90,7 +90,7 @@ export const TabMenu: VFC = () => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <div className=" h-full justify-end ">
+        <div className=" max-h-screen justify-end ">
           <CreateButton />
         </div>
       </TabPanel>
