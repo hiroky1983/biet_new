@@ -48,7 +48,7 @@ export const MobileFooterMenu: VFC = () => {
           );
         })}
       </div>
-      <div><small lang="en">&copy; {THIS_YEAR} hirocky1983 All Rights Reserved.</small></div>
+      <div><small className="text-gray-500" lang="en">&copy; {THIS_YEAR} hirocky1983 All Rights Reserved.</small></div>
     </>
   );
 };

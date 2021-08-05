@@ -76,6 +76,7 @@ export const TabMenu: VFC = () => {
   };
 
   return (
+    <div className="h-auto">
     <div className={classes.root}>
       <AppBar position="static" color="inherit" className={classes.line}>
         <Tabs
@@ -99,6 +100,8 @@ export const TabMenu: VFC = () => {
         <PostCard />
         <PostCard />
       </TabPanel>
+
+    </div>
     </div>
   );
 };

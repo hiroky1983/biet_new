@@ -10,7 +10,7 @@ export const BrowserFooterMenu: VFC = () => {
   
   return (
     <>
-      <div className="flex-col mx-8 sm:mx-16">
+      <div className="flex-col mx-8 sm:mx-16 h-auto">
         {FOOTERITEMS.map((item) => {
           return (
             <Link href={item.href} key={item.href}>
@@ -22,8 +22,8 @@ export const BrowserFooterMenu: VFC = () => {
             </Link>
           );
         })}
+      <div><small className="text-gray-500" lang="en">&copy; {THIS_YEAR} hirocky1983 All Rights Reserved.</small></div>
       </div>
-
     </>
   );
 };
