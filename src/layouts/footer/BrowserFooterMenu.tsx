@@ -4,7 +4,10 @@ import Link from "next/link";
 
 import { FOOTERITEMS } from "./MobileFooterMenu";
 
+const THIS_YEAR = new Date().getFullYear()
+
 export const BrowserFooterMenu: VFC = () => {
+  
   return (
     <>
       <div className="flex-col mx-8 sm:mx-16">
@@ -20,6 +23,7 @@ export const BrowserFooterMenu: VFC = () => {
           );
         })}
       </div>
+
     </>
   );
 };

@@ -28,6 +28,7 @@ export const FOOTERITEMS = [
     description: "ログアウト",
   },
 ];
+const THIS_YEAR = new Date().getFullYear()
 
 export const MobileFooterMenu: VFC = () => {
   return (
@@ -47,6 +48,7 @@ export const MobileFooterMenu: VFC = () => {
           );
         })}
       </div>
+      <div><small lang="en">&copy; {THIS_YEAR} hirocky1983 All Rights Reserved.</small></div>
     </>
   );
 };
