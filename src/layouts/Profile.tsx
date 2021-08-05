@@ -7,7 +7,7 @@ import "tailwindcss/tailwind.css";
 export const Profile: VFC = () => {
   return (
     <>
-      <div className="mx-14 w-screen">
+      <div className="mx-14 w-auto">
         <div className="flex w-full">
           <Image
             src="/img/avatar.png"
