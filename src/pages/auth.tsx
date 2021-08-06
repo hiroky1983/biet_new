@@ -9,6 +9,7 @@ export default function Auth() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [lang, setLang] = useState("");
 
   const onChangeUserId: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
@@ -18,26 +19,15 @@ export default function Auth() {
     useCallback((e) => {
       setPassword(e.target.value);
     }, []);
+  const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setLang(e.target.value);
+    }, []);
 
   const login = async () => {
     try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/auth/jwt/create/`,
-        {
-          method: "POST",
-          body: JSON.stringify({ username: username, password: password }),
-        }
-      )
-        .then((res) => {
-          if (res.status === 400) {
-            throw "authentication failed";
-          } else if (res.ok) {
-            return res.json();
-          }
-        })
-        .then((data) => {
-          const options = { path: "/" };
-        });
+      await auth.signInWithEmailAndPassword(username, password);
+      setIsLogin(false);
       router.push("/");
     } catch (err) {
       alert(err);
@@ -85,7 +75,6 @@ export default function Auth() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      {/* <Image /> */}
       <div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
           {isLogin ? "Login" : "Sign up"}
@@ -101,7 +90,7 @@ export default function Auth() {
               autoComplete="username"
               required
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Username"
+              placeholder={isLogin ? "Username " : "Email"}
               value={username}
               onChange={onChangeUserId}
             />
@@ -126,8 +115,35 @@ export default function Auth() {
               onClick={() => setIsLogin(!isLogin)}
               className="cursor-pointer font-medium text-gray-700 hover:text-indigo-500"
             >
-              change mode ?
+              Create New User
             </span>
+            {isLogin ? null : (
+              <form action="">
+                <div className="space-x-4 mt-4">
+                  <span className="text-gray-500 ">性別？</span>
+                  <input type="radio" value="男性" name="select sex" />
+                  <label>男性</label>
+                  <input type="radio" value="女性" name="select sex" />
+                  <label>女性</label>
+                </div>
+                <div className="mt-6">
+                  <input
+                    className="px-10 py-2 rounded-full"
+                    type="text"
+                    name="select lang"
+                    placeholder="交際相手の国籍は？"
+                    onChange={onChangeLang}
+                  />
+                  <div className="space-x-4 mt-4">
+                    <span className="text-gray-500">現在は？</span>
+                    <input type="radio" value="交際中" name="select status" />
+                    <label>交際中</label>
+                    <input type="radio" value="既婚" name="select status" />
+                    <label>既婚</label>
+                  </div>
+                </div>
+              </form>
+            )}
           </div>
         </div>
 
@@ -151,7 +167,7 @@ export default function Auth() {
                 />
               </svg>
             </span>
-            {isLogin ? "Login with JWT" : "Create new user"}
+            {isLogin ? "Login" : "Create New User"}
           </button>
         </div>
 
