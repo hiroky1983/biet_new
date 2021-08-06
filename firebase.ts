@@ -12,9 +12,11 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+  }
 
-export const db = firebaseApp.firestore();
+export const db = firebase.firestore();
 export const auth = firebase.auth();
 export const storage = firebase.storage();
 export const provider = new firebase.auth.GoogleAuthProvider();
