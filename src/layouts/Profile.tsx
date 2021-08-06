@@ -1,10 +1,18 @@
-import React, { VFC } from "react";
+import React, { useState, VFC } from "react";
 import Image from "next/image";
 import { SecondaryButton } from "../components/button/SecondaryButton";
 
 import "tailwindcss/tailwind.css";
 
 export const Profile: VFC = () => {
+  const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const onChangeImageHandler = (e: { target: { files: any; value: string; }; }) => {
+    if (e.target.files![0]) {
+      setAvatarImage(e.target.files![0]);
+      e.target.value = "";
+    }
+  };
+
   return (
     <>
       <div className="mx-14 w-auto">
