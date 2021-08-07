@@ -61,9 +61,13 @@ export default function Auth() {
     userStatus: userStatus,
   };
 
-  const login = () => {
-    auth.signInWithEmailAndPassword(email, password);
+  const login = async () => {
+    try {
+    await auth.signInWithEmailAndPassword(email, password);
     router.push("/");
+    } catch (error) {
+      console.log(error);
+    } 
   };
   const createUser = async () => {
     try {
