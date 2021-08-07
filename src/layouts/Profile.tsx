@@ -3,6 +3,14 @@ import Image from "next/image";
 import { SecondaryButton } from "../components/button/SecondaryButton";
 
 import "tailwindcss/tailwind.css";
+import { db } from "../../firebase";
+
+type USER = {
+  displayName: string,
+  lang: string,
+  checkValue: string,
+  userStatus: string,
+}
 
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);

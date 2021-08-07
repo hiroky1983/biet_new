@@ -5,6 +5,8 @@ import Link from "next/link";
 import { AiTwotoneHome, AiFillQuestionCircle } from "react-icons/ai";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { BiLogIn } from "react-icons/bi";
+import { auth } from "../../../firebase";
+import { initialState } from "../../pages/auth";
 
 export const FOOTERITEMS = [
   {
@@ -26,9 +28,15 @@ export const FOOTERITEMS = [
     href: "/auth",
     element: <BiLogIn className=" w-8 h-8 m-auto" />,
     description: "ログアウト",
+    onclick: () => {
+      auth.onAuthStateChanged((user) => {
+        auth.signOut();
+        initialState;
+      });
+    },
   },
 ];
-const THIS_YEAR = new Date().getFullYear()
+const THIS_YEAR = new Date().getFullYear();
 
 export const MobileFooterMenu: VFC = () => {
   return (
@@ -39,7 +47,10 @@ export const MobileFooterMenu: VFC = () => {
           return (
             <Link href={item.href} key={item.href}>
               <a>
-                <div className="cursor-pointer box-border m-auto text-blue-500 hover:text-blue-400">
+                <div
+                  className="cursor-pointer box-border m-auto text-blue-500 hover:text-blue-400"
+                  onClick={item.onclick}
+                >
                   {item.element}
                   <p>{item.description}</p>
                 </div>
@@ -48,7 +59,11 @@ export const MobileFooterMenu: VFC = () => {
           );
         })}
       </div>
-      <div><small className="text-gray-500" lang="en">&copy; {THIS_YEAR} hirocky1983 All Rights Reserved.</small></div>
+      <div>
+        <small className="text-gray-500" lang="en">
+          &copy; {THIS_YEAR} hirocky1983 All Rights Reserved.
+        </small>
+      </div>
     </>
   );
 };

@@ -1,19 +1,37 @@
 import { InputHTMLAttributes, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Header } from "../layouts/header/Header";
-import { auth, provider } from "../../firebase";
+import { auth, db } from "../../firebase";
 import Head from "next/head";
+import firebase from "firebase";
+
+export const initialState = {
+  uid: null,
+  username: "",
+  email: "",
+  password: "",
+  lang: "",
+  checkValue: "",
+  userstatus: "",
+};
 
 export default function Auth() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [lang, setLang] = useState("");
+  const [checkValue, setCheckValue] = useState("");
+  const [userStatus, setUserStatus] = useState("");
 
-  const onChangeUserId: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
       setUsername(e.target.value);
+    }, []);
+  const onChangeEmail: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setEmail(e.target.value);
     }, []);
   const onChangePassword: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
@@ -23,44 +41,51 @@ export default function Auth() {
     useCallback((e) => {
       setLang(e.target.value);
     }, []);
+  const onChangeCheckValue: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setCheckValue(e.target.value);
+    }, []);
+  const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setUserStatus(e.target.value);
+    }, []);
 
-  const login = async () => {
-    try {
-      await auth.signInWithEmailAndPassword(username, password);
-      setIsLogin(false);
-      router.push("/");
-    } catch (err) {
-      alert(err);
-    }
+  const user = firebase.auth().currentUser;
+  const userRef = {
+    uid: user?.uid,
+    email: email,
+    password: password,
+    displayName: username,
+    lang: lang,
+    checkValue: checkValue,
+    userStatus: userStatus,
   };
 
-  const authUser = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    if (isLogin) {
-      login();
-    } else {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}api/register/`, {
-          method: "POST",
-          body: JSON.stringify({ username: username, password: password }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => {
-          if (res.status === 400) {
-            throw "authentication failed";
+  const login = () => {
+    auth.signInWithEmailAndPassword(email, password);
+    router.push("/");
+  };
+  const createUser = async () => {
+    try {
+      await auth
+        .createUserWithEmailAndPassword(userRef.email, userRef.password)
+        .then(async () => {
+          const userDoc = await db.collection("users").doc(userRef.uid).get();
+          if (!userDoc.exists) {
+            await userDoc.ref.set({ userRef });
           }
         });
-        login();
-      } catch (err) {
-        alert(err);
-      }
+      router.push("/");
+    } catch (error) {
+      alert(error);
     }
   };
 
-  const signInGoogle = async () => {
-    await auth.signInWithPopup(provider).catch((err) => alert(err.message));
-    router.push("/");
+  const authUser = () => {
+    alert("Auth User");
+  };
+  const signInGoogle = () => {
+    alert("Sign In Google");
   };
 
   return (
@@ -80,19 +105,19 @@ export default function Auth() {
           {isLogin ? "Login" : "Sign up"}
         </h2>
       </div>
-      <form className="mt-8 space-y-6" onSubmit={authUser}>
+      <form className="mt-8 space-y-6">
         <input type="hidden" name="remember" value="true" />
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
             <input
-              name="username"
+              name={isLogin ? "username" : "email"}
               type="text"
-              autoComplete="username"
+              autoComplete={isLogin ? "username" : "email"}
               required
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder={isLogin ? "Username " : "Email"}
-              value={username}
-              onChange={onChangeUserId}
+              value={isLogin ? username : email}
+              onChange={isLogin ? onChangeUserName : onChangeEmail}
             />
           </div>
           <div>
@@ -101,7 +126,7 @@ export default function Auth() {
               type="password"
               autoComplete="current-password"
               required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
               placeholder="Password"
               value={password}
               onChange={onChangePassword}
@@ -113,33 +138,76 @@ export default function Auth() {
           <div className="text-sm">
             <span
               onClick={() => setIsLogin(!isLogin)}
-              className="cursor-pointer font-medium text-gray-700 hover:text-indigo-500"
+              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500"
             >
               Create New User
             </span>
             {isLogin ? null : (
               <form action="">
-                <div className="space-x-4 mt-4">
+                <div className="space-x-4 mt-4 text-center">
                   <span className="text-gray-500 ">性別？</span>
-                  <input type="radio" value="男性" name="select sex" />
-                  <label>男性</label>
-                  <input type="radio" value="女性" name="select sex" />
-                  <label>女性</label>
-                </div>
-                <div className="mt-6">
                   <input
-                    className="px-10 py-2 rounded-full"
-                    type="text"
-                    name="select lang"
-                    placeholder="交際相手の国籍は？"
-                    onChange={onChangeLang}
+                    type="radio"
+                    value="男性"
+                    name="select sex"
+                    checked={checkValue === "男性"}
+                    onChange={onChangeCheckValue}
                   />
-                  <div className="space-x-4 mt-4">
-                    <span className="text-gray-500">現在は？</span>
-                    <input type="radio" value="交際中" name="select status" />
-                    <label>交際中</label>
-                    <input type="radio" value="既婚" name="select status" />
-                    <label>既婚</label>
+                  <label>男性</label>
+                  <input
+                    type="radio"
+                    value="女性"
+                    name="select sex"
+                    checked={checkValue === "女性"}
+                    onChange={onChangeCheckValue}
+                  />
+                  <label>女性</label>
+                  <input
+                    type="radio"
+                    value="未回答"
+                    name="select sex"
+                    checked={checkValue === ""}
+                    onChange={onChangeCheckValue}
+                  />
+                  <label>未回答</label>
+                  <div className="mt-6">
+                    <input
+                      className="px-10 py-2 rounded-full"
+                      type="text"
+                      name="select lang"
+                      placeholder="交際相手の国籍は？"
+                      onChange={onChangeLang}
+                      value={lang}
+                    />
+                    <div className="space-x-4 mt-4">
+                      <span className="text-gray-500">現在は？</span>
+                      <input
+                        type="radio"
+                        value="交際中"
+                        name="select status"
+                        onChange={onChangeCheckStatus}
+                        checked={userStatus === "交際中"}
+                      />
+                      <label>交際中</label>
+                      <input
+                        type="radio"
+                        value="既婚"
+                        name="select status"
+                        onChange={onChangeCheckStatus}
+                        checked={userStatus === "既婚"}
+                      />
+                      <label>既婚</label>
+                    </div>
+                    <div className="mt-6">
+                      <input
+                        className="px-10 py-2 rounded-full"
+                        type="text"
+                        name="select lang"
+                        placeholder="名前を入力"
+                        onChange={onChangeUserName}
+                        value={username}
+                      />
+                    </div>
                   </div>
                 </div>
               </form>
@@ -149,7 +217,7 @@ export default function Auth() {
 
         <div>
           <button
-            type="submit"
+            onClick={isLogin ? login : createUser}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
