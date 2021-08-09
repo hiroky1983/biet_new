@@ -13,7 +13,7 @@ export const Layout: VFC <PROPS>= (props) => {
         <div className="hidden lg:flex">
           <BrowserFooterMenu />
         </div>
-        <div className="w-full">{props.children}</div>
+        <div className="w-full h-auto">{props.children}</div>
       </div>
       <div className="block lg:hidden">
         <MobileFooterMenu />

@@ -6,20 +6,35 @@ import "tailwindcss/tailwind.css";
 import { db } from "../../firebase";
 
 type USER = {
-  displayName: string,
-  lang: string,
-  checkValue: string,
-  userStatus: string,
-}
+  displayName?: string;
+  lang?: string;
+  checkValue?: string;
+  userStatus?: string;
+};
 
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const onChangeImageHandler = (e: { target: { files: any; value: string; }; }) => {
+  // const [user, setUser] = useState<USER>({
+  //   displayName: "",
+  //   lang: "",
+  //   checkValue: "",
+  //   userStatus: "",
+  // });
+  const onChangeImageHandler = (e: {
+    target: { files: any; value: string };
+  }) => {
     if (e.target.files![0]) {
       setAvatarImage(e.target.files![0]);
       e.target.value = "";
     }
   };
+
+  const useRef = db.collection("users").doc("hlxpzjFsxK59rAUWPpNl");
+  const userData = useRef.get().then((doc) => {
+    const user = doc.data();
+    console.log(user);
+    return user;
+  });  
 
   return (
     <>
