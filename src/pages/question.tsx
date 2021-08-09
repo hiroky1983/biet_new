@@ -1,5 +1,4 @@
 import Head from "next/head";
-import "tailwindcss/tailwind.css";
 import { SubHeader } from "../layouts/header/SubHeader";
 
 import React from "react";

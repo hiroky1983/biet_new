@@ -1,5 +1,4 @@
 import Head from "next/head";
-import "tailwindcss/tailwind.css";
 import { ContentsLayout } from "../layouts/contents/ContentsLayout";
 import { Header } from "../layouts/header/Header";
 import { Profile } from "../layouts/Profile";
