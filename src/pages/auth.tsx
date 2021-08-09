@@ -4,6 +4,7 @@ import { Header } from "../layouts/header/Header";
 import { auth, db } from "../../firebase";
 import Head from "next/head";
 import firebase from "firebase";
+import { NextPage } from "next";
 
 export const initialState = {
   uid: null,
@@ -15,7 +16,7 @@ export const initialState = {
   userstatus: "",
 };
 
-export default function Auth() {
+const Auth: NextPage = () => {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
@@ -63,11 +64,13 @@ export default function Auth() {
 
   const login = async () => {
     try {
-    await auth.signInWithEmailAndPassword(email, password);
-    router.push("/");
+      await auth.signInWithEmailAndPassword(email, password);
+      router.push({
+        pathname: "/",
+      });
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
   const createUser = async () => {
     try {
@@ -270,3 +273,5 @@ export default function Auth() {
     </div>
   );
 }
+
+export default Auth;

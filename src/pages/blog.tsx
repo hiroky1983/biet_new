@@ -1,11 +1,11 @@
+import { NextPage } from "next";
 import Head from "next/head";
-import { VFC } from "react";
 import "tailwindcss/tailwind.css";
 import { BrowserFooterMenu } from "../layouts/footer/BrowserFooterMenu";
 import { MobileFooterMenu } from "../layouts/footer/MobileFooterMenu";
 import { SubHeader } from "../layouts/header/SubHeader";
 
-const Blog: VFC = () => {
+const Blog: NextPage = () => {
   return (
     <div>
       <Head>
