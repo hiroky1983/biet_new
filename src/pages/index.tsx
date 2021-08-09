@@ -4,8 +4,9 @@ import { ContentsLayout } from "../layouts/contents/ContentsLayout";
 import { Header } from "../layouts/header/Header";
 import { Profile } from "../layouts/Profile";
 import { Layout } from "../layouts/Layout";
+import { NextPage } from "next";
 
-export default function Home(): JSX.Element {
+  const Home: NextPage = ()  =>{
   return (
     <>
       <Head>
@@ -27,3 +28,5 @@ export default function Home(): JSX.Element {
     </>
   );
 }
+
+export default  Home;
