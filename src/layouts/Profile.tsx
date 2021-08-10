@@ -3,55 +3,90 @@ import Image from "next/image";
 import { SecondaryButton } from "../components/button/SecondaryButton";
 
 import "tailwindcss/tailwind.css";
-import { db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 
 type USER = {
-  displayName?: string;
-  lang?: string;
-  checkValue?: string;
-  userStatus?: string;
+  displayName: string;
+  lang: string;
+  checkValue: string;
+  userStatus: string;
 };
 
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  // const [user, setUser] = useState<USER>({
-  //   displayName: "",
-  //   lang: "",
-  //   checkValue: "",
-  //   userStatus: "",
-  // });
-  const onChangeImageHandler = (e: {
-    target: { files: any; value: string };
-  }) => {
+  const [user, setUser] = useState<USER>({
+    displayName: "",
+    lang: "",
+    checkValue: "",
+    userStatus: "",
+  });
+  const onChangeImageHandler = async (
+    e: {
+      target: { files: any; value: string };
+    }
+    // email: string,
+    // password: string
+  ) => {
+    // const authUser = await auth.createUserWithEmailAndPassword(email, password);
     if (e.target.files![0]) {
+      let url = "";
+      if (avatarImage) {
+        const S =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const N = 16;
+        const randomChar = Array.from(
+          crypto.getRandomValues(new Uint32Array(N))
+        )
+          .map((n) => S[n % S.length])
+          .join("");
+        const fileName = randomChar + "_" + avatarImage.name;
+        await storage.ref(`avatars/${fileName}`).put(avatarImage);
+        url = await storage.ref("avatars").child(fileName).getDownloadURL();
+      }
       setAvatarImage(e.target.files![0]);
       e.target.value = "";
     }
   };
 
-  const useRef = db.collection("users").doc("hlxpzjFsxK59rAUWPpNl");
-  const userData = useRef.get().then((doc) => {
-    const user = doc.data();
-    console.log(user);
-    return user;
-  });  
+  const useRef = async() => {
+   const doc =  await db.collection("users").doc("hlxpzjFsxK59rAUWPpNl").get();
+   const newUser = doc.data ({
+       displayName: doc.data().displayName,
+       lang: doc.data().lang,
+       checkValue: doc.data().checkValue,
+       userStatus: doc.data().userStatus,
+       // displayName: user.displayName = newUser.displayName,
+       // lang: user.lang,
+       // checkValue: user.checkValue,
+       // userStatus: user.userStatus,
+      })
+    setUser(newUser);
+   };
 
   return (
     <>
       <div className="mx-14 w-auto">
         <div className="flex w-full">
-          <Image
-            src="/img/avatar.png"
-            className="rounded-full text-center"
-            width={70}
-            height={70}
-            alt="Avatar"
-          />
-          <div className="mx-6">
-            <p className="text-gray-700">hirocky1983</p>
+          <label>
+            <input
+              type="file"
+              onChange={onChangeImageHandler}
+              className="hidden"
+            />
+            <Image
+              src="/img/avatar.png"
+              className="rounded-full text-center"
+              width={70}
+              height={70}
+              alt="Avatar"
+            />
+          </label>
+          <div className="mx-8 ">
+            <p className="text-gray-700">{user.displayName}</p>
             <br />
             <p className="text-gray-700">
-              <span>🚹</span>　　　　#ベトナム人と交際中
+              <span>{user.checkValue}</span>{" "}
+              {`${user.lang}と${user.userStatus}`}
             </p>
           </div>
           <div className="float-right">

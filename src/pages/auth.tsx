@@ -76,12 +76,13 @@ const Auth: NextPage = () => {
     try {
       await auth
         .createUserWithEmailAndPassword(userRef.email, userRef.password)
-        .then(async () => {
+        async () => {
           const userDoc = await db.collection("users").doc(userRef.uid).get();
           if (!userDoc.exists) {
             await userDoc.ref.set({ userRef });
+            console.log(userRef);
           }
-        });
+        };
       router.push("/");
     } catch (error) {
       alert(error);
@@ -91,8 +92,12 @@ const Auth: NextPage = () => {
   const authUser = () => {
     alert("Auth User");
   };
-  const signInGoogle = () => {
-    alert("Sign In Google");
+
+  const testLogin = () => {
+    auth.signInWithEmailAndPassword(email, password);
+    console.log(email, password);
+    
+    router.push("/");
   };
 
   return (
@@ -248,7 +253,7 @@ const Auth: NextPage = () => {
 
         <div>
           <button
-            onClick={signInGoogle}
+            onClick={testLogin}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -266,7 +271,7 @@ const Auth: NextPage = () => {
                 />
               </svg>
             </span>
-            signin with Google
+            テストログイン
           </button>
         </div>
       </form>
