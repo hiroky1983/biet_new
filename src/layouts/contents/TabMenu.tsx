@@ -91,7 +91,7 @@ export const TabMenu: VFC = () => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <div className=" max-h-screen absolute bottom-4 right-1/4 -translate-x-1/2 text-right">
+        <div className=" max-h-screen  bottom-4 right-1/4 -translate-x-1/2 text-right">
           <CreateButton />
         </div>
       </TabPanel>

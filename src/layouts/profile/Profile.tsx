@@ -1,9 +1,9 @@
 import React, { useState, VFC } from "react";
 import Image from "next/image";
-import { SecondaryButton } from "../components/button/SecondaryButton";
+import { SecondaryButton } from "../../components/button/SecondaryButton";
 
 import "tailwindcss/tailwind.css";
-import { auth, db, storage } from "../../firebase";
+import { auth, db, storage } from "../../../firebase";
 
 type USER = {
   displayName: string;
@@ -48,20 +48,26 @@ export const Profile: VFC = () => {
     }
   };
 
-  const useRef = async() => {
-   const doc =  await db.collection("users").doc("hlxpzjFsxK59rAUWPpNl").get();
-   const newUser = doc.data ({
-       displayName: doc.data().displayName,
-       lang: doc.data().lang,
-       checkValue: doc.data().checkValue,
-       userStatus: doc.data().userStatus,
-       // displayName: user.displayName = newUser.displayName,
-       // lang: user.lang,
-       // checkValue: user.checkValue,
-       // userStatus: user.userStatus,
-      })
-    setUser(newUser);
-   };
+  const useRef = async () => {
+    const doc = await db.collection("users").doc("hlxpzjFsxK59rAUWPpNl").get();
+    const newUser = doc.data(
+      // {
+      // displayName: doc.data().displayName,
+      // lang: doc.data().lang,
+      // checkValue: doc.data().checkValue,
+      // userStatus: doc.data().userStatus,
+      // displayName: user.displayName = newUser.displayName,
+      // lang: user.lang,
+      // checkValue: user.checkValue,
+      // userStatus: user.userStatus,
+   // }
+    );
+    // setUser(newUser);
+  };
+
+  const onClickChangeprofile = () => {
+    
+  }
 
   return (
     <>

@@ -2,17 +2,9 @@ import Head from "next/head";
 import { SubHeader } from "../layouts/header/SubHeader";
 
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Layout } from "../layouts/Layout";
 import { TabMenu } from "../layouts/contents/TabMenu";
 import { NextPage } from "next";
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    boxShadow: "0 0px 0px 0px rgba(0, 0, 0, 0)",
-  },
-});
 
 const Question: NextPage = () => {
   return (

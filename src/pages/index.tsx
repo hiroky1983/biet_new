@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { ContentsLayout } from "../layouts/contents/ContentsLayout";
 import { Header } from "../layouts/header/Header";
-import { Profile } from "../layouts/Profile";
+import { Profile } from "../layouts/profile/Profile";
 import { Layout } from "../layouts/Layout";
 import { NextPage } from "next";
 
