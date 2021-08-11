@@ -2,8 +2,8 @@ import React, { useState, VFC } from "react";
 import Image from "next/image";
 import { SecondaryButton } from "../../components/button/SecondaryButton";
 
-import "tailwindcss/tailwind.css";
 import { auth, db, storage } from "../../../firebase";
+import { ProfileEdit } from "./ProfileEdit";
 
 type USER = {
   displayName: string;
@@ -50,7 +50,8 @@ export const Profile: VFC = () => {
 
   const useRef = async () => {
     const doc = await db.collection("users").doc("hlxpzjFsxK59rAUWPpNl").get();
-    const newUser = doc.data(
+    const newUser = doc
+      .data
       // {
       // displayName: doc.data().displayName,
       // lang: doc.data().lang,
@@ -60,14 +61,19 @@ export const Profile: VFC = () => {
       // lang: user.lang,
       // checkValue: user.checkValue,
       // userStatus: user.userStatus,
-   // }
-    );
+      // }
+      ();
     // setUser(newUser);
   };
+  const [open, setOpen] = useState(false);
 
-  const onClickChangeprofile = () => {
-    
-  }
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const onClickChangeProfile = () => {
+    setOpen(true);
+  };
 
   return (
     <>
@@ -96,7 +102,16 @@ export const Profile: VFC = () => {
             </p>
           </div>
           <div className="float-right">
-            <SecondaryButton>変更</SecondaryButton>
+            <SecondaryButton onClick={onClickChangeProfile}>
+              変更
+            </SecondaryButton>
+            {open && (
+              <ProfileEdit
+                open={open}
+                handleClose={handleClose}
+                onClickChangeProfile={onClickChangeProfile}
+              />
+            )}
           </div>
         </div>
       </div>
