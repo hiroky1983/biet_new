@@ -10,7 +10,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-// import CloseIcon from '@material-ui/icons/Close';
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 
@@ -56,34 +55,15 @@ export const ProfileEdit: VFC<Props> = (props) => {
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              {/* <CloseIcon /> */}
-            </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Sound
+              プロフィール編集
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
-              save
+              保存
             </Button>
           </Toolbar>
         </AppBar>
-        <List>
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItem>
-        </List>
+        
       </Dialog>
     </div>
   );

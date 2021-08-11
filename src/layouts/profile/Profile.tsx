@@ -62,7 +62,6 @@ export const Profile: VFC = () => {
       // checkValue: user.checkValue,
       // userStatus: user.userStatus,
       // }
-      ();
     // setUser(newUser);
   };
   const [open, setOpen] = useState(false);
