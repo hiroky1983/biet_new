@@ -26,6 +26,15 @@ const Auth: NextPage = () => {
   const [checkValue, setCheckValue] = useState("");
   const [userStatus, setUserStatus] = useState("");
 
+  // const [userData, setUserData] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   lang: "",
+  //   checkValue: "",
+  //   userstatus: "",
+  // });
+
   const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
       setUsername(e.target.value);
@@ -51,6 +60,11 @@ const Auth: NextPage = () => {
       setUserStatus(e.target.value);
     }, []);
 
+  // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
+  //   setUserData(e.target.value);
+  // }, []);
+
+
   const user = firebase.auth().currentUser;
   const userRef = {
     uid: user?.uid,
@@ -74,15 +88,17 @@ const Auth: NextPage = () => {
   };
   const createUser = async () => {
     try {
-      await auth
-        .createUserWithEmailAndPassword(userRef.email, userRef.password)
-        async () => {
-          const userDoc = await db.collection("users").doc(userRef.uid).get();
-          if (!userDoc.exists) {
-            await userDoc.ref.set({ userRef });
-            console.log(userRef);
-          }
-        };
+      await auth.createUserWithEmailAndPassword(
+        userRef.email,
+        userRef.password
+      );
+      async () => {
+        const userDoc = await db.collection("users").doc(userRef.uid).get();
+        if (!userDoc.exists) {
+          await userDoc.ref.set({ userRef });
+          console.log(userRef);
+        }
+      };
       router.push("/");
     } catch (error) {
       alert(error);
@@ -96,7 +112,7 @@ const Auth: NextPage = () => {
   const testLogin = () => {
     auth.signInWithEmailAndPassword(email, password);
     console.log(email, password);
-    
+
     router.push("/");
   };
 
@@ -277,6 +293,6 @@ const Auth: NextPage = () => {
       </form>
     </div>
   );
-}
+};
 
 export default Auth;
