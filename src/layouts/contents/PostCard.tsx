@@ -1,6 +1,39 @@
-import React, { VFC } from "react";
+import React, { useEffect, useState, VFC } from "react";
+import { db } from "../../../firebase";
 
 export const PostCard: VFC = () => {
+  const [posts, setPosts] = useState([
+    {
+      id: "",
+      title: "",
+      question: "",
+      image: "",
+      timestamp: null,
+      username: "",
+    },
+  ]);
+
+  useEffect(() => {
+    const unSub = db
+      .collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) =>
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            title: doc.data().title,
+            question: doc.data().question,
+            image: doc.data().image,
+            timestamp: doc.data().timestamp,
+            username: doc.data().username,
+          }))
+        )
+      );
+    return () => {
+      unSub();
+    };
+  }, []);
+
   return (
     <div className="p-8">
       <div className="bg-white p-6 rounded-lg shadow-lg">

@@ -50,8 +50,7 @@ export const Profile: VFC = () => {
 
   const useRef = async () => {
     const doc = await db.collection("users").doc("hlxpzjFsxK59rAUWPpNl").get();
-    const newUser = doc
-      .data
+    const newUser = doc.data
       // {
       // displayName: doc.data().displayName,
       // lang: doc.data().lang,
@@ -61,7 +60,7 @@ export const Profile: VFC = () => {
       // lang: user.lang,
       // checkValue: user.checkValue,
       // userStatus: user.userStatus,
-      // }
+    //   }
     // setUser(newUser);
   };
   const [open, setOpen] = useState(false);
