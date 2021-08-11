@@ -48,21 +48,8 @@ export const Profile: VFC = () => {
     }
   };
 
-  const useRef = async () => {
-    const doc = await db.collection("users").doc("hlxpzjFsxK59rAUWPpNl").get();
-    const newUser = doc.data
-      // {
-      // displayName: doc.data().displayName,
-      // lang: doc.data().lang,
-      // checkValue: doc.data().checkValue,
-      // userStatus: doc.data().userStatus,
-      // displayName: user.displayName = newUser.displayName,
-      // lang: user.lang,
-      // checkValue: user.checkValue,
-      // userStatus: user.userStatus,
-    //   }
-    // setUser(newUser);
-  };
+
+
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {

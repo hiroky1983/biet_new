@@ -1,20 +1,11 @@
 import { InputHTMLAttributes, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Header } from "../layouts/header/Header";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import Head from "next/head";
-import firebase from "firebase";
 import { NextPage } from "next";
+import { useAuthState, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
-export const initialState = {
-  uid: null,
-  username: "",
-  email: "",
-  password: "",
-  lang: "",
-  checkValue: "",
-  userstatus: "",
-};
 
 const Auth: NextPage = () => {
   const router = useRouter();
@@ -25,7 +16,33 @@ const Auth: NextPage = () => {
   const [lang, setLang] = useState("");
   const [checkValue, setCheckValue] = useState("");
   const [userStatus, setUserStatus] = useState("");
+  const [authUser, authLoading, authError] = useAuthState(auth);
+  const [
+    createauthWithEmailAndPassword,
+    signinUser,
+    loading,
+    error,
+  ] = useCreateUserWithEmailAndPassword(auth);
 
+  const login = () => {
+    auth.signInWithEmailAndPassword(email, password)
+  }
+  // const logout = () => {
+  //   auth.signOut();
+  // }
+  const currentUser = () => {
+    if (authLoading) {
+      return <div>Loading...</div>;
+    }
+    if (authError) {
+      return <div>Error: {authError}</div>;
+    }
+    if (authUser) {
+      return (
+        router.push("/")
+      );
+    } 
+  }
   // const [userData, setUserData] = useState({
   //   username: "",
   //   email: "",
@@ -34,6 +51,7 @@ const Auth: NextPage = () => {
   //   checkValue: "",
   //   userstatus: "",
   // });
+
 
   const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
@@ -64,50 +82,24 @@ const Auth: NextPage = () => {
   //   setUserData(e.target.value);
   // }, []);
 
-
-  const user = firebase.auth().currentUser;
-  const userRef = {
-    uid: user?.uid,
-    email: email,
-    password: password,
-    displayName: username,
-    lang: lang,
-    checkValue: checkValue,
-    userStatus: userStatus,
-  };
-
-  const login = async () => {
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      router.push({
-        pathname: "/",
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const createUser = async () => {
-    try {
-      await auth.createUserWithEmailAndPassword(
-        userRef.email,
-        userRef.password
+  const createUser = () => {
+    createauthWithEmailAndPassword
+    if (error) {
+      return (
+        <div>
+          <p>Error: {error.message}</p>
+        </div>
       );
-      async () => {
-        const userDoc = await db.collection("users").doc(userRef.uid).get();
-        if (!userDoc.exists) {
-          await userDoc.ref.set({ userRef });
-          console.log(userRef);
-        }
-      };
-      router.push("/");
-    } catch (error) {
-      alert(error);
     }
-  };
-
-  const authUser = () => {
-    alert("Auth User");
-  };
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+    if (signinUser) {
+      return (
+        router.push("/")
+      )
+  }
+  }
 
   const testLogin = () => {
     auth.signInWithEmailAndPassword(email, password);

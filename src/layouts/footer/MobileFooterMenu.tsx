@@ -6,7 +6,6 @@ import { AiTwotoneHome, AiFillQuestionCircle } from "react-icons/ai";
 import { HiOutlineBookOpen } from "react-icons/hi";
 import { BiLogIn } from "react-icons/bi";
 import { auth } from "../../../firebase";
-import { initialState } from "../../pages/auth";
 
 export const FOOTERITEMS = [
   {
@@ -31,7 +30,6 @@ export const FOOTERITEMS = [
     onclick: () => {
       auth.onAuthStateChanged((user) => {
         auth.signOut();
-        initialState;
       });
     },
   },
