@@ -19,13 +19,14 @@ const Auth: NextPage = () => {
   const [authUser, authLoading, authError] = useAuthState(auth);
   const [
     createauthWithEmailAndPassword,
-    signinUser,
+    createUser,
     loading,
     error,
   ] = useCreateUserWithEmailAndPassword(auth);
 
   const login = () => {
     auth.signInWithEmailAndPassword(email, password)
+    router.push("/");
   }
   // const logout = () => {
   //   auth.signOut();
@@ -82,8 +83,7 @@ const Auth: NextPage = () => {
   //   setUserData(e.target.value);
   // }, []);
 
-  const createUser = () => {
-    createauthWithEmailAndPassword
+  const userRegister = async() => {
     if (error) {
       return (
         <div>
@@ -94,8 +94,9 @@ const Auth: NextPage = () => {
     if (loading) {
       return <p>Loading...</p>;
     }
-    if (signinUser) {
+    if (createUser) {
       return (
+        await 
         router.push("/")
       )
   }
@@ -136,8 +137,10 @@ const Auth: NextPage = () => {
               required
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder={isLogin ? "Username " : "Email"}
-              value={isLogin ? username : email}
-              onChange={isLogin ? onChangeUserName : onChangeEmail}
+              value={email}
+              // value={isLogin ? username : email}
+              // onChange={isLogin ? onChangeUserName : onChangeEmail}
+              onChange={onChangeEmail}
             />
           </div>
           <div>
@@ -237,7 +240,7 @@ const Auth: NextPage = () => {
 
         <div>
           <button
-            onClick={isLogin ? login : createUser}
+            onClick={isLogin ? login : userRegister}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
