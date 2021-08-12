@@ -1,11 +1,26 @@
 import { InputHTMLAttributes, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Header } from "../layouts/header/Header";
-import { auth } from "../../firebase";
+import { auth, provider } from "../../firebase";
 import Head from "next/head";
 import { NextPage } from "next";
-import { useAuthState, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import { IconButton, Modal, TextField } from "@material-ui/core";
+import { RiSendPlane2Fill } from "react-icons/ri";
 
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 const Auth: NextPage = () => {
   const router = useRouter();
@@ -17,17 +32,14 @@ const Auth: NextPage = () => {
   const [checkValue, setCheckValue] = useState("");
   const [userStatus, setUserStatus] = useState("");
   const [authUser, authLoading, authError] = useAuthState(auth);
-  const [
-    createauthWithEmailAndPassword,
-    createUser,
-    loading,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth);
+  const [createauthWithEmailAndPassword, createUser, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [openModal, setOpenModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
-  const login = () => {
-    auth.signInWithEmailAndPassword(email, password)
-    router.push("/");
-  }
+  const login = async () => {
+    await auth.signInWithEmailAndPassword(email, password);
+  };
   // const logout = () => {
   //   auth.signOut();
   // }
@@ -39,11 +51,9 @@ const Auth: NextPage = () => {
       return <div>Error: {authError}</div>;
     }
     if (authUser) {
-      return (
-        router.push("/")
-      );
-    } 
-  }
+      return router.push("/");
+    }
+  };
   // const [userData, setUserData] = useState({
   //   username: "",
   //   email: "",
@@ -52,7 +62,6 @@ const Auth: NextPage = () => {
   //   checkValue: "",
   //   userstatus: "",
   // });
-
 
   const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
@@ -83,7 +92,7 @@ const Auth: NextPage = () => {
   //   setUserData(e.target.value);
   // }, []);
 
-  const userRegister = async() => {
+  const userRegister = async () => {
     if (error) {
       return (
         <div>
@@ -95,18 +104,32 @@ const Auth: NextPage = () => {
       return <p>Loading...</p>;
     }
     if (createUser) {
-      return (
-        await 
-        router.push("/")
-      )
-  }
-  }
+      return await router.push("/");
+    }
+  };
 
-  const testLogin = () => {
-    auth.signInWithEmailAndPassword(email, password);
-    console.log(email, password);
+  // const testLogin = () => {
+  //   //型指定をstringにしたい
+  //   const email = setEmail("aiueo@exmple.com");
+  //   const password = setPassword("12345678");
+  //   auth.signInWithEmailAndPassword(email, password);
+  // };
 
-    router.push("/");
+  const signInGoogle = async () => {
+    await auth.signInWithPopup(provider).catch((err) => alert(err.message));
+  };
+
+  const sendResetEmail = async (e: React.MouseEvent<HTMLElement>) => {
+    await auth
+      .sendPasswordResetEmail(resetEmail)
+      .then(() => {
+        setOpenModal(false);
+        setResetEmail("");
+      })
+      .catch((err) => {
+        alert(err.message);
+        setResetEmail("");
+      });
   };
 
   return (
@@ -137,10 +160,8 @@ const Auth: NextPage = () => {
               required
               className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               placeholder={isLogin ? "Username " : "Email"}
-              value={email}
-              // value={isLogin ? username : email}
-              // onChange={isLogin ? onChangeUserName : onChangeEmail}
-              onChange={onChangeEmail}
+              value={isLogin ? username : email}
+              onChange={isLogin ? onChangeUserName : onChangeEmail}
             />
           </div>
           <div>
@@ -240,7 +261,23 @@ const Auth: NextPage = () => {
 
         <div>
           <button
-            onClick={isLogin ? login : userRegister}
+            onClick={
+              isLogin
+                ? async () => {
+                    try {
+                      await login();
+                    } catch (err) {
+                      alert(err.message);
+                    }
+                  }
+                : async () => {
+                    try {
+                      await userRegister();
+                    } catch (err) {
+                      alert(err.message);
+                    }
+                  }
+            }
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -264,7 +301,12 @@ const Auth: NextPage = () => {
 
         <div>
           <button
-            onClick={testLogin}
+            disabled={
+              isLogin
+                ? !email || password.length < 6
+                : !username || !email || password.length < 6
+            }
+            onClick={signInGoogle}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -284,8 +326,38 @@ const Auth: NextPage = () => {
             </span>
             テストログイン
           </button>
+          <span
+            className="cursor-pointer text-gray-500 block text-center mt-6"
+            onClick={() => setOpenModal(true)}
+          >
+            Forgot password ?
+          </span>
         </div>
       </form>
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <div
+          style={getModalStyle()}
+          className="outline-none absolute w-auto border-r-8 bg-white shadow p-4"
+        >
+          <div className="text-center">
+            <TextField
+              InputLabelProps={{
+                shrink: true,
+              }}
+              type="email"
+              name="email"
+              label="Reset E-mail"
+              value={resetEmail}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setResetEmail(e.target.value);
+              }}
+            />
+            <IconButton onClick={sendResetEmail}>
+              <RiSendPlane2Fill />
+            </IconButton>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

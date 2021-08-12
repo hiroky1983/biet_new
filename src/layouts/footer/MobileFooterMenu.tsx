@@ -28,10 +28,8 @@ export const FOOTERITEMS = [
     element: <BiLogIn className=" w-8 h-8 m-auto" />,
     description: "ログアウト",
     onclick: () => {
-      auth.onAuthStateChanged((user) => {
         auth.signOut();
-      });
-    },
+      }
   },
 ];
 const THIS_YEAR = new Date().getFullYear();
