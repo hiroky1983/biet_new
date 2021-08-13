@@ -4,30 +4,18 @@ import { Header } from "../layouts/header/Header";
 import { auth, db, provider } from "../../firebase";
 import Head from "next/head";
 import { NextPage } from "next";
-import {
-  useAuthState,
-  useCreateUserWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
+
 import { IconButton, Modal, TextField } from "@material-ui/core";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { updateUserProfile } from "../lib/auth";
 import { useDispatch } from "react-redux";
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+import { LockIcon } from "../components/svg/LockIcon";
+import { AuthInput } from "../components/input/AuthInput";
+import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 
 const Auth: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +23,6 @@ const Auth: NextPage = () => {
   const [lang, setLang] = useState("");
   const [checkValue, setCheckValue] = useState("");
   const [userStatus, setUserStatus] = useState("");
-  useCreateUserWithEmailAndPassword(auth);
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
@@ -79,7 +66,7 @@ const Auth: NextPage = () => {
   });
 
   const userRegister = async () => {
-    await userData;
+    // await userData;
     console.log(userData);
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
     await authUser.user?.updateProfile({
@@ -91,8 +78,8 @@ const Auth: NextPage = () => {
         displayName: username,
         photoUrl: "",
       })
-      );
-      router.push("/");
+    );
+    router.push("/");
   };
 
   // const testLogin = () => {
@@ -118,7 +105,7 @@ const Auth: NextPage = () => {
         setResetEmail("");
       });
   };
-  
+
   return (
     <div className="max-w-md w-full m-auto justify-center ">
       <Head>
@@ -136,24 +123,20 @@ const Auth: NextPage = () => {
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <input
-                name={isLogin ? "username" : "email"}
-                type="text"
-                autoComplete={isLogin ? "username" : "email"}
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder={isLogin ? "Username " : "Email"}
-                value={isLogin ? username : email}
-                onChange={isLogin ? onChangeUserName : onChangeEmail}
+              <AuthInput
+                placeholder="email"
+                value={email}
+                onChange={onChangeEmail}
+                inputName="email"
+                type="email"
+                autoComplete="email"
               />
             </div>
             <div>
-              <input
-                name="password"
+              <AuthInput
+                inputName="password"
                 type="password"
                 autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={onChangePassword}
@@ -256,6 +239,7 @@ const Auth: NextPage = () => {
                   ? async () => {
                       try {
                         await login();
+                        router.push("/");
                       } catch (err) {
                         alert(err.message);
                       }
@@ -270,21 +254,7 @@ const Auth: NextPage = () => {
               }
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <svg
-                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
+              <LockIcon />
               {isLogin ? "Login" : "Create New User"}
             </button>
           </div>
@@ -294,22 +264,8 @@ const Auth: NextPage = () => {
               onClick={signInGoogle}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <svg
-                  className="h-5 w-5 text-blue-500 group-hover:text-blue-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-              テストログイン
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3"></span>
+              Test Login
             </button>
             <span
               className="cursor-pointer text-gray-500 block text-center mt-6"
@@ -320,30 +276,13 @@ const Auth: NextPage = () => {
           </div>
         </form>
       </div>
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <div
-          style={getModalStyle()}
-          className="outline-none absolute w-96 h-72 border-r-8 bg-white shadow p-4"
-        >
-          <div className="text-center item-center mt-12">
-            <TextField
-              InputLabelProps={{
-                shrink: true,
-              }}
-              type="email"
-              name="email"
-              label="Reset E-mail"
-              value={resetEmail}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setResetEmail(e.target.value);
-              }}
-            />
-            <IconButton onClick={sendResetEmail}>
-              <RiSendPlane2Fill />
-            </IconButton>
-          </div>
-        </div>
-      </Modal>
+      <ResetPasswordModal 
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        resetEmail={resetEmail}
+        setResetEmail={setResetEmail}
+        sendResetEmail={sendResetEmail}
+      />
     </div>
   );
 };
