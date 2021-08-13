@@ -1,7 +1,5 @@
 import React, { VFC } from "react";
 
-import { AiFillEdit } from "react-icons/ai";
-
 type Props = {
   title?: string;
 };
