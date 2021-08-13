@@ -1,12 +1,12 @@
-import { ChangeEventHandler, VFC } from "react";
+import { InputHTMLAttributes, VFC } from "react";
 
 type PROPS = {
   placeholder: string;
   value: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange: InputHTMLAttributes<HTMLInputElement>["onChange"];
   inputName: string;
   type: string;
-  autoComplete: string;
+  autoComplete?: string;
 };
 export const AuthInput: VFC<PROPS> = (props) => {
   const { placeholder, value, onChange, inputName, type, autoComplete } = props;

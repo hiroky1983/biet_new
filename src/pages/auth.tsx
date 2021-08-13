@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
+import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";
 
 const Auth: NextPage = () => {
   const router = useRouter();
@@ -55,16 +56,16 @@ const Auth: NextPage = () => {
   // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
   //   setUserData(e.target.value);
   // }, []);
-  const userData = db.collection("users").add({
-    username: username,
-    checkValue: checkValue,
-    lang: lang,
-    userstatus: userStatus,
-  });
+  // const userData = db.collection("users").add({
+  //   username: username,
+  //   checkValue: checkValue,
+  //   lang: lang,
+  //   userstatus: userStatus,
+  // });
 
   const userRegister = async () => {
     // await userData;
-    console.log(userData);
+    // console.log(userData);
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
     await authUser.user?.updateProfile({
       displayName: username,
@@ -152,71 +153,17 @@ const Auth: NextPage = () => {
               {isLogin ? null : (
                 <div>
                   <form noValidate>
-                    <div className="space-x-4 mt-4 text-center">
-                      <span className="text-gray-500 ">性別？</span>
-                      <input
-                        type="radio"
-                        value="男性"
-                        name="select gender"
-                        checked={checkValue === "男性"}
-                        onChange={onChangeCheckValue}
+                    <div>
+                      <AuthFormLayout 
+                        checkValue={checkValue}
+                        userStatus={userStatus}
+                        lang={lang}
+                        username={username}
+                        onChangeCheckValue={onChangeCheckValue}
+                        onChangeLang={onChangeLang}
+                        onChangeCheckStatus={onChangeCheckStatus} 
+                        onChangeUserName={onChangeUserName}
                       />
-                      <label>男性</label>
-                      <input
-                        type="radio"
-                        value="女性"
-                        name="select gender"
-                        checked={checkValue === "女性"}
-                        onChange={onChangeCheckValue}
-                      />
-                      <label>女性</label>
-                      <input
-                        type="radio"
-                        value="未回答"
-                        name="select gender"
-                        checked={checkValue === ""}
-                        onChange={onChangeCheckValue}
-                      />
-                      <label>未回答</label>
-                      <div className="mt-6">
-                        <input
-                          className="px-10 py-2 rounded-full"
-                          type="text"
-                          name="select lang"
-                          placeholder="交際相手の国籍は？"
-                          onChange={onChangeLang}
-                          value={lang}
-                        />
-                        <div className="space-x-4 mt-4">
-                          <span className="text-gray-500">現在は？</span>
-                          <input
-                            type="radio"
-                            value="交際中"
-                            name="select status"
-                            onChange={onChangeCheckStatus}
-                            checked={userStatus === "交際中"}
-                          />
-                          <label>交際中</label>
-                          <input
-                            type="radio"
-                            value="既婚"
-                            name="select status"
-                            onChange={onChangeCheckStatus}
-                            checked={userStatus === "既婚"}
-                          />
-                          <label>既婚</label>
-                        </div>
-                        <div className="mt-6">
-                          <input
-                            className="px-10 py-2 rounded-full"
-                            type="text"
-                            name="select lang"
-                            placeholder="名前を入力"
-                            onChange={onChangeUserName}
-                            value={username}
-                          />
-                        </div>
-                      </div>
                     </div>
                   </form>
                 </div>
@@ -272,7 +219,7 @@ const Auth: NextPage = () => {
           </div>
         </form>
       </div>
-      <ResetPasswordModal 
+      <ResetPasswordModal
         openModal={openModal}
         setOpenModal={setOpenModal}
         resetEmail={resetEmail}
