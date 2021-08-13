@@ -1,11 +1,11 @@
-import { ChangeEventHandler, InputHTMLAttributes, VFC } from "react";
+import { InputHTMLAttributes, VFC } from "react";
 import { AuthInput } from "../../components/input/AuthInput";
 
 type PROPS = {
   lang: string;
   username: string;
   checkValue: string;
-    userStatus: string;
+  userStatus: string;
   onChangeCheckValue: InputHTMLAttributes<HTMLInputElement>["onChange"];
   onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"];
   onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"];

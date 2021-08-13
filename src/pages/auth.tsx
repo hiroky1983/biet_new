@@ -23,6 +23,14 @@ const Auth: NextPage = () => {
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    lang: "",
+    checkValue: "",
+    userStatus: "",
+  });
 
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
@@ -53,9 +61,13 @@ const Auth: NextPage = () => {
       setUserStatus(e.target.value);
     }, []);
 
-  // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
-  //   setUserData(e.target.value);
-  // }, []);
+  const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
+    const target = e.target;
+    const value = target.type === "raido" ? target.checked : target.value;
+    const name = target.name;
+    setValues({ ...values, [name]: value });
+  }, [values]);
+  
   // const userData = db.collection("users").add({
   //   username: username,
   //   checkValue: checkValue,
@@ -81,7 +93,6 @@ const Auth: NextPage = () => {
   };
 
   // const testLogin = () => {
-  //   //型指定をstringにしたい
   //   const email = setEmail("aiueo@exmple.com");
   //   const password = setPassword("12345678");
   //   auth.signInWithEmailAndPassword(email, password);
@@ -154,14 +165,14 @@ const Auth: NextPage = () => {
                 <div>
                   <form noValidate>
                     <div>
-                      <AuthFormLayout 
+                      <AuthFormLayout
                         checkValue={checkValue}
                         userStatus={userStatus}
                         lang={lang}
                         username={username}
                         onChangeCheckValue={onChangeCheckValue}
                         onChangeLang={onChangeLang}
-                        onChangeCheckStatus={onChangeCheckStatus} 
+                        onChangeCheckStatus={onChangeCheckStatus}
                         onChangeUserName={onChangeUserName}
                       />
                     </div>
