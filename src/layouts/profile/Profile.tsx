@@ -20,6 +20,7 @@ export const Profile: VFC = () => {
     checkValue: "",
     userStatus: "",
   });
+  
   const onChangeImageHandler = async (
     e: {
       target: { files: any; value: string };
