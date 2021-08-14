@@ -10,6 +10,7 @@ import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";
+import { SecondaryButton } from "../components/button/SecondaryButton";
 
 const Auth: NextPage = () => {
   const router = useRouter();
@@ -128,7 +129,6 @@ const Auth: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-
       <form className="mt-8 space-y-6" noValidate>
         <input type="hidden" name="remember" value="true" />
         <div className="rounded-md shadow-sm -space-y-px">
@@ -182,7 +182,7 @@ const Auth: NextPage = () => {
         </div>
 
         <div>
-          <button
+          <SecondaryButton
             disabled={!email || password.length < 6}
             onClick={
               isLogin
@@ -201,20 +201,18 @@ const Auth: NextPage = () => {
                     }
                   }
             }
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <LockIcon />
             {isLogin ? "Login" : "Create New User"}
-          </button>
+          </SecondaryButton>
         </div>
 
         <div>
-          <button
+          <SecondaryButton
             onClick={signInGoogle}
-            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Test Login
-          </button>
+          </SecondaryButton>
           <span
             className="cursor-pointer text-gray-500 block text-center mt-6"
             onClick={() => setOpenModal(true)}

@@ -49,8 +49,6 @@ export const Profile: VFC = () => {
     }
   };
 
-
-
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
