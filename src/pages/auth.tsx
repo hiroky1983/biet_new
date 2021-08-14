@@ -23,14 +23,14 @@ const Auth: NextPage = () => {
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    lang: "",
-    checkValue: "",
-    userStatus: "",
-  });
+  // const [values, setValues] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   lang: "",
+  //   checkValue: "",
+  //   userStatus: "",
+  // });
 
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
@@ -61,13 +61,13 @@ const Auth: NextPage = () => {
       setUserStatus(e.target.value);
     }, []);
 
-  const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
-    const target = e.target;
-    const value = target.type === "raido" ? target.checked : target.value;
-    const name = target.name;
-    setValues({ ...values, [name]: value });
-  }, [values]);
-  
+  // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
+  //   const target = e.target;
+  //   const value = target.type === "raido" ? target.checked : target.value;
+  //   const name = target.name;
+  //   setValues({ ...values, [name]: value });
+  // }, [values]);
+
   // const userData = db.collection("users").add({
   //   username: username,
   //   checkValue: checkValue,
@@ -114,6 +114,7 @@ const Auth: NextPage = () => {
         setResetEmail("");
       });
   };
+  console.log(login);
 
   return (
     <div className="max-w-md w-full m-auto justify-center ">
@@ -127,109 +128,102 @@ const Auth: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div>
-        <form className="mt-8 space-y-6" noValidate>
-          <input type="hidden" name="remember" value="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <AuthInput
-                placeholder="email"
-                value={email}
-                onChange={onChangeEmail}
-                inputName="email"
-                type="email"
-                autoComplete="email"
-              />
-            </div>
-            <div>
-              <AuthInput
-                inputName="password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="Password"
-                value={password}
-                onChange={onChangePassword}
-              />
-            </div>
-          </div>
 
-          <div className="flex items-center justify-center">
-            <div className="text-sm">
-              <span
-                onClick={() => setIsLogin(!isLogin)}
-                className="cursor-pointer font-medium text-gray-700 hover:text-blue-500"
-              >
-                Create New User
-              </span>
-              {isLogin ? null : (
-                <div>
-                  <form noValidate>
-                    <div>
-                      <AuthFormLayout
-                        checkValue={checkValue}
-                        userStatus={userStatus}
-                        lang={lang}
-                        username={username}
-                        onChangeCheckValue={onChangeCheckValue}
-                        onChangeLang={onChangeLang}
-                        onChangeCheckStatus={onChangeCheckStatus}
-                        onChangeUserName={onChangeUserName}
-                      />
-                    </div>
-                  </form>
-                </div>
-              )}
-            </div>
-          </div>
-
+      <form className="mt-8 space-y-6" noValidate>
+        <input type="hidden" name="remember" value="true" />
+        <div className="rounded-md shadow-sm -space-y-px">
           <div>
-            <button
-              disabled={
-                isLogin
-                  ? !email || password.length < 6
-                  : !username || !email || password.length < 6
-              }
-              onClick={
-                isLogin
-                  ? async () => {
-                      try {
-                        await login();
-                        router.push("/");
-                      } catch (err) {
-                        alert(err.message);
-                      }
-                    }
-                  : async () => {
-                      try {
-                        await userRegister();
-                      } catch (err) {
-                        alert(err.message);
-                      }
-                    }
-              }
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <LockIcon />
-              {isLogin ? "Login" : "Create New User"}
-            </button>
+            <AuthInput
+              placeholder="email"
+              value={email}
+              onChange={onChangeEmail}
+              inputName="email"
+              type="email"
+              autoComplete="email"
+            />
           </div>
-
           <div>
-            <button
-              onClick={signInGoogle}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Test Login
-            </button>
+            <AuthInput
+              inputName="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Password"
+              value={password}
+              onChange={onChangePassword}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <div className="text-sm">
             <span
-              className="cursor-pointer text-gray-500 block text-center mt-6"
-              onClick={() => setOpenModal(true)}
+              onClick={() => setIsLogin(!isLogin)}
+              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500"
             >
-              Forgot password ?
+              Create New User
             </span>
+            {isLogin ? null : (
+              <div>
+                <div>
+                  <AuthFormLayout
+                    checkValue={checkValue}
+                    userStatus={userStatus}
+                    lang={lang}
+                    username={username}
+                    onChangeCheckValue={onChangeCheckValue}
+                    onChangeLang={onChangeLang}
+                    onChangeCheckStatus={onChangeCheckStatus}
+                    onChangeUserName={onChangeUserName}
+                  />
+                </div>
+              </div>
+            )}
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div>
+          <button
+            disabled={!email || password.length < 6}
+            onClick={
+              isLogin
+                ? async () => {
+                    try {
+                      await login();
+                    } catch (err) {
+                      alert(err.message);
+                    }
+                  }
+                : async () => {
+                    try {
+                      await userRegister();
+                    } catch (err) {
+                      alert(err.message);
+                    }
+                  }
+            }
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <LockIcon />
+            {isLogin ? "Login" : "Create New User"}
+          </button>
+        </div>
+
+        <div>
+          <button
+            onClick={signInGoogle}
+            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Test Login
+          </button>
+          <span
+            className="cursor-pointer text-gray-500 block text-center mt-6"
+            onClick={() => setOpenModal(true)}
+          >
+            Forgot password ?
+          </span>
+        </div>
+      </form>
+
       <ResetPasswordModal
         openModal={openModal}
         setOpenModal={setOpenModal}
