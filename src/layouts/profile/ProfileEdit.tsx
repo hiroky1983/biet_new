@@ -41,9 +41,6 @@ export const ProfileEdit: VFC<Props> = (props) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={onClickChangeProfile}>
-        Open full-screen dialog
-      </Button>
       <Dialog
         fullScreen
         open={open}

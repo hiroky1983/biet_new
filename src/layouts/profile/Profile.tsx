@@ -85,7 +85,7 @@ export const Profile: VFC = () => {
               {`${user.lang}と${user.userStatus}`}
             </p>
           </div>
-          <div className="float-right">
+
             <SecondaryButton onClick={onClickChangeProfile}>
               変更
             </SecondaryButton>
@@ -96,7 +96,7 @@ export const Profile: VFC = () => {
                 onClickChangeProfile={onClickChangeProfile}
               />
             )}
-          </div>
+          
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
