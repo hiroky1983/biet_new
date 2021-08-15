@@ -4,9 +4,9 @@ import { AuthInput } from "../../components/input/AuthInput";
 type PROPS = {
   lang: string;
   username: string;
-  checkValue: string;
+  gender: string;
   userStatus: string;
-  onChangeCheckValue: InputHTMLAttributes<HTMLInputElement>["onChange"];
+  onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"];
   onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"];
   onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"];
   onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"];
@@ -36,11 +36,11 @@ const SELECT_STATUS = [
 ];
 export const AuthFormLayout: VFC<PROPS> = (props) => {
   const {
-    checkValue,
+    gender,
     userStatus,
     username,
     lang,
-    onChangeCheckValue,
+    onChangeGender,
     onChangeLang,
     onChangeCheckStatus,
     onChangeUserName,
@@ -56,8 +56,8 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
                 type="radio"
                 value={gender.value}
                 name="select gender"
-                checked={checkValue === checkValue}
-                onChange={onChangeCheckValue}
+                checked={gender === gender}
+                onChange={onChangeGender}
               />
               <label>{gender.value}</label>
             </div>

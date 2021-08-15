@@ -20,7 +20,7 @@ const Auth: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lang, setLang] = useState("");
-  const [checkValue, setCheckValue] = useState("");
+  const [gender, setGender] = useState("");
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
@@ -54,9 +54,9 @@ const Auth: NextPage = () => {
     useCallback((e) => {
       setLang(e.target.value);
     }, []);
-  const onChangeCheckValue: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
-      setCheckValue(e.target.value);
+      setGender(e.target.value);
     }, []);
   const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
@@ -94,11 +94,9 @@ const Auth: NextPage = () => {
     router.push("/");
   };
 
-  // const testLogin = () => {
-  //   const email = setEmail("aiueo@exmple.com");
-  //   const password = setPassword("12345678");
-  //   auth.signInWithEmailAndPassword(email, password);
-  // };
+  const testLogin = () => {
+    auth.signInWithEmailAndPassword("testUser@gmail.com", "aaaaaaaa");
+  };
 
   const signInGoogle = async () => {
     await auth.signInWithPopup(provider).catch((err) => alert(err.message));
@@ -116,7 +114,6 @@ const Auth: NextPage = () => {
         setResetEmail("");
       });
   };
-  console.log(login);
 
   return (
     <div className="max-w-md w-full m-auto justify-center ">
@@ -166,11 +163,11 @@ const Auth: NextPage = () => {
               <div>
                 <div>
                   <AuthFormLayout
-                    checkValue={checkValue}
+                    gender={gender}
                     userStatus={userStatus}
                     lang={lang}
                     username={username}
-                    onChangeCheckValue={onChangeCheckValue}
+                    onChangeGender={onChangeGender}
                     onChangeLang={onChangeLang}
                     onChangeCheckStatus={onChangeCheckStatus}
                     onChangeUserName={onChangeUserName}
@@ -208,7 +205,7 @@ const Auth: NextPage = () => {
         </div>
 
         <div>
-          <SecondaryButton onClick={signInGoogle}>Test Login</SecondaryButton>
+          <SecondaryButton onClick={testLogin}>Test Login</SecondaryButton>
           <span
             className="cursor-pointer text-gray-500 block text-center mt-6"
             onClick={() => setOpenModal(true)}
