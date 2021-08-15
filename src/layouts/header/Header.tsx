@@ -7,7 +7,7 @@ export const Header: VFC = () => {
     <div className="flex justify-center ">
       <div className="p-6 cursor-pointer">
         <Image
-          src="/img/biet-new.png"
+          src="/img/biet-new-removebg-preview.png"
           className="cursor-pointer"
           width={420}
           height={80}
