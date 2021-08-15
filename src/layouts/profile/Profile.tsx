@@ -1,4 +1,4 @@
-import React, { useState, VFC } from "react";
+import React, { TextareaHTMLAttributes, useState, VFC } from "react";
 import Image from "next/image";
 import { SecondaryButton } from "../../components/button/SecondaryButton";
 
@@ -7,18 +7,17 @@ import { ProfileEdit } from "./ProfileEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, updateUserProfile } from "../../lib/auth";
 
-type USER = {
-  displayName: string;
-  lang: string;
-  checkValue: string;
-  userStatus: string;
-};
-
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
+  const [profile, setProfile] =
+    useState<string>("プロフィールはまだありません");
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const username = user.displayName;
+
+  const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] = (e) => {
+    setProfile(e.target.value);
+  };
 
   const onChangeImageHandler = async (e: any) => {
     const authUser = auth.currentUser;
@@ -52,7 +51,6 @@ export const Profile: VFC = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
   const onClickChangeProfile = () => {
     setOpen(true);
   };
@@ -90,17 +88,13 @@ export const Profile: VFC = () => {
               open={open}
               handleClose={handleClose}
               onClickChangeProfile={onClickChangeProfile}
+              onChangeProfile= {onChangeProfile}
             />
           )}
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
-        <p className="text-gray-700">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut odit
-          impedit at, optio voluptatibus aspernatur sint commodi consequatur quo
-          vitae, mollitia id reprehenderit assumenda minus. Qui recusandae nobis
-          optio officiis.
-        </p>
+        <p className="text-gray-700">{profile}</p>
       </div>
     </>
   );

@@ -8,7 +8,6 @@ export const ContentsCard: VFC = () => {
       <div className="bg-white shadow-lg p-4 rounded-2xl w-60 cursor-pointer ">
         <div className="text-center mt-4">
           <p className="text-gray-600 font-bold">Name</p>
-          <p className="text-sm font-hairline text-gray-600 mt-1">Subtitle</p>
         </div>
         <div className="flex justify-center mt-4">
           <Image
