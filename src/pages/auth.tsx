@@ -35,6 +35,7 @@ const Auth: NextPage = () => {
 
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
+    router.push("/");
   };
 
   const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
@@ -129,8 +130,8 @@ const Auth: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <form className="mt-8 space-y-6" noValidate>
-        <input type="hidden" name="remember" value="true" />
+      {/* <form className="mt-8 space-y-6" noValidate> */}
+        {/* <input type="hidden" name="remember" value="true" /> */}
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
             <AuthInput
@@ -158,7 +159,7 @@ const Auth: NextPage = () => {
           <div className="text-sm">
             <span
               onClick={() => setIsLogin(!isLogin)}
-              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500"
+              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500 block my-4"
             >
               Create New User
             </span>
@@ -181,7 +182,7 @@ const Auth: NextPage = () => {
           </div>
         </div>
 
-        <div>
+        <div className="mt-6">
           <SecondaryButton
             disabled={!email || password.length < 6}
             onClick={
@@ -207,7 +208,7 @@ const Auth: NextPage = () => {
           </SecondaryButton>
         </div>
 
-        <div>
+        <div className="mt-6">
           <SecondaryButton
             onClick={signInGoogle}
           >
@@ -220,7 +221,7 @@ const Auth: NextPage = () => {
             Forgot password ?
           </span>
         </div>
-      </form>
+      {/* </form> */}
 
       <ResetPasswordModal
         openModal={openModal}

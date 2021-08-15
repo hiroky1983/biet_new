@@ -4,6 +4,8 @@ import { SecondaryButton } from "../../components/button/SecondaryButton";
 
 import { auth, db, storage } from "../../../firebase";
 import { ProfileEdit } from "./ProfileEdit";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../lib/auth";
 
 type USER = {
   displayName: string;
@@ -14,21 +16,14 @@ type USER = {
 
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const [user, setUser] = useState<USER>({
-    displayName: "",
-    lang: "",
-    checkValue: "",
-    userStatus: "",
-  });
+    const user = useSelector(selectUser);
   
   const onChangeImageHandler = async (
     e: {
       target: { files: any; value: string };
     }
-    // email: string,
-    // password: string
   ) => {
-    // const authUser = await auth.createUserWithEmailAndPassword(email, password);
+    
     if (e.target.files![0]) {
       let url = "";
       if (avatarImage) {
@@ -47,6 +42,7 @@ export const Profile: VFC = () => {
       setAvatarImage(e.target.files![0]);
       e.target.value = "";
     }
+
   };
 
   const [open, setOpen] = useState(false);
@@ -71,7 +67,7 @@ export const Profile: VFC = () => {
             />
             <Image
               src="/img/avatar.png"
-              className="rounded-full text-center"
+              className="rounded-full text-center cursor-pointer"
               width={70}
               height={70}
               alt="Avatar"
@@ -81,8 +77,8 @@ export const Profile: VFC = () => {
             <p className="text-gray-700">{user.displayName}</p>
             <br />
             <p className="text-gray-700">
-              <span>{user.checkValue}</span>{" "}
-              {`${user.lang}と${user.userStatus}`}
+              {/* <span>{user.checkValue}</span>{" "}
+              {`${user.lang}と${user.userStatus}`} */}
             </p>
           </div>
 
