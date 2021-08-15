@@ -24,14 +24,14 @@ const Auth: NextPage = () => {
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  // const [values, setValues] = useState({
-  //   username: "",
-  //   email: "",
-  //   password: "",
-  //   lang: "",
-  //   checkValue: "",
-  //   userStatus: "",
-  // });
+  const [values, setValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+    lang: "",
+    gender: "",
+    userStatus: "",
+  });
 
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
@@ -63,12 +63,14 @@ const Auth: NextPage = () => {
       setUserStatus(e.target.value);
     }, []);
 
-  // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
-  //   const target = e.target;
-  //   const value = target.type === "raido" ? target.checked : target.value;
-  //   const name = target.name;
-  //   setValues({ ...values, [name]: value });
-  // }, [values]);
+  const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
+    const target = e.target;
+    const value = target.type === "raido" ? target.checked : target.value;
+    const name = target.name;
+    setValues({ ...values, [name]: value });
+  }, [values]);
+  console.log(values);
+  
 
   // const userData = db.collection("users").add({
   //   username: username,
