@@ -130,8 +130,7 @@ const Auth: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      {/* <form className="mt-8 space-y-6" noValidate> */}
-        {/* <input type="hidden" name="remember" value="true" /> */}
+      <div className="mt-8 space-y-6">
         <div className="rounded-md shadow-sm -space-y-px">
           <div>
             <AuthInput
@@ -159,7 +158,7 @@ const Auth: NextPage = () => {
           <div className="text-sm">
             <span
               onClick={() => setIsLogin(!isLogin)}
-              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500 block my-4"
+              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500  "
             >
               Create New User
             </span>
@@ -182,7 +181,7 @@ const Auth: NextPage = () => {
           </div>
         </div>
 
-        <div className="mt-6">
+        <div>
           <SecondaryButton
             disabled={!email || password.length < 6}
             onClick={
@@ -208,12 +207,8 @@ const Auth: NextPage = () => {
           </SecondaryButton>
         </div>
 
-        <div className="mt-6">
-          <SecondaryButton
-            onClick={signInGoogle}
-          >
-            Test Login
-          </SecondaryButton>
+        <div>
+          <SecondaryButton onClick={signInGoogle}>Test Login</SecondaryButton>
           <span
             className="cursor-pointer text-gray-500 block text-center mt-6"
             onClick={() => setOpenModal(true)}
@@ -221,7 +216,7 @@ const Auth: NextPage = () => {
             Forgot password ?
           </span>
         </div>
-      {/* </form> */}
+      </div>
 
       <ResetPasswordModal
         openModal={openModal}

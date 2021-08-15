@@ -4,8 +4,8 @@ import { SecondaryButton } from "../../components/button/SecondaryButton";
 
 import { auth, db, storage } from "../../../firebase";
 import { ProfileEdit } from "./ProfileEdit";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../lib/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, updateUserProfile } from "../../lib/auth";
 
 type USER = {
   displayName: string;
@@ -16,33 +16,35 @@ type USER = {
 
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-    const user = useSelector(selectUser);
-  
-  const onChangeImageHandler = async (
-    e: {
-      target: { files: any; value: string };
-    }
-  ) => {
-    
-    if (e.target.files![0]) {
-      let url = "";
-      if (avatarImage) {
-        const S =
-          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        const N = 16;
-        const randomChar = Array.from(
-          crypto.getRandomValues(new Uint32Array(N))
-        )
-          .map((n) => S[n % S.length])
-          .join("");
-        const fileName = randomChar + "_" + avatarImage.name;
-        await storage.ref(`avatars/${fileName}`).put(avatarImage);
-        url = await storage.ref("avatars").child(fileName).getDownloadURL();
-      }
-      setAvatarImage(e.target.files![0]);
-      e.target.value = "";
-    }
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const username = user.displayName;
 
+  const onChangeImageHandler = async (e: any) => {
+    const authUser = auth.currentUser;
+    const file = e.target.files[0];
+    const value = e.target.value;
+    let url = "";
+    if (avatarImage) {
+      const S =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join("");
+      const fileName = randomChar + "_" + avatarImage.name;
+      await storage.ref(`avatars/${fileName}`).put(avatarImage);
+      url = await storage.ref("avatars").child(fileName).getDownloadURL();
+    }
+    await authUser!.updateProfile({ photoURL: url });
+    dispatch(
+      updateUserProfile({
+        displayName: username,
+        photoUrl: url,
+      })
+    );
+    // setAvatarImage(file);
+    //  value("")
   };
 
   const [open, setOpen] = useState(false);
@@ -66,7 +68,7 @@ export const Profile: VFC = () => {
               className="hidden"
             />
             <Image
-              src="/img/avatar.png"
+              src={"/img/avatar.png"}
               className="rounded-full text-center cursor-pointer"
               width={70}
               height={70}
@@ -82,17 +84,14 @@ export const Profile: VFC = () => {
             </p>
           </div>
 
-            <SecondaryButton onClick={onClickChangeProfile}>
-              変更
-            </SecondaryButton>
-            {open && (
-              <ProfileEdit
-                open={open}
-                handleClose={handleClose}
-                onClickChangeProfile={onClickChangeProfile}
-              />
-            )}
-          
+          <SecondaryButton onClick={onClickChangeProfile}>変更</SecondaryButton>
+          {open && (
+            <ProfileEdit
+              open={open}
+              handleClose={handleClose}
+              onClickChangeProfile={onClickChangeProfile}
+            />
+          )}
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
