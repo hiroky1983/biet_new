@@ -6,15 +6,17 @@ import Head from "next/head";
 import { NextPage } from "next";
 import { updateUserProfile } from "../lib/auth";
 import { useDispatch } from "react-redux";
-import { LockIcon } from "../components/svg/LockIcon";
+import { LockIcon } from "../components/button/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";
 import { SecondaryButton } from "../components/button/SecondaryButton";
+import { useFirebase } from "../hooks/useFirebase";
 
 const Auth: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { userName, docId, photoUrl } = useFirebase();
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -24,14 +26,14 @@ const Auth: NextPage = () => {
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    lang: "",
-    gender: "",
-    userStatus: "",
-  });
+  // const [values, setValues] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   lang: "",
+  //   gender: "",
+  //   userStatus: "",
+  // });
 
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
@@ -63,18 +65,17 @@ const Auth: NextPage = () => {
       setUserStatus(e.target.value);
     }, []);
 
-  const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
-    const target = e.target;
-    const value = target.type === "raido" ? target.checked : target.value;
-    const name = target.name;
-    setValues({ ...values, [name]: value });
-  }, [values]);
-  console.log(values);
-  
+  // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
+  //   const target = e.target;
+  //   const value = target.type === "raido" ? target.checked : target.value;
+  //   const name = target.name;
+  //   setValues({ ...values, [name]: value });
+  // }, [values]);
+  // console.log(values);
 
-  // const userData = db.collection("users").add({
+  // const userData = db.collection("users").doc(docId).set({
   //   username: username,
-  //   checkValue: checkValue,
+  //   gender: gender,
   //   lang: lang,
   //   userstatus: userStatus,
   // });
@@ -96,8 +97,12 @@ const Auth: NextPage = () => {
     router.push("/");
   };
 
-  const testLogin = () => {
-    auth.signInWithEmailAndPassword("testUser@gmail.com", "aaaaaaaa");
+  const onClickTestLogin = async () => {
+    try {
+      await auth.signInWithEmailAndPassword("testUser@gmail.com", "aaaaaaaa");
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const signInGoogle = async () => {
@@ -207,7 +212,9 @@ const Auth: NextPage = () => {
         </div>
 
         <div>
-          <SecondaryButton onClick={testLogin}>Test Login</SecondaryButton>
+          <SecondaryButton onClick={onClickTestLogin}>
+            Test Login
+          </SecondaryButton>
           <span
             className="cursor-pointer text-gray-500 block text-center mt-6"
             onClick={() => setOpenModal(true)}

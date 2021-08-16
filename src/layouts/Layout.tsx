@@ -15,7 +15,7 @@ export const Layout: VFC <PROPS>= (props) => {
         </div>
         <div className="w-full h-auto">{props.children}</div>
       </div>
-      <div className="block lg:hidden">
+      <div className=" block  lg:hidden ">
         <MobileFooterMenu />
       </div>
     </div>

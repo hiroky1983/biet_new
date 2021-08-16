@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { db } from '../../firebase';
 import { selectUser } from '../lib/auth';
 
-
 export const useFirebase = () => {
   const user = useSelector(selectUser)
   
@@ -24,6 +23,5 @@ export const useFirebase = () => {
     docId,
     photoUrl,
     userName,
-
   }
 }

@@ -36,10 +36,11 @@ type Props = {
   open: boolean;
   onClickChangeProfile: () => void;
   onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"];
+  profile: string;
 };
 
 export const ProfileEdit: VFC<Props> = (props) => {
-  const { open, onClickChangeProfile, handleClose, onChangeProfile } = props;
+  const { open, onClickChangeProfile, handleClose, onChangeProfile,profile } = props;
   const classes = useStyles();
 
   return (
@@ -61,11 +62,11 @@ export const ProfileEdit: VFC<Props> = (props) => {
           </Toolbar>
         </AppBar>
         {/* <AuthFormLayout
-          checkValue={}
+          gender={}
           userStatus={}
           lang={}
           username={}
-          onChangeCheckValue={}
+          onChangegender={}
           onChangeLang={}
           onChangeCheckStatus={}
           onChangeUserName={}
@@ -74,6 +75,7 @@ export const ProfileEdit: VFC<Props> = (props) => {
           minRows={5}
           aria-label="Maximum height"
           onChange={onChangeProfile}
+          defaultValue={profile}
         />
       </Dialog>
     </div>

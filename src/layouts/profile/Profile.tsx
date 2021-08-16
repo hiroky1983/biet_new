@@ -14,15 +14,23 @@ export const Profile: VFC = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const username = user.displayName;
+  const userData = db.collection("users").doc().get();
 
-  const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] = (e) => {
-    setProfile(e.target.value);
+
+  const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
+    (e) => {
+      setProfile(e.target.value);
+    };
+
+  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0]) {
+      setAvatarImage(e.target.files![0]);
+      e.target.value = "";
+    }
   };
 
-  const onChangeImageHandler = async (e: any) => {
+  const handleImageChage = async () => {
     const authUser = auth.currentUser;
-    const file = e.target.files[0];
-    const value = e.target.value;
     let url = "";
     if (avatarImage) {
       const S =
@@ -42,8 +50,6 @@ export const Profile: VFC = () => {
         photoUrl: url,
       })
     );
-    // setAvatarImage(file);
-    //  value("")
   };
 
   const [open, setOpen] = useState(false);
@@ -55,40 +61,48 @@ export const Profile: VFC = () => {
     setOpen(true);
   };
 
+  console.log(user.photoUrl);
+
   return (
     <>
       <div className="mx-14 w-auto">
         <div className="flex w-full">
-          <label>
-            <input
-              type="file"
-              onChange={onChangeImageHandler}
-              className="hidden"
-            />
-            <Image
-              src={"/img/avatar.png"}
-              className="rounded-full text-center cursor-pointer"
-              width={70}
-              height={70}
-              alt="Avatar"
-            />
-          </label>
+          <div>
+            <label>
+              <input
+                type="file"
+                onChange={onChangeImageHandler}
+                className="hidden"
+                onClick={handleImageChage}
+              />
+              <Image
+                src={"/img/avatar.png"}
+                className="rounded-full text-center cursor-pointer"
+                width={70}
+                height={70}
+                alt="Avatar"
+              />
+            </label>
+          </div>
           <div className="mx-8 ">
             <p className="text-gray-700">{user.displayName}</p>
             <br />
-            <p className="text-gray-700">
-              {/* <span>{user.checkValue}</span>{" "}
-              {`${user.lang}と${user.userStatus}`} */}
-            </p>
+            {/* <p className="text-gray-700">
+              <span>{user.gender}</span>
+              {`${user.lang}と${user.userStatus}`}
+            </p> */}
           </div>
+<div className="flex-auto ">
 
           <SecondaryButton onClick={onClickChangeProfile}>変更</SecondaryButton>
+</div>
           {open && (
             <ProfileEdit
               open={open}
               handleClose={handleClose}
               onClickChangeProfile={onClickChangeProfile}
-              onChangeProfile= {onChangeProfile}
+              onChangeProfile={onChangeProfile}
+              profile={profile}
             />
           )}
         </div>
