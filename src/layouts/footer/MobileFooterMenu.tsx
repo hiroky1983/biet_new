@@ -38,7 +38,7 @@ export const MobileFooterMenu: VFC = () => {
   return (
     <>
       <div className="border border-gray-300"></div>
-      <div className="flex  justify-between mx-10 my-4">
+      <div className="flex  justify-between mx-10 my-4 z-50">
         {FOOTERITEMS.map((item) => {
           return (
             <Link href={item.href} key={item.href}>

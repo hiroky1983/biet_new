@@ -1,8 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import { BrowserFooterMenu } from "../layouts/footer/BrowserFooterMenu";
-import { MobileFooterMenu } from "../layouts/footer/MobileFooterMenu";
-import { SubHeader } from "../layouts/header/SubHeader";
+
+import { Layout } from "../layouts/Layout";
 
 const Blog: NextPage = () => {
   return (
@@ -15,15 +14,9 @@ const Blog: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SubHeader title="Blog" />
-      <div className="flex">
-        <div className="hidden lg:flex">
-          <BrowserFooterMenu />
-        </div>
-      </div>
-      <div className="block lg:hidden">
-        <MobileFooterMenu />
-      </div>
+      <Layout title="Blog">
+        
+      </Layout>
     </div>
   );
 };

@@ -17,8 +17,7 @@ const Question: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SubHeader title="Question" />
-      <Layout>
+      <Layout title="Question">
         <div className="w-full">
           <TabMenu  />
         </div>
