@@ -6,7 +6,7 @@ import Head from "next/head";
 import { NextPage } from "next";
 import { updateUserProfile } from "../lib/auth";
 import { useDispatch } from "react-redux";
-import { LockIcon } from "../components/button/svg/LockIcon";
+import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";

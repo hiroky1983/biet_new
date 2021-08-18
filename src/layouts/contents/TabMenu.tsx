@@ -74,8 +74,6 @@ export const TabMenu: VFC = () => {
   const [value, setValue] = React.useState(0);
   const [posts, setPosts] = useState<Array<any>>([]);
 
-
-
   const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -101,7 +99,7 @@ export const TabMenu: VFC = () => {
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <PostCard />
+          {posts.length === 0 ? <p className="text-gray-700">質問はまだありません</p> : <PostCard />}
         </TabPanel>
       </div>
     </div>
