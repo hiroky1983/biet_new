@@ -12,6 +12,7 @@ import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";
 import { SecondaryButton } from "../components/button/SecondaryButton";
 import { useFirebase } from "../hooks/useFirebase";
+import useSWR from "swr";
 
 const Auth: NextPage = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const Auth: NextPage = () => {
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const { data: user } = useSWR("firestore/user")
   // const [values, setValues] = useState({
   //   username: "",
   //   email: "",
