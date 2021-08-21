@@ -96,7 +96,7 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
           value={username}
           onChange={onChangeUserName}
           type="text"
-          inputName="select lang"
+          inputName="userName"
         />
       </div>
     </>

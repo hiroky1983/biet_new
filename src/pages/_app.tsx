@@ -8,11 +8,9 @@ import { store } from "../lib/store";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-     <React.StrictMode>
       <Provider store={store}>
         <Component {...pageProps} />
       </Provider>
-    </React.StrictMode>
     </>
   );
 }

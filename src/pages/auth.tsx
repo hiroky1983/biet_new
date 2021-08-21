@@ -9,43 +9,26 @@ import { useDispatch } from "react-redux";
 import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
-import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";
 import { SecondaryButton } from "../components/button/SecondaryButton";
 import { useFirebase } from "../hooks/useFirebase";
 import useSWR from "swr";
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Auth: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [isLogin, setIsLogin] = useState<boolean|null>(true);
-  const [username, setUsername] = useState("");
+  const [isLogin, setIsLogin] = useState<boolean | null>(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [lang, setLang] = useState("");
-  const [gender, setGender] = useState("");
-  const [userStatus, setUserStatus] = useState("");
+  const [username, setUsername] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const [userData, setUserData] = useState({
-    username: "",
-    gender: "",
-    lang: "",
-    userstatus: "",
-  });
 
   const [btnLoading, setBtnLoading] = useState(false);
-
-  const user = useFirebase();
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
     router.push("/");
   };
 
-  const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setUsername(e.target.value);
-    }, []);
   const onChangeEmail: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
       setEmail(e.target.value);
@@ -54,17 +37,9 @@ const Auth: NextPage = () => {
     useCallback((e) => {
       setPassword(e.target.value);
     }, []);
-  const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
-      setLang(e.target.value);
-    }, []);
-  const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setGender(e.target.value);
-    }, []);
-  const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setUserStatus(e.target.value);
+      setUsername(e.target.value);
     }, []);
 
   const userRegister = async () => {
@@ -79,9 +54,6 @@ const Auth: NextPage = () => {
         photoUrl: "",
       })
     );
-    if (user.docId) {
-      setUserData(userData);
-    }
     router.push("/");
   };
 
@@ -109,7 +81,6 @@ const Auth: NextPage = () => {
         setResetEmail("");
       });
   };
-
 
   return (
     <div className="max-w-md w-full m-auto justify-center ">
@@ -157,18 +128,13 @@ const Auth: NextPage = () => {
             </span>
             {isLogin ? null : (
               <div>
-                <div>
-                  <AuthFormLayout
-                    gender={gender}
-                    userStatus={userStatus}
-                    lang={lang}
-                    username={username}
-                    onChangeGender={onChangeGender}
-                    onChangeLang={onChangeLang}
-                    onChangeCheckStatus={onChangeCheckStatus}
-                    onChangeUserName={onChangeUserName}
-                  />
-                </div>
+        <AuthInput
+          placeholder="名前を入力"
+          value={username}
+          onChange={onChangeUserName}
+          type="text"
+          inputName="select lang"
+        />
               </div>
             )}
           </div>
@@ -178,26 +144,21 @@ const Auth: NextPage = () => {
           <SecondaryButton
             disabled={!email || password.length < 6}
             onClick={
-              isLogin 
+              isLogin
                 ? async () => {
                     try {
-                      setBtnLoading(true);
-
                       await login();
                     } catch (err) {
                       alert(err.message);
                     }
-                    setBtnLoading(false);
                   }
                 : async () => {
                     try {
-                      setBtnLoading(true);
                       await userRegister();
                     } catch (err) {
                       alert(err.message);
                     }
-                    setBtnLoading(false);
-                  } 
+                  }
             }
           >
             <LockIcon />

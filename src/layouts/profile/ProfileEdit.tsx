@@ -1,4 +1,10 @@
-import React, { TextareaHTMLAttributes, useState, VFC } from "react";
+import React, {
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useCallback,
+  useState,
+  VFC,
+} from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -11,6 +17,9 @@ import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import { AuthFormLayout } from "../auth/AuthFormLayout";
 import { TextareaAutosize } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../lib/auth";
+import { db } from "../../../firebase";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,8 +49,55 @@ type Props = {
 };
 
 export const ProfileEdit: VFC<Props> = (props) => {
-  const { open, onClickChangeProfile, handleClose, onChangeProfile,profile } = props;
+  const { open, handleClose, onChangeProfile, profile } = props;
   const classes = useStyles();
+  const [lang, setLang] = useState("");
+  const [gender, setGender] = useState("");
+  const [userStatus, setUserStatus] = useState("");
+  const [username, setUsername] = useState("");
+  const user = useSelector(selectUser);
+  const docId = user.uid;
+
+  const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setLang(e.target.value);
+    }, []);
+  const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setGender(e.target.value);
+    }, []);
+  const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setUserStatus(e.target.value);
+    }, []);
+  const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+    useCallback((e) => {
+      setUsername(e.target.value);
+    }, []);
+  const onClickChangeProfile = async () => {
+    if (user.uid) {
+      await db.collection("users").doc(docId).set(
+        {
+          //firestoreのdccから値を取得する
+          lang: lang,
+          gender: gender,
+          userName: user.displayName,
+          userStatus: userStatus,
+        },
+        { merge: true }
+      );
+    } else {
+      await db.collection("users").doc(docId).set({
+        lang: lang,
+        gender: gender,
+        userName: user.displayName,
+        userStatus: userStatus,
+      })
+    }
+    handleClose();
+  };
+
+  console.log(gender);
 
   return (
     <div>
@@ -56,27 +112,37 @@ export const ProfileEdit: VFC<Props> = (props) => {
             <Typography variant="h6" className={classes.title}>
               プロフィール編集
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            <Button autoFocus color="inherit" onClick={onClickChangeProfile}>
               保存
             </Button>
           </Toolbar>
         </AppBar>
-        {/* <AuthFormLayout
-          gender={}
-          userStatus={}
-          lang={}
-          username={}
-          onChangegender={}
-          onChangeLang={}
-          onChangeCheckStatus={}
-          onChangeUserName={}
-        /> */}
-        <TextareaAutosize
-          minRows={5}
-          aria-label="Maximum height"
-          onChange={onChangeProfile}
-          defaultValue={profile}
-        />
+        <div className="text-center">
+          <AuthFormLayout
+            gender={gender}
+            userStatus={userStatus}
+            lang={lang}
+            username={username}
+            onChangeGender={onChangeGender}
+            onChangeLang={onChangeLang}
+            onChangeCheckStatus={onChangeCheckStatus}
+            onChangeUserName={onChangeUserName}
+          />
+          <TextareaAutosize
+            minRows={5}
+            aria-label="Maximum height"
+            style={{
+              height: "100%",
+              width: "100%",
+              border: "1px solid #ccc",
+              marginTop: "10px",
+            }}
+            onChange={onChangeProfile}
+            defaultValue={
+              profile === "プロフィールはまだありません" ? "" : profile
+            }
+          />
+        </div>
       </Dialog>
     </div>
   );
