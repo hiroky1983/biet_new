@@ -49,11 +49,11 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
   } = props;
   return (
     <>
-      <div className="flex  ">
+      <div className="flex">
         <span className="text-gray-500">性別？</span>
         {SELECT_GENDERS.map((gend) => {
           return (
-            <div key={gend.value} className="space-x-2  text-center">
+            <div key={gend.value} className="text-center">
               <input
                 type="radio"
                 value={gender}

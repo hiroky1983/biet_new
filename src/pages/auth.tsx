@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Header } from "../layouts/header/Header";
-import { auth, db, provider } from "../../firebase";
+import { auth, provider } from "../../firebase";
 import Head from "next/head";
 import { NextPage } from "next";
 import { updateUserProfile } from "../lib/auth";
@@ -10,8 +10,6 @@ import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 import { SecondaryButton } from "../components/button/SecondaryButton";
-import { useFirebase } from "../hooks/useFirebase";
-import useSWR from "swr";
 
 const Auth: NextPage = () => {
   const router = useRouter();
@@ -23,7 +21,6 @@ const Auth: NextPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
 
-  const [btnLoading, setBtnLoading] = useState(false);
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
     router.push("/");
@@ -95,30 +92,36 @@ const Auth: NextPage = () => {
       </Head>
       <Header />
       <div className="mt-8 space-y-6">
-        <div className="rounded-md shadow-sm -space-y-px">
-          <div>
-            <AuthInput
-              placeholder="email"
-              value={email}
-              onChange={onChangeEmail}
-              inputName="email"
-              type="email"
-              autoComplete="email"
-            />
-          </div>
-          <div>
-            <AuthInput
-              inputName="password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Password"
-              value={password}
-              onChange={onChangePassword}
-            />
-          </div>
+        <div>
+          <AuthInput
+            placeholder="email"
+            value={email}
+            onChange={onChangeEmail}
+            inputName="email"
+            type="email"
+            autoComplete="email"
+          />
+          <AuthInput
+            inputName="password"
+            type="password"
+            autoComplete="current-password"
+            placeholder="Password"
+            value={password}
+            onChange={onChangePassword}
+          />
+          {isLogin ? null : (
+            <div className="">
+              <AuthInput
+                placeholder="名前を入力"
+                value={username}
+                onChange={onChangeUserName}
+                type="text"
+                inputName="userName"
+              />
+            </div>
+          )}
         </div>
-
-        <div className="flex items-center justify-center">
+        <div className="flex justify-center">
           <div className="text-sm">
             <span
               onClick={() => setIsLogin(!isLogin)}
@@ -126,20 +129,8 @@ const Auth: NextPage = () => {
             >
               Create New User
             </span>
-            {isLogin ? null : (
-              <div>
-        <AuthInput
-          placeholder="名前を入力"
-          value={username}
-          onChange={onChangeUserName}
-          type="text"
-          inputName="select lang"
-        />
-              </div>
-            )}
           </div>
         </div>
-
         <div>
           <SecondaryButton
             disabled={!email || password.length < 6}
@@ -165,7 +156,6 @@ const Auth: NextPage = () => {
             {isLogin ? "Login" : "Create New User"}
           </SecondaryButton>
         </div>
-
         <div>
           <SecondaryButton onClick={onClickTestLogin}>
             Test Login
@@ -178,7 +168,6 @@ const Auth: NextPage = () => {
           </span>
         </div>
       </div>
-
       <ResetPasswordModal
         openModal={openModal}
         setOpenModal={setOpenModal}
