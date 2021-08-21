@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { InputHTMLAttributes, VFC } from "react";
 import { AuthInput } from "../../components/input/AuthInput";
 
@@ -34,6 +35,7 @@ const SELECT_STATUS = [
     value: "既婚",
   },
 ];
+
 export const AuthFormLayout: VFC<PROPS> = (props) => {
   const {
     gender,
@@ -49,17 +51,17 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
     <>
       <div className="flex  ">
         <span className="text-gray-500">性別？</span>
-        {SELECT_GENDERS.map((gender) => {
+        {SELECT_GENDERS.map((gend) => {
           return (
-            <div key={gender.value} className="space-x-2  text-center">
+            <div key={gend.value} className="space-x-2  text-center">
               <input
                 type="radio"
-                value={gender.value}
+                value={gender}
                 name="select gender"
                 checked={gender === gender}
                 onChange={onChangeGender}
               />
-              <label>{gender.value}</label>
+              <label>{gend.value}</label>
             </div>
           );
         })}

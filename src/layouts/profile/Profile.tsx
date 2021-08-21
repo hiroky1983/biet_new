@@ -16,7 +16,6 @@ export const Profile: VFC = () => {
   const username = user.displayName;
   const userData = db.collection("users").doc().get();
 
-
   const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
     (e) => {
       setProfile(e.target.value);
@@ -92,10 +91,11 @@ export const Profile: VFC = () => {
               {`${user.lang}と${user.userStatus}`}
             </p> */}
           </div>
-<div className="flex-auto ">
-
-          <SecondaryButton onClick={onClickChangeProfile}>変更</SecondaryButton>
-</div>
+          <div className="flex-auto ">
+            <SecondaryButton onClick={onClickChangeProfile}>
+              変更
+            </SecondaryButton>
+          </div>
           {open && (
             <ProfileEdit
               open={open}

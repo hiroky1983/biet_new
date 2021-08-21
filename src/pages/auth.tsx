@@ -110,21 +110,6 @@ const Auth: NextPage = () => {
       });
   };
 
-  const buttonStatus = () => {
-    if (isLogin) {
-      return <span>Login</span>;
-    }
-    if (!isLogin) {
-      return <span>Create New User</span>;
-    }
-    if (btnLoading && isLogin === null) {
-      return (
-        <CircularProgress  color={'secondary'}/>
-      );
-    }
-  };
-  console.log(btnLoading);
-  console.log(isLogin);
 
   return (
     <div className="max-w-md w-full m-auto justify-center ">
@@ -216,7 +201,7 @@ const Auth: NextPage = () => {
             }
           >
             <LockIcon />
-            {buttonStatus()}
+            {isLogin ? "Login" : "Create New User"}
           </SecondaryButton>
         </div>
 
