@@ -13,12 +13,12 @@ import { AuthFormLayout } from "../layouts/auth/AuthFormLayout";
 import { SecondaryButton } from "../components/button/SecondaryButton";
 import { useFirebase } from "../hooks/useFirebase";
 import useSWR from "swr";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Auth: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { userName, docId, photoUrl } = useFirebase();
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState<boolean|null>(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,16 +27,16 @@ const Auth: NextPage = () => {
   const [userStatus, setUserStatus] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const { data: user } = useSWR("firestore/user")
-  // const [values, setValues] = useState({
-  //   username: "",
-  //   email: "",
-  //   password: "",
-  //   lang: "",
-  //   gender: "",
-  //   userStatus: "",
-  // });
+  const [userData, setUserData] = useState({
+    username: "",
+    gender: "",
+    lang: "",
+    userstatus: "",
+  });
 
+  const [btnLoading, setBtnLoading] = useState(false);
+
+  const user = useFirebase();
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
     router.push("/");
@@ -67,24 +67,7 @@ const Auth: NextPage = () => {
       setUserStatus(e.target.value);
     }, []);
 
-  // const handleInputChange: InputHTMLAttributes<HTMLInputElement>["onChange"] = useCallback((e) => {
-  //   const target = e.target;
-  //   const value = target.type === "raido" ? target.checked : target.value;
-  //   const name = target.name;
-  //   setValues({ ...values, [name]: value });
-  // }, [values]);
-  // console.log(values);
-
-  // const userData = db.collection("users").doc(docId).set({
-  //   username: username,
-  //   gender: gender,
-  //   lang: lang,
-  //   userstatus: userStatus,
-  // });
-
   const userRegister = async () => {
-    // await userData;
-    // console.log(userData);
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
     await authUser.user?.updateProfile({
       displayName: username,
@@ -96,6 +79,9 @@ const Auth: NextPage = () => {
         photoUrl: "",
       })
     );
+    if (user.docId) {
+      setUserData(userData);
+    }
     router.push("/");
   };
 
@@ -123,6 +109,22 @@ const Auth: NextPage = () => {
         setResetEmail("");
       });
   };
+
+  const buttonStatus = () => {
+    if (isLogin) {
+      return <span>Login</span>;
+    }
+    if (!isLogin) {
+      return <span>Create New User</span>;
+    }
+    if (btnLoading && isLogin === null) {
+      return (
+        <CircularProgress  color={'secondary'}/>
+      );
+    }
+  };
+  console.log(btnLoading);
+  console.log(isLogin);
 
   return (
     <div className="max-w-md w-full m-auto justify-center ">
@@ -191,25 +193,30 @@ const Auth: NextPage = () => {
           <SecondaryButton
             disabled={!email || password.length < 6}
             onClick={
-              isLogin
+              isLogin 
                 ? async () => {
                     try {
+                      setBtnLoading(true);
+
                       await login();
                     } catch (err) {
                       alert(err.message);
                     }
+                    setBtnLoading(false);
                   }
                 : async () => {
                     try {
+                      setBtnLoading(true);
                       await userRegister();
                     } catch (err) {
                       alert(err.message);
                     }
-                  }
+                    setBtnLoading(false);
+                  } 
             }
           >
             <LockIcon />
-            {isLogin ? "Login" : "Create New User"}
+            {buttonStatus()}
           </SecondaryButton>
         </div>
 
