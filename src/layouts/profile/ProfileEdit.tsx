@@ -83,6 +83,7 @@ export const ProfileEdit: VFC<Props> = (props) => {
           gender: gender,
           userName: user.displayName,
           userStatus: userStatus,
+          profile: profile
         },
         { merge: true }
       );

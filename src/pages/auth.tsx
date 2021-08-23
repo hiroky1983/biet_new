@@ -56,7 +56,9 @@ const Auth: NextPage = () => {
 
   const onClickTestLogin = async () => {
     try {
-      await auth.signInWithEmailAndPassword("testUser@gmail.com", "aaaaaaaa");
+      setEmail("test@sample.com");
+      setPassword("testlogin");
+      await auth.signInWithEmailAndPassword(email, password);
     } catch (err) {
       alert(err);
     }

@@ -6,6 +6,7 @@ import { auth, db, storage } from "../../../firebase";
 import { ProfileEdit } from "./ProfileEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, updateUserProfile } from "../../lib/auth";
+import { useEffect } from "react";
 
 export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
@@ -14,7 +15,7 @@ export const Profile: VFC = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const username = user.displayName;
-  const userData = db.collection("users").doc().get();
+  const docRef = db.collection("users").doc(user.uid).get();
 
   const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
     (e) => {
@@ -27,6 +28,14 @@ export const Profile: VFC = () => {
       e.target.value = "";
     }
   };
+  useEffect(() => {
+    const unSub = docRef.then((doc) => {
+        setProfile(doc.data()?.profile);
+    });
+    return () => {
+      unSub;
+    };
+  }, [docRef]);
 
   const handleImageChage = async () => {
     const authUser = auth.currentUser;
