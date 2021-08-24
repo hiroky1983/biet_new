@@ -46,30 +46,53 @@ type Props = {
   onClickChangeProfile: () => void;
   onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"];
   profile: string;
+  lang: string;
+  setLang: React.Dispatch<React.SetStateAction<string>>;
+  gender: string;
+  setGender: React.Dispatch<React.SetStateAction<string>>;
+  userStatus: string;
+  setUserStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const ProfileEdit: VFC<Props> = (props) => {
-  const { open, handleClose, onChangeProfile, profile } = props;
+  const {
+    open,
+    handleClose,
+    onChangeProfile,
+    profile,
+    lang,
+    setLang,
+    gender,
+    setGender,
+    userStatus,
+    setUserStatus,
+  } = props;
   const classes = useStyles();
-  const [lang, setLang] = useState("");
-  const [gender, setGender] = useState("");
-  const [userStatus, setUserStatus] = useState("");
   const [username, setUsername] = useState("");
   const user = useSelector(selectUser);
   const docId = user.uid;
 
   const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setLang(e.target.value);
-    }, []);
+    useCallback(
+      (e) => {
+        setLang(e.target.checked);
+      },
+      [setLang]
+    );
   const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setGender(e.target.value);
-    }, []);
+    useCallback(
+      (e) => {
+        setGender(e.target.checked);
+      },
+      [setGender]
+    );
   const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setUserStatus(e.target.value);
-    }, []);
+    useCallback(
+      (e) => {
+        setUserStatus(e.target.value);
+      },
+      [setUserStatus]
+    );
   const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
       setUsername(e.target.value);
@@ -83,7 +106,7 @@ export const ProfileEdit: VFC<Props> = (props) => {
           gender: gender,
           userName: user.displayName,
           userStatus: userStatus,
-          profile: profile
+          profile: profile,
         },
         { merge: true }
       );
@@ -93,12 +116,13 @@ export const ProfileEdit: VFC<Props> = (props) => {
         gender: gender,
         userName: user.displayName,
         userStatus: userStatus,
-      })
+      });
     }
     handleClose();
   };
 
   console.log(gender);
+  
 
   return (
     <div>

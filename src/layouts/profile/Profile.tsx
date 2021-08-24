@@ -12,10 +12,14 @@ export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
   const [profile, setProfile] =
     useState<string>("プロフィールはまだありません");
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
-  const username = user.displayName;
-  const docRef = db.collection("users").doc(user.uid).get();
+    const [lang, setLang] = useState("");
+    const [gender, setGender] = useState("");
+    const [userStatus, setUserStatus] = useState("");
+    const user = useSelector(selectUser);
+    const username = user.displayName;
+    
+    const dispatch = useDispatch();
+    const docRef = db.collection("users").doc(user.uid).get();
 
   const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
     (e) => {
@@ -31,11 +35,17 @@ export const Profile: VFC = () => {
   useEffect(() => {
     const unSub = docRef.then((doc) => {
         setProfile(doc.data()?.profile);
+        setGender(doc.data()?.gender);
+        setLang(doc.data()?.lang);
+        setUserStatus(doc.data()?.userStatus);
+        if(user.photoUrl){
+          setAvatarImage(doc.data()?.avatarImage)
+        }
     });
     return () => {
       unSub;
     };
-  }, [docRef]);
+  }, [docRef, user.photoUrl]);
 
   const handleImageChage = async () => {
     const authUser = auth.currentUser;
@@ -58,6 +68,9 @@ export const Profile: VFC = () => {
         photoUrl: url,
       })
     );
+    db.collection("users").doc(user.uid).update({ 
+      avatarImage: user.photoUrl,
+    });
   };
 
   const [open, setOpen] = useState(false);
@@ -68,8 +81,6 @@ export const Profile: VFC = () => {
   const onClickChangeProfile = () => {
     setOpen(true);
   };
-
-  console.log(user.photoUrl);
 
   return (
     <>
@@ -84,7 +95,7 @@ export const Profile: VFC = () => {
                 onClick={handleImageChage}
               />
               <Image
-                src={"/img/avatar.png"}
+                src={avatarImage ? user.photoUrl:"/img/avatar.png"}
                 className="rounded-full text-center cursor-pointer"
                 width={70}
                 height={70}
@@ -95,10 +106,10 @@ export const Profile: VFC = () => {
           <div className="mx-8 ">
             <p className="text-gray-700">{user.displayName}</p>
             <br />
-            {/* <p className="text-gray-700">
-              <span>{user.gender}</span>
-              {`${user.lang}と${user.userStatus}`}
-            </p> */}
+            <p className="text-gray-700">
+              <span>{gender}</span>
+              {`${lang}と${userStatus}`}
+            </p>
           </div>
           <div className="flex-auto ">
             <SecondaryButton onClick={onClickChangeProfile}>
@@ -112,6 +123,12 @@ export const Profile: VFC = () => {
               onClickChangeProfile={onClickChangeProfile}
               onChangeProfile={onChangeProfile}
               profile={profile}
+              lang={lang}
+              gender={gender}
+              userStatus={userStatus}
+              setLang={setLang}
+              setGender={setGender}
+              setUserStatus={setUserStatus}
             />
           )}
         </div>
