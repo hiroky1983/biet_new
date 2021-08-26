@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, VFC } from "react";
+import { Input } from "@chakra-ui/react";
 
 type PROPS = {
   placeholder: string;
@@ -11,16 +12,17 @@ type PROPS = {
 export const AuthInput: VFC<PROPS> = (props) => {
   const { placeholder, value, onChange, inputName, type, autoComplete } = props;
   return (
-    <div>
-      <input
-        name={inputName}
+    <div>    
+      <Input
         type={type}
         autoComplete={autoComplete}
-        required
-        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+        name={inputName}
+        variant="flushed"
         placeholder={placeholder}
+        required
         value={value}
         onChange={onChange}
+        
       />
     </div>
   );
