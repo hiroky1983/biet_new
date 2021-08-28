@@ -122,7 +122,6 @@ export const ProfileEdit: VFC<Props> = (props) => {
   };
 
   console.log(gender);
-  
 
   return (
     <div>

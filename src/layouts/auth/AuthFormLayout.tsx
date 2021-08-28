@@ -1,6 +1,7 @@
-import { memo } from "react";
-import { InputHTMLAttributes, VFC } from "react";
+import { InputHTMLAttributes, useState, VFC } from "react";
 import { AuthInput } from "../../components/input/AuthInput";
+import { Input, Stack } from "@chakra-ui/react";
+import { Radio, RadioGroup } from "@chakra-ui/react";
 
 type PROPS = {
   lang: string;
@@ -47,6 +48,7 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
     onChangeCheckStatus,
     onChangeUserName,
   } = props;
+  const [value, setValue] = useState("1")
   return (
     <>
       <div className="flex">
@@ -62,6 +64,11 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
                 onChange={onChangeGender}
               />
               <label>{gend.value}</label>
+              <RadioGroup onChange={setValue} value={value}>
+                <Stack direction="row">
+                  <Radio value={gender}>First</Radio>
+                </Stack>
+              </RadioGroup>
             </div>
           );
         })}

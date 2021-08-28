@@ -12,14 +12,14 @@ export const Profile: VFC = () => {
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
   const [profile, setProfile] =
     useState<string>("プロフィールはまだありません");
-    const [lang, setLang] = useState("");
-    const [gender, setGender] = useState("");
-    const [userStatus, setUserStatus] = useState("");
-    const user = useSelector(selectUser);
-    const username = user.displayName;
-    
-    const dispatch = useDispatch();
-    const docRef = db.collection("users").doc(user.uid).get();
+  const [lang, setLang] = useState("");
+  const [gender, setGender] = useState("");
+  const [userStatus, setUserStatus] = useState("");
+  const user = useSelector(selectUser);
+  const username = user.displayName;
+
+  const dispatch = useDispatch();
+  const docRef = db.collection("users").doc(user.uid).get();
 
   const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
     (e) => {
@@ -34,13 +34,13 @@ export const Profile: VFC = () => {
   };
   useEffect(() => {
     const unSub = docRef.then((doc) => {
-        setProfile(doc.data()?.profile);
-        setGender(doc.data()?.gender);
-        setLang(doc.data()?.lang);
-        setUserStatus(doc.data()?.userStatus);
-        if(user.photoUrl){
-          setAvatarImage(doc.data()?.avatarImage)
-        }
+      setProfile(doc.data()?.profile);
+      setGender(doc.data()?.gender);
+      setLang(doc.data()?.lang);
+      setUserStatus(doc.data()?.userStatus);
+      if (user.photoUrl) {
+        setAvatarImage(doc.data()?.avatarImage);
+      }
     });
     return () => {
       unSub;
@@ -68,7 +68,7 @@ export const Profile: VFC = () => {
         photoUrl: url,
       })
     );
-    db.collection("users").doc(user.uid).update({ 
+    db.collection("users").doc(user.uid).update({
       avatarImage: user.photoUrl,
     });
   };
@@ -95,7 +95,7 @@ export const Profile: VFC = () => {
                 onClick={handleImageChage}
               />
               <Image
-                src={avatarImage ? user.photoUrl:"/img/avatar.png"}
+                src={avatarImage ? user.photoUrl : "/img/avatar.png"}
                 className="rounded-full text-center cursor-pointer"
                 width={70}
                 height={70}
