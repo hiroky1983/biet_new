@@ -114,7 +114,7 @@ export const ProfileEdit: VFC<Props> = (props) => {
       await db.collection("users").doc(docId).set({
         lang: lang,
         gender: gender,
-        userName: user.displayName,
+        userName: username,
         userStatus: userStatus,
       });
     }
