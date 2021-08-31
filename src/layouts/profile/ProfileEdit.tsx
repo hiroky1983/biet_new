@@ -46,12 +46,6 @@ type Props = {
   onClickChangeProfile: () => void;
   onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"];
   profile: string;
-  lang: string;
-  setLang: React.Dispatch<React.SetStateAction<string>>;
-  gender: string;
-  setGender: React.Dispatch<React.SetStateAction<string>>;
-  userStatus: string;
-  setUserStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const ProfileEdit: VFC<Props> = (props) => {
@@ -60,66 +54,53 @@ export const ProfileEdit: VFC<Props> = (props) => {
     handleClose,
     onChangeProfile,
     profile,
-    lang,
-    setLang,
-    gender,
-    setGender,
-    userStatus,
-    setUserStatus,
   } = props;
   const classes = useStyles();
+  const [lang, setLang] = useState("");
   const [username, setUsername] = useState("");
+  const [gender, setGender] = useState("");
+  const [userStatus, setUserStatus] = useState("");
+  // const [userData, setUserData] = useState(null);
   const user = useSelector(selectUser);
   const docId = user.uid;
 
-  const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback(
-      (e) => {
-        setLang(e.target.checked);
-      },
-      [setLang]
-    );
-  const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback(
-      (e) => {
-        setGender(e.target.checked);
-      },
-      [setGender]
-    );
-  const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback(
-      (e) => {
-        setUserStatus(e.target.value);
-      },
-      [setUserStatus]
-    );
-  const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-    useCallback((e) => {
-      setUsername(e.target.value);
-    }, []);
-  const onClickChangeProfile = async () => {
-    if (user.uid) {
-      await db.collection("users").doc(docId).set(
-        {
-          //firestoreのdccから値を取得する
-          lang: lang,
-          gender: gender,
-          userName: user.displayName,
-          userStatus: userStatus,
-          profile: profile,
-        },
-        { merge: true }
-      );
-    } else {
-      await db.collection("users").doc(docId).set({
-        lang: lang,
-        gender: gender,
-        userName: username,
-        userStatus: userStatus,
-      });
-    }
+  // const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  //   useCallback(
+  //     (e) => {
+  //       setLang(e.target.checked);
+  //     },
+  //     [setLang]
+  //   );
+  // const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  //   useCallback(
+  //     (e) => {
+  //       setGender(e.target.checked);
+  //     },
+  //     [setGender]
+  //   );
+  // const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  //   useCallback(
+  //     (e) => {
+  //       setUserStatus(e.target.value);
+  //     },
+  //     [setUserStatus]
+  //   );
+  // const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
+  //   useCallback((e) => {
+  //     setUsername(e.target.value);
+  //   }, []);
+  const onClickChangeProfile = useCallback(async (e) => {
+    e.preventDefault();
+    const userData = {
+      lang: lang,
+      gender: gender,
+      userName: username,
+      userStatus: userStatus,
+    };
+    const newData = db.collection("users").doc(docId);
+    await newData.set({ ...userData }, { merge: true });
     handleClose();
-  };
+  }, [lang, gender, username, userStatus, docId, handleClose]);
 
   console.log(gender);
 
@@ -147,10 +128,10 @@ export const ProfileEdit: VFC<Props> = (props) => {
             userStatus={userStatus}
             lang={lang}
             username={username}
-            onChangeGender={onChangeGender}
-            onChangeLang={onChangeLang}
-            onChangeCheckStatus={onChangeCheckStatus}
-            onChangeUserName={onChangeUserName}
+            onChangeGender={(e) => setGender(e.target.value)}
+            onChangeLang={(e) => setLang(e.target.value)}
+            onChangeCheckStatus={(e) => setUserStatus(e.target.value)}
+            onChangeUserName={(e) => setUsername(e.target.value)}
           />
           <TextareaAutosize
             minRows={5}
