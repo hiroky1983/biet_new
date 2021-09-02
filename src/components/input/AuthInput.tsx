@@ -12,7 +12,7 @@ type PROPS = {
 export const AuthInput: VFC<PROPS> = (props) => {
   const { placeholder, value, onChange, inputName, type, autoComplete } = props;
   return (
-    <div>    
+    <div className="mt-4">    
       <Input
         type={type}
         autoComplete={autoComplete}
