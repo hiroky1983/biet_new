@@ -123,12 +123,12 @@ export const Profile: VFC = () => {
               onClickChangeProfile={onClickChangeProfile}
               onChangeProfile={onChangeProfile}
               profile={profile}
-              lang={lang}
-              gender={gender}
-              userStatus={userStatus}
-              setLang={setLang}
-              setGender={setGender}
-              setUserStatus={setUserStatus}
+              // // lang={lang}
+              // gender={gender}
+              // userStatus={userStatus}
+              // setLang={setLang}
+              // setGender={setGender}
+              // setUserStatus={setUserStatus}
             />
           )}
         </div>
