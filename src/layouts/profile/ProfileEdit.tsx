@@ -64,31 +64,6 @@ export const ProfileEdit: VFC<Props> = (props) => {
   const user = useSelector(selectUser);
   const docId = user.uid;
 
-  // const onChangeLang: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-  //   useCallback(
-  //     (e) => {
-  //       setLang(e.target.checked);
-  //     },
-  //     [setLang]
-  //   );
-  // const onChangeGender: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-  //   useCallback(
-  //     (e) => {
-  //       setGender(e.target.checked);
-  //     },
-  //     [setGender]
-  //   );
-  // const onChangeCheckStatus: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-  //   useCallback(
-  //     (e) => {
-  //       setUserStatus(e.target.value);
-  //     },
-  //     [setUserStatus]
-  //   );
-  // const onChangeUserName: InputHTMLAttributes<HTMLInputElement>["onChange"] =
-  //   useCallback((e) => {
-  //     setUsername(e.target.value);
-  //   }, []);
   const onClickChangeProfile = useCallback(async (e) => {
     e.preventDefault();
     const userData = {
@@ -98,7 +73,7 @@ export const ProfileEdit: VFC<Props> = (props) => {
       userStatus: userStatus,
     };
     const newData = db.collection("users").doc(docId);
-    await newData.set({ ...userData }, { merge: true });
+    await newData.update({ ...userData });
     handleClose();
   }, [lang, gender, username, userStatus, docId, handleClose]);
 

@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { Header } from "../layouts/header/Header";
-import { auth, provider } from "../../firebase";
+import { auth, db, provider } from "../../firebase";
 import Head from "next/head";
 import { NextPage } from "next";
 import { updateUserProfile } from "../lib/auth";
@@ -51,6 +51,9 @@ const Auth: NextPage = () => {
         photoUrl: "",
       })
     );
+    await db.collection("users").doc(authUser.user?.uid).set({
+      userName: username,
+    });
     router.push("/");
   };
 
