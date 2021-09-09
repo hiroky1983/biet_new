@@ -52,9 +52,15 @@ const Auth: NextPage = () => {
       })
     );
     await db.collection("users").doc(authUser.user?.uid).set({
+      userId: authUser.user?.uid,
       userName: username,
     });
-    router.push("/");
+    router.push({
+      pathname: `router.pathname/${authUser.user!.uid}`,
+      query: {
+        userId: authUser.user?.uid,
+      },
+    });
   };
 
   const onClickTestLogin = async () => {
@@ -144,15 +150,15 @@ const Auth: NextPage = () => {
                 ? async () => {
                     try {
                       await login();
-                    } catch (err) {
-                      alert(err.message);
+                    } catch (error: any) {
+                      alert(error.message);
                     }
                   }
                 : async () => {
                     try {
                       await userRegister();
-                    } catch (err) {
-                      alert(err.message);
+                    } catch (error: any) {
+                      alert(error.message);
                     }
                   }
             }
