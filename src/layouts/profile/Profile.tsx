@@ -17,8 +17,25 @@ export const Profile: VFC = () => {
   const [userStatus, setUserStatus] = useState("");
   const user = useSelector(selectUser);
   const username = user.displayName;
-
   const dispatch = useDispatch();
+  const [userData, setUserData] = useState({
+    profile,
+    lang,
+    userStatus,
+    gender,
+  });
+  const userProfile = () => {
+    if (userData) {
+      return (
+        <>
+          <span>{gender}</span>
+          <span>{`${lang}と${userStatus}`}</span>
+        </>
+      );
+    } else {
+      <span>プロフィールはまだありません</span>;
+    }
+  };
   const docRef = db.collection("users").doc(user.uid).get();
 
   const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
@@ -106,10 +123,7 @@ export const Profile: VFC = () => {
           <div className="mx-8 ">
             <p className="text-gray-700">{user.displayName}</p>
             <br />
-            <p className="text-gray-700">
-              <span>{gender}</span>
-              {`${lang}と${userStatus}`}
-            </p>
+            <p className="text-gray-700">{userProfile()}</p>
           </div>
           <div className="flex-auto ">
             <SecondaryButton onClick={onClickChangeProfile}>
@@ -122,7 +136,6 @@ export const Profile: VFC = () => {
               handleClose={handleClose}
               onClickChangeProfile={onClickChangeProfile}
               onChangeProfile={onChangeProfile}
-              profile={profile}
               // // lang={lang}
               // gender={gender}
               // userStatus={userStatus}
