@@ -1,18 +1,26 @@
 import React, { ReactNode, VFC } from "react";
+import { Button } from "@chakra-ui/button";
+import { buttonStyles } from "../../utils/buttonStyles";
+import { background } from "@chakra-ui/styled-system";
 
 type Props = {
   children?: ReactNode;
+  onClick: () => void;
 };
 
 export const PrimaryButton: VFC<Props> = (props) => {
-  const { children } = props;
+  const { children, onClick } = props;
   return (
     <div className="items-center justify-center text-center ">
-      <button
-        className="bg-gray-400 text-white rounded-lg  hover:bg-gray-300 focus:outline-none w-32 h-16"
+      <Button
+        colorScheme="blue"
+        width={"20"}
+        rounded="full"
+        _hover={{ background: "lightBlue" }}
+        onClick={onClick}
       >
         {children}
-      </button>
+      </Button>
     </div>
   );
 };

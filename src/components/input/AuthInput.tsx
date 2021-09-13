@@ -14,6 +14,7 @@ export const AuthInput: VFC<PROPS> = (props) => {
   return (
     <div className="mt-4">    
       <Input
+        padding="2"
         type={type}
         autoComplete={autoComplete}
         name={inputName}
