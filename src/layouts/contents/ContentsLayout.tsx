@@ -1,7 +1,6 @@
 import Link from "next/link";
 import React, { VFC } from "react";
-import "tailwindcss/tailwind.css";
-import { PrimaryButton } from "../../components/button/PrimaryButton";
+import { SecondaryButton } from "../../components/button/SecondaryButton";
 import { ContentsCard } from "./ContentsCard";
 
 const CONTENTSITEMS = [
@@ -34,7 +33,7 @@ export const ContentsLayout: VFC = () => {
             <div className="my-10 justify-center items-center">
               <Link href={item.href}>
                 <a>
-                  <PrimaryButton>もっと見る</PrimaryButton>
+                  <SecondaryButton>もっと見る</SecondaryButton>
                 </a>
               </Link>
             </div>

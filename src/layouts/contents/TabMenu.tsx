@@ -6,7 +6,6 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { PostCard } from "./PostCard";
-import { CreateButton } from "../../components/button/CreateButton";
 import { useState } from "react";
 
 interface TabPanelProps {
@@ -95,7 +94,6 @@ export const TabMenu: VFC = () => {
         </AppBar>
         <TabPanel value={value} index={0}>
           <div className="h-auto bottom-4 fixed  -translate-x-1/2 text-right float-right mr-6">
-            <CreateButton />
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
