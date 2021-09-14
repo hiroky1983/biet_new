@@ -10,16 +10,21 @@ import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
 import { SecondaryButton } from "../components/button/SecondaryButton";
+import { Button } from "@chakra-ui/button";
+import { useAlert } from "../hooks/useAlert";
 
 const Auth: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState<boolean | null>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const doneSave = useAlert("認証に成功しました", "success");
+  const undoneSave = useAlert("認証に失敗しました", "error");
 
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
@@ -64,17 +69,15 @@ const Auth: NextPage = () => {
   };
 
   const onClickTestLogin = async () => {
+    setIsLoading(true);
     try {
-      setEmail("test@sample.com");
-      setPassword("testlogin");
-      await auth.signInWithEmailAndPassword(email, password);
+      await auth.signInWithEmailAndPassword("test@sample.com", "12345678");
+      console.log("set");
+      return login();
     } catch (err) {
-      alert(err);
+      undoneSave();
     }
-  };
-
-  const signInGoogle = async () => {
-    await auth.signInWithPopup(provider).catch((err) => alert(err.message));
+    setIsLoading(false);
   };
 
   const sendResetEmail = async (e: React.MouseEvent<HTMLElement>) => {
@@ -133,44 +136,60 @@ const Auth: NextPage = () => {
           )}
         </div>
         <div className="flex justify-center">
-          <div className="text-sm">
+          <div className="text-sm mt-2">
             <span
               onClick={() => setIsLogin(!isLogin)}
-              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500  "
+              className="cursor-pointer font-medium text-gray-700 hover:text-blue-500"
             >
               Create New User
             </span>
           </div>
         </div>
         <div>
-          <SecondaryButton
+          <Button
             disabled={!email || password.length < 6}
+            isLoading={isLoading}
+            colorScheme="blue"
+            my="2"
+            width="100%"
+            rightIcon={<LockIcon />}
             onClick={
               isLogin
                 ? async () => {
                     try {
+                      setIsLoading(true);
                       await login();
-                    } catch (error: any) {
-                      alert(error.message);
+                      doneSave();
+                    } catch (err) {
+                      undoneSave();
                     }
+                    setIsLoading(false);
                   }
                 : async () => {
                     try {
+                      setIsLoading(true);
                       await userRegister();
+                      doneSave();
                     } catch (error: any) {
-                      alert(error.message);
+                      undoneSave();
                     }
+                    setIsLoading(false);
                   }
             }
           >
-            <LockIcon />
             {isLogin ? "Login" : "Create New User"}
-          </SecondaryButton>
+          </Button>
         </div>
         <div>
-          <SecondaryButton onClick={onClickTestLogin}>
+          <Button
+            onClick={onClickTestLogin}
+            isLoading={isLoading}
+            colorScheme="blue"
+            my="2"
+            width="100%"
+          >
             Test Login
-          </SecondaryButton>
+          </Button>
           <span
             className="cursor-pointer text-gray-500 block text-center mt-6"
             onClick={() => setOpenModal(true)}
