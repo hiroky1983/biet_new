@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
-import { SecondaryButton } from "../components/button/SecondaryButton";
 import { Button } from "@chakra-ui/button";
 import { useAlert } from "../hooks/useAlert";
 

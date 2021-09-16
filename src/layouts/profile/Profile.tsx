@@ -1,69 +1,63 @@
 import React, { TextareaHTMLAttributes, useState, VFC } from "react";
 import Image from "next/image";
-import { SecondaryButton } from "../../components/button/SecondaryButton";
 
 import { auth, db, storage } from "../../../firebase";
-import { ProfileEdit } from "./ProfileEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, updateUserProfile } from "../../lib/auth";
 import { useEffect } from "react";
+import { PrimaryButton } from "../../components/button/PrimaryButton";
+import { useDisclosure } from "@chakra-ui/hooks";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Textarea,
+  Radio,
+  RadioGroup,
+  Stack,
+} from "@chakra-ui/react";
+import { AuthInput } from "../../components/input/AuthInput";
+import { useAlert } from "../../hooks/useAlert";
 
 export const Profile: VFC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const username = user.displayName;
+  const doc = async () => await db.collection("users").doc(user.uid).get();
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const [profile, setProfile] =
-    useState<string>("プロフィールはまだありません");
+  const [profile, setProfile] = useState("");
   const [lang, setLang] = useState("");
   const [gender, setGender] = useState("");
   const [userStatus, setUserStatus] = useState("");
-  const user = useSelector(selectUser);
-  const username = user.displayName;
-  const dispatch = useDispatch();
-  const [userData, setUserData] = useState({
-    profile,
-    lang,
-    userStatus,
-    gender,
-  });
-  const userProfile = () => {
-    if (userData) {
-      return (
-        <>
-          <span>{gender}</span>
-          <span>{`${lang}と${userStatus}`}</span>
-        </>
-      );
-    } else {
-      <span>プロフィールはまだありません</span>;
-    }
-  };
-  const docRef = db.collection("users").doc(user.uid).get();
+  const [userName, setUserName] = useState("");
+  const [userData, setUserData] = useState<React.SetStateAction<any> | null>(
+    null
+  );
+  const doneSave = useAlert("認証に成功しました", "success");
+  const undoneSave = useAlert("保存に失敗しました", "error");
 
-  const onChangeProfile: TextareaHTMLAttributes<HTMLTextAreaElement>["onChange"] =
-    (e) => {
-      setProfile(e.target.value);
+  useEffect(() => {
+    const InitialUserData = async () => {
+      const doc = await db.collection("users").doc(user.uid).get();
+      const data: any = doc.data();
+      console.log(data);
+      setUserData(data);
     };
-
+    InitialUserData();
+  }, [user.uid]);
+  
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setAvatarImage(e.target.files![0]);
       e.target.value = "";
     }
   };
-  useEffect(() => {
-    const unSub = docRef.then((doc) => {
-      setProfile(doc.data()?.profile);
-      setGender(doc.data()?.gender);
-      setLang(doc.data()?.lang);
-      setUserStatus(doc.data()?.userStatus);
-      if (user.photoUrl) {
-        setAvatarImage(doc.data()?.avatarImage);
-      }
-    });
-    return () => {
-      unSub;
-    };
-  }, [docRef, user.photoUrl]);
-
   const handleImageChage = async () => {
     const authUser = auth.currentUser;
     let url = "";
@@ -89,14 +83,40 @@ export const Profile: VFC = () => {
       avatarImage: user.photoUrl,
     });
   };
+  const handleSubmit = async () => {
+    const getUser = await db.collection("users").doc(user.uid).get();
+    const data = getUser.data();
+    const userParams = {
+      userName: userName,
+      profile: profile,
+      lang: lang,
+      userStatus: userStatus,
+      gender: gender,
+    };
+    console.log(userParams);
 
-  const [open, setOpen] = useState(false);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const onClickChangeProfile = () => {
-    setOpen(true);
+    try {
+      if (data) {
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .update({
+            ...userParams,
+          });
+      }
+      if (!data) {
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .set({
+            ...userParams,
+          });
+      }
+      doneSave();
+    } catch (error) {
+      undoneSave();
+    }
+    onClose();
   };
 
   return (
@@ -121,34 +141,88 @@ export const Profile: VFC = () => {
             </label>
           </div>
           <div className="mx-8 ">
-            <p className="text-gray-700">{user.displayName}</p>
+            <p className="text-gray-700 font-bold">{user.displayName}</p>
             <br />
-            <p className="text-gray-700">{userProfile()}</p>
+            {/* <p className="text-gray-700">
+              {userData?.gender ? userData.gender : null}
+            </p>
+            <p className="text-gray-700">
+              {
+                (userData?.lang,
+                userData?.userStatus
+                  ? `${userData.lang}人と${userData.userStatus}`
+                  : null)
+              }
+            </p> */}
           </div>
           <div className="flex-auto ">
-            <SecondaryButton onClick={onClickChangeProfile}>
-              変更
-            </SecondaryButton>
+            <PrimaryButton onClick={onOpen}>変更</PrimaryButton>
           </div>
-          {open && (
-            <ProfileEdit
-              open={open}
-              handleClose={handleClose}
-              onClickChangeProfile={onClickChangeProfile}
-              onChangeProfile={onChangeProfile}
-              // // lang={lang}
-              // gender={gender}
-              // userStatus={userStatus}
-              // setLang={setLang}
-              // setGender={setGender}
-              // setUserStatus={setUserStatus}
-            />
-          )}
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
-        <p className="text-gray-700">{profile}</p>
+        {/* <p className="text-gray-700">
+          {userData.profile ? userData.profile : "プロフィールはまだありません"}
+        </p> */}
       </div>
+      <Modal isOpen={isOpen} onClose={onClose} size="6xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>プロフィール編集</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody mx="12" my="4">
+            <AuthInput
+              placeholder={"名前"}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              defaultValue={userData?.userName}
+              type="text"
+            />
+            <AuthInput
+              placeholder={"交際相手の国籍は？"}
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+              defaultValue={userData?.lang}
+              type={"text"}
+            />
+            <RadioGroup onChange={setGender} value={gender} my="6">
+              <Stack direction="row" spacing={8} mx="4">
+                <Radio value={"🚹"}>男性</Radio>
+                <Radio value={"🚺"}>女性</Radio>
+                <Radio value={""}>未設定</Radio>
+              </Stack>
+            </RadioGroup>
+            <RadioGroup onChange={setUserStatus} value={userStatus} my="6">
+              <Stack direction="row" spacing={8} mx="4">
+                <Radio value={"交際中"}>交際中</Radio>
+                <Radio value={"既婚"}>既婚</Radio>
+              </Stack>
+            </RadioGroup>
+            <Textarea
+              placeholder="Here is a sample placeholder"
+              mt="1.5rem"
+              onChange={(e) => setProfile(e.target.value)}
+              value={profile}
+              defaultValue={userData?.profile}
+              rows={5}
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              colorScheme="orange"
+              variant="ghost"
+              mr={3}
+              onClick={onClose}
+            >
+              Close
+            </Button>
+            <Button colorScheme="blue" onClick={handleSubmit}>
+              Secondary Action
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
