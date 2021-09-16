@@ -23,7 +23,6 @@ export const CreateButton: VFC<Props> = (props) => {
         width="40"
         isLoading={isLoading}
         spinner={spinner}
-        
       >
         {children}
       </Button>

@@ -16,6 +16,8 @@ export const SecondaryButton: VFC<Props> = (props) => {
         onClick={onClick}
         colorScheme="blackAlpha"
         textColor="white"
+        px="6"
+        py="8"
       >
         {children}
       </Button>
