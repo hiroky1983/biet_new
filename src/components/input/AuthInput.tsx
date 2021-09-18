@@ -5,14 +5,23 @@ type PROPS = {
   placeholder: string;
   value: string;
   onChange: InputHTMLAttributes<HTMLInputElement>["onChange"];
-  inputName: string;
+  inputName?: string;
   type: string;
   autoComplete?: string;
+  defaultValue?: string;
 };
 export const AuthInput: VFC<PROPS> = (props) => {
-  const { placeholder, value, onChange, inputName, type, autoComplete } = props;
+  const {
+    placeholder,
+    value,
+    onChange,
+    inputName,
+    type,
+    autoComplete,
+    defaultValue,
+  } = props;
   return (
-    <div className="mt-4">    
+    <div className="mt-4">
       <Input
         padding="2"
         type={type}
@@ -23,7 +32,7 @@ export const AuthInput: VFC<PROPS> = (props) => {
         required
         value={value}
         onChange={onChange}
-        
+        defaultValue={defaultValue}
       />
     </div>
   );
