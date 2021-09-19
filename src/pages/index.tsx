@@ -11,6 +11,7 @@ import { login, logout, selectUser } from "../lib/auth";
 import Auth from "./auth";
 import router from "next/router";
 
+
 const Home: NextPage = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -38,15 +39,6 @@ const Home: NextPage = () => {
     <>
       {user.uid ? (
         <>
-          <Head>
-            <title>biet-new</title>
-            <meta
-              lang="ja"
-              name="Connect with people who are dating foreigners "
-              content="Connect for SNS"
-            />
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
           <Layout title={router.pathname}>
             <div className="flex-col">
               <Profile />

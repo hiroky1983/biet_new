@@ -9,14 +9,6 @@ import { NextPage } from "next";
 const Question: NextPage = () => {
   return (
     <>
-      <Head>
-        <title>biet-new</title>
-        <meta
-          name="Connect with people who are dating foreigners "
-          content="Connect for SNS"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Layout title="Question">
         <div className="w-full">
           <TabMenu  />

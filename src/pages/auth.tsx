@@ -96,12 +96,6 @@ const Auth: NextPage = () => {
     <div className="max-w-md w-full m-auto justify-center ">
       <Head>
         <title>{isLogin ? "Login" : "Create account"}</title>
-        <meta
-          lang="ja"
-          name="Connect with people who are dating foreigners "
-          content="Connect for SNS"
-        />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
       <div className="mt-8 space-y-6">
