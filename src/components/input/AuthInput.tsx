@@ -3,6 +3,7 @@ import { Input } from "@chakra-ui/react";
 
 type PROPS = {
   placeholder: string;
+  id?: string;
   value?: string;
   onChange?: InputHTMLAttributes<HTMLInputElement>["onChange"];
   name?: string;
@@ -16,6 +17,7 @@ type PROPS = {
 };
 export const AuthInput: VFC<PROPS> = (props) => {
   const {
+    id,
     placeholder,
     value,
     onChange,
@@ -25,12 +27,13 @@ export const AuthInput: VFC<PROPS> = (props) => {
     defaultValue,
     register,
     isReadOnly,
-    isRequired, 
+    isRequired,
     isInvalid,
   } = props;
   return (
     <div className="mt-4">
       <Input
+        id={id}
         {...register}
         padding="2"
         type={type}
