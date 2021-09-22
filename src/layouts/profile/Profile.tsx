@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes, useState, VFC } from "react";
+import React, { useCallback, useState, VFC } from "react";
 import Image from "next/image";
 
 import { auth, db, storage } from "../../../firebase";
@@ -23,35 +23,62 @@ import {
 } from "@chakra-ui/react";
 import { AuthInput } from "../../components/input/AuthInput";
 import { useAlert } from "../../hooks/useAlert";
+import { useForm } from "react-hook-form";
 
 export const Profile: VFC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const username = user.displayName;
-  const doc = async () => await db.collection("users").doc(user.uid).get();
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const [profile, setProfile] = useState("");
-  const [lang, setLang] = useState("");
-  const [gender, setGender] = useState("");
-  const [userStatus, setUserStatus] = useState("");
-  const [userName, setUserName] = useState("");
   const [userData, setUserData] = useState<React.SetStateAction<any> | null>(
     null
   );
+  const [gender, setGender] = useState("");
+  const [userStatus, setUserStatus] = useState("");
+  const [userName, setUserName] = useState("");
+  const [lang, setLang] = useState("");
+  const [profile, setProfile] = useState("");
   const doneSave = useAlert("認証に成功しました", "success");
   const undoneSave = useAlert("保存に失敗しました", "error");
+  const {
+    handleSubmit,
+    register,
+    formState,
+    reset,
+    setValue,
+    getValues,
+    clearErrors,
+    formState: { errors },
+  } = useForm({
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  });
+
+  const handleChangeInputData = useCallback((property, value, setValue) => {
+    setUserData((p: any) => {
+      return {
+        ...p,
+        [property]: value,
+        setValue: setValue(value),
+      };
+    });
+  }, []);
 
   useEffect(() => {
     const InitialUserData = async () => {
-      const doc = await db.collection("users").doc(user.uid).get();
-      const data: any = doc.data();
-      console.log(data);
-      setUserData(data);
+      if (user.uid) {
+        const doc = await db.collection("users").doc(user.uid).get();
+        const data: any = doc.data();
+        const fieldNames = Object.keys(data);
+        fieldNames.map((fieldName) => {
+          setValue(fieldName, data[fieldName]);
+        });
+      }
     };
     InitialUserData();
-  }, [user.uid]);
-  
+  }, [setValue, user.uid]);
+
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setAvatarImage(e.target.files![0]);
@@ -83,7 +110,7 @@ export const Profile: VFC = () => {
       avatarImage: user.photoUrl,
     });
   };
-  const handleSubmit = async () => {
+  const handleChangeSubmit = async () => {
     const getUser = await db.collection("users").doc(user.uid).get();
     const data = getUser.data();
     const userParams = {
@@ -108,9 +135,12 @@ export const Profile: VFC = () => {
         await db
           .collection("users")
           .doc(user.uid)
-          .set({
-            ...userParams,
-          });
+          .set(
+            {
+              ...userParams,
+            },
+            { merge: true }
+          );
       }
       doneSave();
     } catch (error) {
@@ -118,6 +148,11 @@ export const Profile: VFC = () => {
     }
     onClose();
   };
+  // console.log(gender);
+  // console.log(lang);
+  // console.log(profile);
+  // console.log(userStatus);
+  // console.log(userName);
 
   return (
     <>
@@ -141,19 +176,12 @@ export const Profile: VFC = () => {
             </label>
           </div>
           <div className="mx-8 ">
-            <p className="text-gray-700 font-bold">{user.displayName}</p>
+            <p className="text-gray-700 font-bold">{userName}</p>
             <br />
-            {/* <p className="text-gray-700">
-              {userData?.gender ? userData.gender : null}
-            </p>
+            <p className="text-gray-700">{gender ? gender : null}</p>
             <p className="text-gray-700">
-              {
-                (userData?.lang,
-                userData?.userStatus
-                  ? `${userData.lang}人と${userData.userStatus}`
-                  : null)
-              }
-            </p> */}
+              {userStatus ? `${lang}人と${userStatus}` : null}
+            </p>
           </div>
           <div className="flex-auto ">
             <PrimaryButton onClick={onOpen}>変更</PrimaryButton>
@@ -161,66 +189,80 @@ export const Profile: VFC = () => {
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
-        {/* <p className="text-gray-700">
-          {userData.profile ? userData.profile : "プロフィールはまだありません"}
-        </p> */}
+        <p className="text-gray-700">
+          {profile ? profile : "プロフィールはまだありません"}
+        </p>
       </div>
       <Modal isOpen={isOpen} onClose={onClose} size="6xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>プロフィール編集</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody mx="12" my="4">
-            <AuthInput
-              placeholder={"名前"}
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-              defaultValue={userData?.userName}
-              type="text"
-            />
-            <AuthInput
-              placeholder={"交際相手の国籍は？"}
-              value={lang}
-              onChange={(e) => setLang(e.target.value)}
-              defaultValue={userData?.lang}
-              type={"text"}
-            />
-            <RadioGroup onChange={setGender} value={gender} my="6">
-              <Stack direction="row" spacing={8} mx="4">
-                <Radio value={"🚹"}>男性</Radio>
-                <Radio value={"🚺"}>女性</Radio>
-                <Radio value={""}>未設定</Radio>
-              </Stack>
-            </RadioGroup>
-            <RadioGroup onChange={setUserStatus} value={userStatus} my="6">
-              <Stack direction="row" spacing={8} mx="4">
-                <Radio value={"交際中"}>交際中</Radio>
-                <Radio value={"既婚"}>既婚</Radio>
-              </Stack>
-            </RadioGroup>
-            <Textarea
-              placeholder="Here is a sample placeholder"
-              mt="1.5rem"
-              onChange={(e) => setProfile(e.target.value)}
-              value={profile}
-              defaultValue={userData?.profile}
-              rows={5}
-            />
-          </ModalBody>
+          <form onSubmit={handleSubmit(handleChangeSubmit)}>
+            <ModalHeader>プロフィール編集</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody mx="12" my="4">
+              {/* <InputTextForm
+                    id="partner_address2"
+                    label="番地"
+                    isInvalid={isDeliveriesData && errors?.partner_address2}
+                    register={register("partner_address2", {
+                      required: isDeliveriesData && REQUIRE_MSG,
+                    })}
+                    {...(isDeliveriesData && { isRequired: true })}
+                  /> */}
+              <AuthInput
+                id="userName"
+                placeholder="名前"
+                type="text"
+                register={register("userName", {
+                  required: true,
+                })}
+              />
+              <AuthInput
+                id="lang"
+                placeholder={"交際相手の国籍は？"}
+                type="text"
+                register={register("lang", {
+                  required: true,
+                })}
+              />
+              <RadioGroup id="gender" options={["🚹", "🚺", ""]}>
+                <Stack direction="row" spacing={8} mx="4">
+                  <Radio value={"🚹"}>男性</Radio>
+                  <Radio value={"🚺"}>女性</Radio>
+                  <Radio value={""}>未設定</Radio>
+                </Stack>
+              </RadioGroup>
+              <RadioGroup id="userStatus" options={["交際中", "既婚"]}>
+                <Stack direction="row" spacing={8} mx="4">
+                  <Radio value="交際中">交際中</Radio>
+                  <Radio value="既婚">既婚</Radio>
+                </Stack>
+              </RadioGroup>
+              <Textarea
+                placeholder="Here is a sample placeholder"
+                mt="1.5rem"
+                onChange={(e) =>
+                  handleChangeInputData("profile", e.target.value, setProfile)
+                }
+                value={profile}
+                rows={5}
+              />
+            </ModalBody>
 
-          <ModalFooter>
-            <Button
-              colorScheme="orange"
-              variant="ghost"
-              mr={3}
-              onClick={onClose}
-            >
-              Close
-            </Button>
-            <Button colorScheme="blue" onClick={handleSubmit}>
-              Secondary Action
-            </Button>
-          </ModalFooter>
+            <ModalFooter>
+              <Button
+                colorScheme="orange"
+                variant="ghost"
+                mr={3}
+                onClick={onClose}
+              >
+                Close
+              </Button>
+              <Button colorScheme="blue" type="submit">
+                Secondary Action
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>
