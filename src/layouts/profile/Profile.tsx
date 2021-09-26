@@ -239,13 +239,12 @@ export const Profile: VFC = () => {
                 </Stack>
               </RadioGroup>
               <Textarea
-                placeholder="Here is a sample placeholder"
-                mt="1.5rem"
-                onChange={(e) =>
-                  handleChangeInputData("profile", e.target.value, setProfile)
-                }
-                value={profile}
+                id="profile"
+                placeholder="プロフィール"
                 rows={5}
+                register={register("profile", {
+                  required: true,
+                })}
               />
             </ModalBody>
 
