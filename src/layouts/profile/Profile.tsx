@@ -153,6 +153,8 @@ export const Profile: VFC = () => {
   // console.log(profile);
   // console.log(userStatus);
   // console.log(userName);
+  console.log(userName);
+  
 
   return (
     <>
