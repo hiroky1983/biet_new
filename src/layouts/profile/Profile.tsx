@@ -39,7 +39,7 @@ export const Profile: VFC = () => {
   const [userName, setUserName] = useState("");
   const [lang, setLang] = useState("");
   const [profile, setProfile] = useState("");
-  const doneSave = useAlert("認証に成功しました", "success");
+  const doneSave = useAlert("保存に成功しました", "success");
   const undoneSave = useAlert("保存に失敗しました", "error");
   const {
     handleSubmit,
@@ -55,16 +55,6 @@ export const Profile: VFC = () => {
     reValidateMode: "onChange",
   });
 
-  const handleChangeInputData = useCallback((property, value, setValue) => {
-    setUserData((p: any) => {
-      return {
-        ...p,
-        [property]: value,
-        setValue: setValue(value),
-      };
-    });
-  }, []);
-
   useEffect(() => {
     const InitialUserData = async () => {
       if (user.uid) {
@@ -74,6 +64,10 @@ export const Profile: VFC = () => {
         fieldNames.map((fieldName) => {
           setValue(fieldName, data[fieldName]);
         });
+        setUserData(data);
+        if(data.avatar){
+          setAvatarImage(data.avatar);
+        }
       }
     };
     InitialUserData();
@@ -121,6 +115,8 @@ export const Profile: VFC = () => {
       gender: gender,
     };
     console.log(userParams);
+    console.log(avatarImage);
+    
 
     try {
       if (data) {
@@ -148,12 +144,8 @@ export const Profile: VFC = () => {
     }
     onClose();
   };
-  // console.log(gender);
-  // console.log(lang);
-  // console.log(profile);
-  // console.log(userStatus);
-  // console.log(userName);
-  console.log(userName);
+  console.log(userData);
+  const avatar = userData?.avatarImage;
   
 
   return (
@@ -169,7 +161,7 @@ export const Profile: VFC = () => {
                 onClick={handleImageChage}
               />
               <Image
-                src={avatarImage ? user.photoUrl : "/img/avatar.png"}
+                src={avatarImage ? avatar : "/img/avatar.png"}
                 className="rounded-full text-center cursor-pointer"
                 width={70}
                 height={70}
@@ -191,7 +183,7 @@ export const Profile: VFC = () => {
         </div>
       </div>
       <div className="justify-center box-border my-4 mx-14">
-        <p className="text-gray-700">
+        <p className="text-gray-700" id="profile">
           {profile ? profile : "プロフィールはまだありません"}
         </p>
       </div>
@@ -202,30 +194,17 @@ export const Profile: VFC = () => {
             <ModalHeader>プロフィール編集</ModalHeader>
             <ModalCloseButton />
             <ModalBody mx="12" my="4">
-              {/* <InputTextForm
-                    id="partner_address2"
-                    label="番地"
-                    isInvalid={isDeliveriesData && errors?.partner_address2}
-                    register={register("partner_address2", {
-                      required: isDeliveriesData && REQUIRE_MSG,
-                    })}
-                    {...(isDeliveriesData && { isRequired: true })}
-                  /> */}
               <AuthInput
                 id="userName"
                 placeholder="名前"
                 type="text"
-                register={register("userName", {
-                  required: true,
-                })}
+                register={register("userName")}
               />
               <AuthInput
                 id="lang"
                 placeholder={"交際相手の国籍は？"}
                 type="text"
-                register={register("lang", {
-                  required: true,
-                })}
+                register={register("lang")}
               />
               <RadioGroup id="gender" options={["🚹", "🚺", ""]}>
                 <Stack direction="row" spacing={8} mx="4">
@@ -244,9 +223,7 @@ export const Profile: VFC = () => {
                 id="profile"
                 placeholder="プロフィール"
                 rows={5}
-                register={register("profile", {
-                  required: true,
-                })}
+                register={register("profile")}
               />
             </ModalBody>
 
