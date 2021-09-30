@@ -24,6 +24,7 @@ import {
 import { AuthInput } from "../../components/input/AuthInput";
 import { useAlert } from "../../hooks/useAlert";
 import { useForm } from "react-hook-form";
+import firebase from "firebase";
 
 export const Profile: VFC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,7 +66,7 @@ export const Profile: VFC = () => {
           setValue(fieldName, data[fieldName]);
         });
         setUserData(data);
-        if(data.avatar){
+        if (data.avatar) {
           setAvatarImage(data.avatar);
         }
       }
@@ -81,6 +82,7 @@ export const Profile: VFC = () => {
   };
   const handleImageChage = async () => {
     const authUser = auth.currentUser;
+    console.log(authUser);
     let url = "";
     if (avatarImage) {
       const S =
@@ -93,30 +95,29 @@ export const Profile: VFC = () => {
       await storage.ref(`avatars/${fileName}`).put(avatarImage);
       url = await storage.ref("avatars").child(fileName).getDownloadURL();
     }
-    await authUser!.updateProfile({ photoURL: url });
+    await authUser?.updateProfile({ photoURL: url });
     dispatch(
       updateUserProfile({
         displayName: username,
         photoUrl: url,
       })
     );
-    db.collection("users").doc(user.uid).update({
-      avatarImage: user.photoUrl,
+    await db.collection("users").doc(user.uid).update({
+      avatarImage: url,
     });
   };
   const handleChangeSubmit = async () => {
     const getUser = await db.collection("users").doc(user.uid).get();
     const data = getUser.data();
     const userParams = {
-      userName: userName,
-      profile: profile,
-      lang: lang,
-      userStatus: userStatus,
-      gender: gender,
+      userName: data?.userName,
+      profile: data?.profile,
+      lang: data?.lang,
+      userStatus: data?.userStatus,
+      gender: data?.gender,
     };
     console.log(userParams);
     console.log(avatarImage);
-    
 
     try {
       if (data) {
@@ -145,8 +146,6 @@ export const Profile: VFC = () => {
     onClose();
   };
   console.log(userData);
-  const avatar = userData?.avatarImage;
-  
 
   return (
     <>
@@ -161,7 +160,7 @@ export const Profile: VFC = () => {
                 onClick={handleImageChage}
               />
               <Image
-                src={avatarImage ? avatar : "/img/avatar.png"}
+                src={avatarImage ? avatarImage : "/img/avatar.png"}
                 className="rounded-full text-center cursor-pointer"
                 width={70}
                 height={70}
@@ -206,14 +205,14 @@ export const Profile: VFC = () => {
                 type="text"
                 register={register("lang")}
               />
-              <RadioGroup id="gender" options={["🚹", "🚺", ""]}>
+              <RadioGroup id="gender" options={["🚹", "🚺", ""]} my="4">
                 <Stack direction="row" spacing={8} mx="4">
                   <Radio value={"🚹"}>男性</Radio>
                   <Radio value={"🚺"}>女性</Radio>
                   <Radio value={""}>未設定</Radio>
                 </Stack>
               </RadioGroup>
-              <RadioGroup id="userStatus" options={["交際中", "既婚"]}>
+              <RadioGroup id="userStatus" options={["交際中", "既婚"]} my="4">
                 <Stack direction="row" spacing={8} mx="4">
                   <Radio value="交際中">交際中</Radio>
                   <Radio value="既婚">既婚</Radio>
