@@ -20,6 +20,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Spinner,
 } from "@chakra-ui/react";
 import { AuthInput } from "../../components/input/AuthInput";
 import { useAlert } from "../../hooks/useAlert";
@@ -35,11 +36,7 @@ export const Profile: VFC = () => {
   const [userData, setUserData] = useState<React.SetStateAction<any> | null>(
     null
   );
-  const [gender, setGender] = useState("");
-  const [userStatus, setUserStatus] = useState("");
-  const [userName, setUserName] = useState("");
-  const [lang, setLang] = useState("");
-  const [profile, setProfile] = useState("");
+
   const doneSave = useAlert("保存に成功しました", "success");
   const undoneSave = useAlert("保存に失敗しました", "error");
   const {
@@ -149,99 +146,115 @@ export const Profile: VFC = () => {
 
   return (
     <>
-      <div className="mx-14 w-auto">
-        <div className="flex w-full">
-          <div>
-            <label>
-              <input
-                type="file"
-                onChange={onChangeImageHandler}
-                className="hidden"
-                onClick={handleImageChage}
-              />
-              <Image
-                src={avatarImage ? avatarImage : "/img/avatar.png"}
-                className="rounded-full text-center cursor-pointer"
-                width={70}
-                height={70}
-                alt="Avatar"
-              />
-            </label>
+      {!userData ? (
+        <Spinner />
+      ) : (
+        <>
+          <div className="mx-14 w-auto">
+            <div className="flex w-full">
+              <div>
+                <label>
+                  <input
+                    type="file"
+                    onChange={onChangeImageHandler}
+                    className="hidden"
+                    onClick={handleImageChage}
+                  />
+                  <Image
+                    src={avatarImage ? avatarImage : "/img/avatar.png"}
+                    className="rounded-full text-center cursor-pointer"
+                    width={70}
+                    height={70}
+                    alt="Avatar"
+                  />
+                </label>
+              </div>
+              <div className="mx-8 ">
+                <p className="text-gray-700 font-bold">{userData.userName}</p>
+                <br />
+                <p className="text-gray-700">
+                  {userData.gender ? userData.gender : null}
+                </p>
+                <p className="text-gray-700">
+                  {userData.userStatus
+                    ? `${userData.lang}人と${userData.userStatus}`
+                    : null}
+                </p>
+              </div>
+              <div className="flex-auto ">
+                <PrimaryButton onClick={onOpen}>変更</PrimaryButton>
+              </div>
+            </div>
           </div>
-          <div className="mx-8 ">
-            <p className="text-gray-700 font-bold">{userName}</p>
-            <br />
-            <p className="text-gray-700">{gender ? gender : null}</p>
-            <p className="text-gray-700">
-              {userStatus ? `${lang}人と${userStatus}` : null}
+          <div className="justify-center box-border my-4 mx-14">
+            <p className="text-gray-700" id="profile">
+              {userData.profile
+                ? userData.profile
+                : "プロフィールはまだありません"}
             </p>
           </div>
-          <div className="flex-auto ">
-            <PrimaryButton onClick={onOpen}>変更</PrimaryButton>
-          </div>
-        </div>
-      </div>
-      <div className="justify-center box-border my-4 mx-14">
-        <p className="text-gray-700" id="profile">
-          {profile ? profile : "プロフィールはまだありません"}
-        </p>
-      </div>
-      <Modal isOpen={isOpen} onClose={onClose} size="6xl">
-        <ModalOverlay />
-        <ModalContent>
-          <form onSubmit={handleSubmit(handleChangeSubmit)}>
-            <ModalHeader>プロフィール編集</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody mx="12" my="4">
-              <AuthInput
-                id="userName"
-                placeholder="名前"
-                type="text"
-                register={register("userName")}
-              />
-              <AuthInput
-                id="lang"
-                placeholder={"交際相手の国籍は？"}
-                type="text"
-                register={register("lang")}
-              />
-              <RadioGroup id="gender" options={["🚹", "🚺", ""]} my="4">
-                <Stack direction="row" spacing={8} mx="4">
-                  <Radio value={"🚹"}>男性</Radio>
-                  <Radio value={"🚺"}>女性</Radio>
-                  <Radio value={""}>未設定</Radio>
-                </Stack>
-              </RadioGroup>
-              <RadioGroup id="userStatus" options={["交際中", "既婚"]} my="4">
-                <Stack direction="row" spacing={8} mx="4">
-                  <Radio value="交際中">交際中</Radio>
-                  <Radio value="既婚">既婚</Radio>
-                </Stack>
-              </RadioGroup>
-              <Textarea
-                id="profile"
-                placeholder="プロフィール"
-                rows={5}
-                register={register("profile")}
-              />
-            </ModalBody>
+          <Modal isOpen={isOpen} onClose={onClose} size="6xl">
+            <ModalOverlay />
+            <ModalContent>
+              <form onSubmit={handleSubmit(handleChangeSubmit)}>
+                <ModalHeader>プロフィール編集</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody mx="12" my="4">
+                  <AuthInput
+                    id="userName"
+                    placeholder="名前"
+                    type="text"
+                    register={register("userName")}
+                  />
+                  <AuthInput
+                    id="lang"
+                    placeholder={"交際相手の国籍は？"}
+                    type="text"
+                    register={register("lang")}
+                  />
+                  <RadioGroup id="gender" options={["🚹", "🚺", ""]} my="4">
+                    <Stack direction="row" spacing={8} mx="4">
+                      <Radio value={"🚹"}>男性</Radio>
+                      <Radio value={"🚺"}>女性</Radio>
+                      <Radio value={""}>未設定</Radio>
+                    </Stack>
+                  </RadioGroup>
+                  <RadioGroup
+                    id="userStatus"
+                    options={["交際中", "既婚"]}
+                    my="4"
+                  >
+                    <Stack direction="row" spacing={8} mx="4">
+                      <Radio value="交際中">交際中</Radio>
+                      <Radio value="既婚">既婚</Radio>
+                    </Stack>
+                  </RadioGroup>
+                  <Textarea
+                    id="profile"
+                    placeholder="プロフィール"
+                    rows={5}
+                    register={register("profile")}
+                  />
+                </ModalBody>
 
-            <ModalFooter>
-              <Button
-                colorScheme="orange"
-                variant="ghost"
-                mr={3}
-                onClick={onClose}
-              >
-                Close
-              </Button>
-              <Button colorScheme="blue" type="submit">
-                Secondary Action
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
+                <ModalFooter>
+                  <Button
+                    colorScheme="orange"
+                    variant="ghost"
+                    mr={3}
+                    onClick={onClose}
+                  >
+                    Close
+                  </Button>
+                  <Button colorScheme="blue" type="submit">
+                    Secondary Action
+                  </Button>
+                </ModalFooter>
+              </form>
+            </ModalContent>
+          </Modal>
+        </>
+      )}
     </>
   );
 };
