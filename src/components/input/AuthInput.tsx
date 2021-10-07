@@ -1,5 +1,5 @@
-import { InputHTMLAttributes, VFC } from "react";
-import { Input } from "@chakra-ui/react";
+import React, { InputHTMLAttributes, VFC } from "react";
+import { FormControl, FormErrorMessage, Input } from "@chakra-ui/react";
 
 type PROPS = {
   placeholder: string;
@@ -13,7 +13,7 @@ type PROPS = {
   register?: any;
   isReadOnly?: boolean;
   isRequired?: boolean;
-  isInvalid?: boolean;
+  isInvalid?: any;
 };
 export const AuthInput: VFC<PROPS> = (props) => {
   const {
@@ -32,23 +32,24 @@ export const AuthInput: VFC<PROPS> = (props) => {
   } = props;
   return (
     <div className="mt-4">
-      <Input
-        id={id}
-        {...register}
-        padding="2"
-        type={type}
-        autoComplete={autoComplete}
-        name={name}
-        variant="flushed"
-        placeholder={placeholder}
-        required
-        value={value}
-        onChange={onChange}
-        defaultValue={defaultValue}
-        isReadOnly={isReadOnly}
-        isRequired={isRequired}
-        isInvalid={isInvalid}
-      />
+      <FormControl id={id}  isInvalid={isInvalid}>
+          <Input
+            {...register}
+            padding="2"
+            type={type}
+            autoComplete={autoComplete}
+            variant="flushed"
+            placeholder={placeholder}
+            required
+            value={value}
+            onChange={onChange}
+            defaultValue={defaultValue}
+            isReadOnly={isReadOnly}
+            isRequired={isRequired}
+            isInvalid={isInvalid}
+          />
+          <FormErrorMessage>{isInvalid && isInvalid.message}</FormErrorMessage>
+      </FormControl>
     </div>
   );
 };
