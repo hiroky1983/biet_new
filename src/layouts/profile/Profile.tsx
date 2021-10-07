@@ -1,4 +1,4 @@
-import React, { useCallback, useState, VFC } from "react";
+import React, { useState, VFC } from "react";
 import Image from "next/image";
 
 import { auth, db, storage } from "../../../firebase";
@@ -17,10 +17,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Textarea,
-  Radio,
-  RadioGroup,
-  Stack,
   Spinner,
+  FormControl,
 } from "@chakra-ui/react";
 import { AuthInput } from "../../components/input/AuthInput";
 import { useAlert } from "../../hooks/useAlert";
@@ -42,11 +40,7 @@ export const Profile: VFC = () => {
   const {
     handleSubmit,
     register,
-    formState,
-    reset,
     setValue,
-    getValues,
-    clearErrors,
     formState: { errors },
   } = useForm({
     mode: "onSubmit",
@@ -103,38 +97,21 @@ export const Profile: VFC = () => {
       avatarImage: url,
     });
   };
-  const handleChangeSubmit = async () => {
-    const getUser = await db.collection("users").doc(user.uid).get();
-    const data = getUser.data();
-    const userParams = {
-      userName: data?.userName,
-      profile: data?.profile,
-      lang: data?.lang,
-      userStatus: data?.userStatus,
-      gender: data?.gender,
-    };
-    console.log(userParams);
-    console.log(avatarImage);
-
+  const handleChangeSubmit = async (
+    data: Partial<firebase.firestore.DocumentData>
+  ) => {
     try {
       if (data) {
         await db
           .collection("users")
           .doc(user.uid)
-          .update({
-            ...userParams,
-          });
-      }
-      if (!data) {
-        await db
-          .collection("users")
-          .doc(user.uid)
           .set(
             {
-              ...userParams,
+              ...data,
             },
             { merge: true }
           );
+        setUserData(data);
       }
       doneSave();
     } catch (error) {
@@ -142,7 +119,6 @@ export const Profile: VFC = () => {
     }
     onClose();
   };
-  console.log(userData);
 
   return (
     <>
@@ -196,7 +172,7 @@ export const Profile: VFC = () => {
           <Modal isOpen={isOpen} onClose={onClose} size="6xl">
             <ModalOverlay />
             <ModalContent>
-              <form onSubmit={handleSubmit(handleChangeSubmit)}>
+              <form onSubmit={handleSubmit(handleChangeSubmit)} noValidate>
                 <ModalHeader>プロフィール編集</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody mx="12" my="4">
@@ -212,44 +188,68 @@ export const Profile: VFC = () => {
                     type="text"
                     register={register("lang")}
                   />
-                  <RadioGroup id="gender" options={["🚹", "🚺", ""]} my="4">
-                    <Stack direction="row" spacing={8} mx="4">
-                      <Radio value={"🚹"}>男性</Radio>
-                      <Radio value={"🚺"}>女性</Radio>
-                      <Radio value={""}>未設定</Radio>
-                    </Stack>
-                  </RadioGroup>
-                  <RadioGroup
-                    id="userStatus"
-                    options={["交際中", "既婚"]}
-                    my="4"
-                  >
-                    <Stack direction="row" spacing={8} mx="4">
-                      <Radio value="交際中">交際中</Radio>
-                      <Radio value="既婚">既婚</Radio>
-                    </Stack>
-                  </RadioGroup>
+                  <FormControl>
+                    <div className="my-4 mx-4 space-x-3 text-gray-700">
+                      <input
+                        type="radio"
+                        {...register("gender")}
+                        value={"🚹"}
+                      />
+                      <label>男性</label>
+                      <input
+                        type="radio"
+                        {...register("gender")}
+                        value={"🚺"}
+                      />
+                      <label>女性</label>
+                      <input type="radio" {...register("gender")} value={""} />
+                      <label>未回答</label>
+                    </div>
+                  </FormControl>
+                  <FormControl>
+                    <div className="my-4 mx-4 space-x-3 text-gray-700">
+                      <input
+                        type="radio"
+                        {...register("userStatus")}
+                        value={"交際中"}
+                      />
+                      <label>交際中</label>
+                      <input
+                        type="radio"
+                        {...register("userStatus")}
+                        value={"既婚"}
+                      />
+                      <label>既婚</label>
+                    </div>
+                  </FormControl>
                   <Textarea
                     id="profile"
                     placeholder="プロフィール"
                     rows={5}
-                    register={register("profile")}
+                    {...register("profile")}
                   />
+                  <ModalFooter px="none">
+                    <Button
+                      p="5"
+                      rounded="full"
+                      colorScheme="orange"
+                      variant="ghost"
+                      mr={4}
+                      onClick={onClose}
+                    >
+                      閉じる
+                    </Button>
+                    <Button
+                      colorScheme="blue"
+                      type="submit"
+                      px="7"
+                      py="5"
+                      rounded="full"
+                    >
+                      保存
+                    </Button>
+                  </ModalFooter>
                 </ModalBody>
-
-                <ModalFooter>
-                  <Button
-                    colorScheme="orange"
-                    variant="ghost"
-                    mr={3}
-                    onClick={onClose}
-                  >
-                    Close
-                  </Button>
-                  <Button colorScheme="blue" type="submit">
-                    Secondary Action
-                  </Button>
-                </ModalFooter>
               </form>
             </ModalContent>
           </Modal>
