@@ -1,7 +1,5 @@
 import React, { ReactNode, VFC } from "react";
 import { Button } from "@chakra-ui/button";
-import { buttonStyles } from "../../utils/buttonStyles";
-import { background } from "@chakra-ui/styled-system";
 
 type Props = {
   children?: ReactNode;
