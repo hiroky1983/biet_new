@@ -25,11 +25,6 @@ const Auth: NextPage = () => {
   const doneSave = useAlert("認証に成功しました", "success");
   const undoneSave = useAlert("認証に失敗しました", "error");
 
-  const login = async () => {
-    await auth.signInWithEmailAndPassword(email, password);
-    router.push("/");
-  };
-
   const onChangeEmail: InputHTMLAttributes<HTMLInputElement>["onChange"] =
     useCallback((e) => {
       setEmail(e.target.value);
@@ -42,6 +37,11 @@ const Auth: NextPage = () => {
     useCallback((e) => {
       setUsername(e.target.value);
     }, []);
+    
+  const login = async () => {
+    await auth.signInWithEmailAndPassword(email, password);
+    router.push("/");
+  };
 
   const userRegister = async () => {
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
@@ -57,22 +57,21 @@ const Auth: NextPage = () => {
       })
     );
     await db.collection("users").doc(authUser.user?.uid).set({
-      userId: authUser.user?.uid,
       userName: username,
     });
     router.push("/");
   };
 
-  const onClickTestLogin = async () => {
-    setIsLoading(true);
-    try {
-      await auth.signInWithEmailAndPassword("test@sample.com", "12345678");
-      console.log("set");
-      return login();
-    } catch (err) {
-      undoneSave();
-    }
-    setIsLoading(false);
+  const handleTryLogin = () => {
+    auth
+      .signInWithEmailAndPassword("test@example.com", "password")
+      .then(() => {
+        router.push("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("申し訳ございません、エラーが発生しました。");
+      });
   };
 
   const sendResetEmail = async (e: React.MouseEvent<HTMLElement>) => {
@@ -171,7 +170,7 @@ const Auth: NextPage = () => {
         </div>
         <div>
           <Button
-            onClick={onClickTestLogin}
+            onClick={handleTryLogin}
             isLoading={isLoading}
             colorScheme="blue"
             my="2"
