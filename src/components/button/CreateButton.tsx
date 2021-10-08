@@ -1,7 +1,5 @@
 import React, { VFC } from "react";
 import { Button } from "@chakra-ui/button";
-import { LockIcon } from "../svg/LockIcon";
-import { on } from "events";
 
 type Props = {
   title?: string;
@@ -13,11 +11,11 @@ type Props = {
 };
 
 export const CreateButton: VFC<Props> = (props) => {
-  const { children, isLoading, spinner,disabled,onClick } = props;
+  const { children, isLoading, spinner, disabled, onClick } = props;
   return (
     <div className="items-center">
       <Button
-      onClick={onClick}
+        onClick={onClick}
         disabled={disabled}
         colorScheme="blue"
         width="40"
