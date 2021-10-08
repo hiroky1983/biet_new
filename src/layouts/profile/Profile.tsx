@@ -71,21 +71,25 @@ export const Profile: VFC = () => {
       e.target.value = "";
     }
   };
-  const handleImageChage = async () => {
-    const authUser = auth.currentUser;
-    console.log(authUser);
-    let url = "";
-    if (avatarImage) {
-      const S =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      const N = 16;
-      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-        .map((n) => S[n % S.length])
-        .join("");
-      const fileName = randomChar + "_" + avatarImage.name;
-      await storage.ref(`avatars/${fileName}`).put(avatarImage);
-      url = await storage.ref("avatars").child(fileName).getDownloadURL();
+  const handleImageChage = async (e) => {
+    const authUser = auth.currentUser;      
+    if (e.target.files![0]) {
+      setAvatarImage(e.target.files![0]);
+      e.target.value = "";
     }
+    console.log(avatarImage);
+    
+    let url = "";
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const N = 16;
+    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+      .map((n) => S[n % S.length])
+      .join("");
+    const fileName = randomChar + "_" + avatarImage.name;
+    await storage.ref(`avatars/${fileName}`).put(avatarImage);
+    url = await storage.ref("avatars").child(fileName).getDownloadURL();
+    console.log(url);
+
     await authUser?.updateProfile({ photoURL: url });
     dispatch(
       updateUserProfile({
@@ -139,14 +143,16 @@ export const Profile: VFC = () => {
                   <Image
                     src={avatarImage ? avatarImage : "/img/avatar.png"}
                     className="rounded-full text-center cursor-pointer"
-                    width={70}
-                    height={70}
+                    width={80}
+                    height={80}
                     alt="Avatar"
                   />
                 </label>
               </div>
               <div className="mx-8 ">
-                <p className="text-gray-700 font-bold">{userData.userName}</p>
+                <p className="text-gray-700 font-extrabold">
+                  {userData.userName}
+                </p>
                 <br />
                 <p className="text-gray-700">
                   {userData.gender ? userData.gender : null}
@@ -157,7 +163,7 @@ export const Profile: VFC = () => {
                     : null}
                 </p>
               </div>
-              <div className="flex-auto ">
+              <div className="flex-auto">
                 <PrimaryButton onClick={onOpen}>変更</PrimaryButton>
               </div>
             </div>
@@ -190,19 +196,11 @@ export const Profile: VFC = () => {
                   />
                   <FormControl>
                     <div className="my-4 mx-4 space-x-3 text-gray-700">
-                      <input
-                        type="radio"
-                        {...register("gender")}
-                        value={"🚹"}
-                      />
+                      <input type="radio" {...register("gender")} value="🚹" />
                       <label>男性</label>
-                      <input
-                        type="radio"
-                        {...register("gender")}
-                        value={"🚺"}
-                      />
+                      <input type="radio" {...register("gender")} value="🚺" />
                       <label>女性</label>
-                      <input type="radio" {...register("gender")} value={""} />
+                      <input type="radio" {...register("gender")} value="" />
                       <label>未回答</label>
                     </div>
                   </FormControl>
@@ -211,13 +209,13 @@ export const Profile: VFC = () => {
                       <input
                         type="radio"
                         {...register("userStatus")}
-                        value={"交際中"}
+                        value="交際中"
                       />
                       <label>交際中</label>
                       <input
                         type="radio"
                         {...register("userStatus")}
-                        value={"既婚"}
+                        value="既婚"
                       />
                       <label>既婚</label>
                     </div>
