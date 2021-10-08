@@ -45,6 +45,7 @@ const Auth: NextPage = () => {
 
   const userRegister = async () => {
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
+    console.log(authUser);
     await authUser.user?.updateProfile({
       displayName: username,
       photoURL: "",
@@ -59,12 +60,7 @@ const Auth: NextPage = () => {
       userId: authUser.user?.uid,
       userName: username,
     });
-    router.push({
-      pathname: `router.pathname/${authUser.user!.uid}`,
-      query: {
-        userId: authUser.user?.uid,
-      },
-    });
+    router.push("/");
   };
 
   const onClickTestLogin = async () => {
@@ -104,12 +100,12 @@ const Auth: NextPage = () => {
             placeholder="email"
             value={email}
             onChange={onChangeEmail}
-            inputName="email"
+            name="email"
             type="email"
             autoComplete="email"
           />
           <AuthInput
-            inputName="password"
+            name="password"
             type="password"
             autoComplete="current-password"
             placeholder="Password"
@@ -123,7 +119,7 @@ const Auth: NextPage = () => {
                 value={username}
                 onChange={onChangeUserName}
                 type="text"
-                inputName="userName"
+                name="userName"
               />
             </div>
           )}
