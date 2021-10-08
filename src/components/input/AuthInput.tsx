@@ -41,6 +41,7 @@ export const AuthInput: VFC<PROPS> = (props) => {
             variant="flushed"
             placeholder={placeholder}
             required
+            name={name}
             value={value}
             onChange={onChange}
             defaultValue={defaultValue}

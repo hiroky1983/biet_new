@@ -78,7 +78,7 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
         value={lang}
         onChange={onChangeLang}
         type="text"
-        inputName="select lang"
+        name="select lang"
       />
       <div className="flex mt-4">
         <span className="text-gray-500">現在は？</span>
@@ -103,7 +103,7 @@ export const AuthFormLayout: VFC<PROPS> = (props) => {
           value={username}
           onChange={onChangeUserName}
           type="text"
-          inputName="userName"
+          name="userName"
         />
       </div>
     </>
