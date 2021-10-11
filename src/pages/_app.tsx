@@ -6,6 +6,7 @@ import { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "../lib/store";
 import { ChakraProvider } from "@chakra-ui/react";
+import { theme } from "../../theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>
