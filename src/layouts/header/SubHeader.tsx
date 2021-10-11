@@ -8,9 +8,9 @@ type Props = {
 
 export const SubHeader: VFC<Props> = (props) => {
   return (
-    <div className="flex justify-center p-8">
+    <div className="flex justify-center p-8  h-36">
       <div className="p-5 cursor-pointer">
-        <h1 className="font-bold text-lg text-gray-700">{props.title}</h1>
+        <h1 className="font-bold text-gray-700 text-3xl">{props.title}</h1>
       </div>
     </div>
   );

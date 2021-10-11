@@ -4,13 +4,13 @@ import Image from "next/image";
 
 export const Header: VFC = () => {
   return (
-    <div className="flex justify-center ">
+    <div className="flex justify-center h-36">
       <div className="p-6 cursor-pointer">
         <Image
           src="/img/biet-new-removebg-preview.png"
           className="cursor-pointer"
-          width={420}
-          height={80}
+          width={460}
+          height={100}
           alt="Avatar"
         />
       </div>

@@ -36,6 +36,7 @@ export const AuthInput: VFC<PROPS> = (props) => {
           <Input
             {...register}
             padding="2"
+            fontSize="lg"
             type={type}
             autoComplete={autoComplete}
             variant="flushed"
