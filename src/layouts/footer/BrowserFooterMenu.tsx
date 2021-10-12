@@ -15,7 +15,7 @@ export const BrowserFooterMenu: VFC = () => {
           return (
             <Link href={item.href} key={item.href}>
               <a>
-                <div className="space-y-3 cursor-pointer box-border m-2 py-4 sm:m-auto text-blue-500 hover:text-blue-400">
+                <div className="cursor-pointer box-border m-2 py-8 sm:m-auto text-blue-500 hover:text-blue-400">
                   {item.element}
                 </div>
               </a>
