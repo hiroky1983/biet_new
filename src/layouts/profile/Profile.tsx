@@ -41,7 +41,7 @@ export const Profile: VFC = () => {
     handleSubmit,
     register,
     setValue,
-    formState: { errors },
+    formState,
   } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -70,42 +70,82 @@ export const Profile: VFC = () => {
       setAvatarImage(e.target.files![0]);
       e.target.value = "";
     }
-  };
-  const handleImageChage = async (e) => {
-    const authUser = auth.currentUser;      
-    if (e.target.files![0]) {
-      setAvatarImage(e.target.files![0]);
-      e.target.value = "";
-    }
     console.log(avatarImage);
-    
-    let url = "";
-    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const N = 16;
-    const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-      .map((n) => S[n % S.length])
-      .join("");
-    const fileName = randomChar + "_" + avatarImage.name;
-    await storage.ref(`avatars/${fileName}`).put(avatarImage);
-    url = await storage.ref("avatars").child(fileName).getDownloadURL();
-    console.log(url);
-
-    await authUser?.updateProfile({ photoURL: url });
-    dispatch(
-      updateUserProfile({
-        displayName: username,
-        photoUrl: url,
-      })
-    );
-    await db.collection("users").doc(user.uid).update({
-      avatarImage: url,
-    });
   };
+
+  // const handleImageChage = async (e) => {
+  //   const authUser = auth.currentUser;
+  //   if (avatarImage) {
+  //     console.log(avatarImage);
+  //     let url = "";
+  //     const S =
+  //       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  //     const N = 16;
+  //     const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+  //       .map((n) => S[n % S.length])
+  //       .join("");
+  //     const fileName = randomChar + "_" + avatarImage.name;
+  //     await storage.ref(`avatars/${fileName}`).put(avatarImage);
+  //     url = await storage.ref("avatars").child(fileName).getDownloadURL();
+  //     console.log(url);
+  //     await authUser?.updateProfile({ photoURL: url });
+  //     dispatch(
+  //       updateUserProfile({
+  //         displayName: username,
+  //         photoUrl: url,
+  //       })
+  //     );
+  //     await db.collection("users").doc(user.uid).update({
+  //       avatarImage: url,
+  //     });
+  //   }
+  // };
   const handleChangeSubmit = async (
     data: Partial<firebase.firestore.DocumentData>
   ) => {
+    const authUser = auth.currentUser;
     try {
-      if (data) {
+      if (avatarImage) {
+        let url = "";
+        const S =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const N = 16;
+        const randomChar = Array.from(
+          crypto.getRandomValues(new Uint32Array(N))
+        )
+          .map((n) => S[n % S.length])
+          .join("");
+        const fileName = randomChar + "_" + avatarImage.name;
+        await storage.ref(`avatars/${fileName}`).put(avatarImage);
+        url = await storage.ref("avatars").child(fileName).getDownloadURL();
+        console.log(url);
+        
+        await authUser?.updateProfile({ photoURL: url });
+        dispatch(
+          updateUserProfile({
+            displayName: username,
+            photoUrl: url,
+          })
+        );
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .set(
+            {
+              ...data,
+              avatarImage: url,
+            },
+            { merge: true }
+          );
+        setUserData(data);
+      } else {
+        await authUser?.updateProfile({ photoURL: "" });
+        dispatch(
+          updateUserProfile({
+            displayName: username,
+            photoUrl: "",
+          })
+        );
         await db
           .collection("users")
           .doc(user.uid)
@@ -130,34 +170,32 @@ export const Profile: VFC = () => {
         <Spinner />
       ) : (
         <>
-          <div className="mx-14 w-auto">
+          <div className="mx-14 w-auto mt-2">
             <div className="flex w-full">
               <div>
                 <label>
                   <input
                     type="file"
-                    onChange={onChangeImageHandler}
                     className="hidden"
-                    onClick={handleImageChage}
                   />
                   <Image
-                    src={avatarImage ? avatarImage : "/img/avatar.png"}
+                    src={avatarImage ? user.photoUrl : "/img/avatar.png"}
                     className="rounded-full text-center cursor-pointer"
-                    width={80}
-                    height={80}
+                    width={90}
+                    height={90}
                     alt="Avatar"
                   />
                 </label>
               </div>
               <div className="mx-8 ">
-                <p className="text-gray-700 font-extrabold">
+                <p className="text-gray-700 font-extrabold text-xl">
                   {userData.userName}
                 </p>
                 <br />
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-lg">
                   {userData.gender ? userData.gender : null}
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-lg">
                   {userData.userStatus
                     ? `${userData.lang}人と${userData.userStatus}`
                     : null}
@@ -169,7 +207,7 @@ export const Profile: VFC = () => {
             </div>
           </div>
           <div className="justify-center box-border my-4 mx-14">
-            <p className="text-gray-700" id="profile">
+            <p className="text-gray-700 text-lg" id="profile">
               {userData.profile
                 ? userData.profile
                 : "プロフィールはまだありません"}
@@ -182,6 +220,20 @@ export const Profile: VFC = () => {
                 <ModalHeader>プロフィール編集</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody mx="12" my="4">
+                  <label>
+                    <input
+                      type="file"
+                      onChange={onChangeImageHandler}
+                      className="hidden"
+                    />
+                    <Image
+                      src="/img/avatar.png"
+                      className="rounded-full text-center cursor-pointer"
+                      width={80}
+                      height={80}
+                      alt="Avatar"
+                    />
+                  </label>
                   <AuthInput
                     id="userName"
                     placeholder="名前"
@@ -195,7 +247,7 @@ export const Profile: VFC = () => {
                     register={register("lang")}
                   />
                   <FormControl>
-                    <div className="my-4 mx-4 space-x-3 text-gray-700">
+                    <div className="my-4 mx-4 space-x-3 text-gray-700 text-lg">
                       <input type="radio" {...register("gender")} value="🚹" />
                       <label>男性</label>
                       <input type="radio" {...register("gender")} value="🚺" />
@@ -205,7 +257,7 @@ export const Profile: VFC = () => {
                     </div>
                   </FormControl>
                   <FormControl>
-                    <div className="my-4 mx-4 space-x-3 text-gray-700">
+                    <div className="my-4 mx-4 space-x-3 text-gray-700 text-lg">
                       <input
                         type="radio"
                         {...register("userStatus")}
@@ -221,6 +273,7 @@ export const Profile: VFC = () => {
                     </div>
                   </FormControl>
                   <Textarea
+                    fontSize="lg"
                     id="profile"
                     placeholder="プロフィール"
                     rows={5}
@@ -243,6 +296,7 @@ export const Profile: VFC = () => {
                       px="7"
                       py="5"
                       rounded="full"
+                      isLoading={formState.isSubmitting}
                     >
                       保存
                     </Button>
