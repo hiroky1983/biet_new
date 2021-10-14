@@ -167,7 +167,7 @@ export const Profile: VFC = () => {
   return (
     <>
       {!userData ? (
-        <Spinner />
+        <Spinner color="blue"/>
       ) : (
         <>
           <div className="mx-14 w-auto mt-2">
