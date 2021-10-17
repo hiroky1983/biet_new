@@ -38,5 +38,17 @@
     "postcss": "^8.3.5",
     "tailwindcss": "^2.2.4",
     "typescript": "4.3.5"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "main": "next.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hiroky1983/biet_new.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hiroky1983/biet_new/issues"
+  },
+  "homepage": "https://github.com/hiroky1983/biet_new#readme"
 }
