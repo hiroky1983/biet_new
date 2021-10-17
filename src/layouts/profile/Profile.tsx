@@ -73,33 +73,6 @@ export const Profile: VFC = () => {
     console.log(avatarImage);
   };
 
-  // const handleImageChage = async (e) => {
-  //   const authUser = auth.currentUser;
-  //   if (avatarImage) {
-  //     console.log(avatarImage);
-  //     let url = "";
-  //     const S =
-  //       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  //     const N = 16;
-  //     const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
-  //       .map((n) => S[n % S.length])
-  //       .join("");
-  //     const fileName = randomChar + "_" + avatarImage.name;
-  //     await storage.ref(`avatars/${fileName}`).put(avatarImage);
-  //     url = await storage.ref("avatars").child(fileName).getDownloadURL();
-  //     console.log(url);
-  //     await authUser?.updateProfile({ photoURL: url });
-  //     dispatch(
-  //       updateUserProfile({
-  //         displayName: username,
-  //         photoUrl: url,
-  //       })
-  //     );
-  //     await db.collection("users").doc(user.uid).update({
-  //       avatarImage: url,
-  //     });
-  //   }
-  // };
   const handleChangeSubmit = async (
     data: Partial<firebase.firestore.DocumentData>
   ) => {
