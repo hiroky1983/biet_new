@@ -12,8 +12,6 @@ type PROPS = {
   defaultValue?: string;
   register?: any;
   isReadOnly?: boolean;
-  isRequired?: boolean;
-  isInvalid?: any;
 };
 export const AuthInput: VFC<PROPS> = (props) => {
   const {
@@ -27,31 +25,24 @@ export const AuthInput: VFC<PROPS> = (props) => {
     defaultValue,
     register,
     isReadOnly,
-    isRequired,
-    isInvalid,
   } = props;
   return (
     <div className="mt-4">
-      <FormControl id={id}  isInvalid={isInvalid}>
-          <Input
-            {...register}
-            padding="2"
-            fontSize="lg"
-            type={type}
-            autoComplete={autoComplete}
-            variant="flushed"
-            placeholder={placeholder}
-            required
-            name={name}
-            value={value}
-            onChange={onChange}
-            defaultValue={defaultValue}
-            isReadOnly={isReadOnly}
-            isRequired={isRequired}
-            isInvalid={isInvalid}
-          />
-          <FormErrorMessage>{isInvalid && isInvalid.message}</FormErrorMessage>
-      </FormControl>
+      <Input
+        {...register}
+        padding="2"
+        fontSize="lg"
+        type={type}
+        autoComplete={autoComplete}
+        variant="flushed"
+        placeholder={placeholder}
+        required
+        name={name}
+        value={value}
+        onChange={onChange}
+        defaultValue={defaultValue}
+        isReadOnly={isReadOnly}
+      />
     </div>
   );
 };
