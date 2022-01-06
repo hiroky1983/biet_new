@@ -19,11 +19,10 @@ import {
   Textarea,
   Spinner,
   FormControl,
+  Input,
 } from "@chakra-ui/react";
-import { AuthInput } from "../../components/input/AuthInput";
 import { useAlert } from "../../hooks/useAlert";
 import { useForm } from "react-hook-form";
-import firebase from "firebase";
 
 export const Profile: VFC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,12 +36,7 @@ export const Profile: VFC = () => {
 
   const doneSave = useAlert("保存に成功しました", "success");
   const undoneSave = useAlert("保存に失敗しました", "error");
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    formState,
-  } = useForm({
+  const { handleSubmit, register, setValue, formState } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
@@ -73,10 +67,9 @@ export const Profile: VFC = () => {
     console.log(avatarImage);
   };
 
-  const handleChangeSubmit = async (
-    data: Partial<firebase.firestore.DocumentData>
-  ) => {
+  const handleChangeSubmit = async (data: any) => {
     const authUser = auth.currentUser;
+
     try {
       if (avatarImage) {
         let url = "";
@@ -91,8 +84,7 @@ export const Profile: VFC = () => {
         const fileName = randomChar + "_" + avatarImage.name;
         await storage.ref(`avatars/${fileName}`).put(avatarImage);
         url = await storage.ref("avatars").child(fileName).getDownloadURL();
-        console.log(url);
-        
+
         await authUser?.updateProfile({ photoURL: url });
         dispatch(
           updateUserProfile({
@@ -140,17 +132,14 @@ export const Profile: VFC = () => {
   return (
     <>
       {!userData ? (
-        <Spinner color="blue"/>
+        <Spinner color="blue" />
       ) : (
         <>
           <div className="mx-14 w-auto mt-2">
             <div className="flex w-full">
               <div>
                 <label>
-                  <input
-                    type="file"
-                    className="hidden"
-                  />
+                  <input type="file" className="hidden" />
                   <Image
                     src={avatarImage ? user.photoUrl : "/img/avatar.png"}
                     className="rounded-full text-center cursor-pointer"
@@ -207,17 +196,23 @@ export const Profile: VFC = () => {
                       alt="Avatar"
                     />
                   </label>
-                  <AuthInput
-                    id="userName"
+                  <Input
+                    mt="4"
+                    fontSize="xl"
+                    p="2"
                     placeholder="名前"
                     type="text"
-                    register={register("userName")}
+                    {...register("userName")}
+                    variant="flushed"
                   />
-                  <AuthInput
-                    id="lang"
-                    placeholder={"交際相手の国籍は？"}
+                  <Input
+                    mt="4"
+                    fontSize="xl"
+                    p="2"
+                    placeholder="交際相手の国籍"
                     type="text"
-                    register={register("lang")}
+                    {...register("lang")}
+                    variant="flushed"
                   />
                   <FormControl>
                     <div className="my-4 mx-4 space-x-3 text-gray-700 text-lg">
@@ -250,6 +245,7 @@ export const Profile: VFC = () => {
                     id="profile"
                     placeholder="プロフィール"
                     rows={5}
+                    resize="none"
                     {...register("profile")}
                   />
                   <ModalFooter px="none">
