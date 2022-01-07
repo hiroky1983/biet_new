@@ -45,7 +45,7 @@ const Auth: NextPage = () => {
 
   const userRegister = async () => {
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
-    console.log(authUser);
+    
     await authUser.user?.updateProfile({
       displayName: username,
       photoURL: "",
