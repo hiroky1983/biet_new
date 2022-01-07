@@ -1,4 +1,5 @@
-import React, { VFC } from "react";
+import React from "react";
+import type { VFC } from "react";
 import "tailwindcss/tailwind.css";
 import Image from "next/image";
 

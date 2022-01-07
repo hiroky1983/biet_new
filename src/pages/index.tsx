@@ -1,15 +1,14 @@
-import Head from "next/head";
+import React, { useEffect } from "react";
+import router from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+import { NextPage } from "next";
+
 import { ContentsLayout } from "../layouts/contents/ContentsLayout";
 import { Profile } from "../layouts/profile/Profile";
 import { Layout } from "../layouts/Layout";
-import { NextPage } from "next";
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
 import { auth } from "../../firebase";
 import { login, logout, selectUser } from "../lib/auth";
 import Auth from "./auth";
-import router from "next/router";
 
 
 const Home: NextPage = () => {

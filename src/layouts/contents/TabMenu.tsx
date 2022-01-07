@@ -1,5 +1,6 @@
-import { useState, VFC } from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from "@chakra-ui/react";
+import { useState } from "react";
+import type { VFC } from "react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { PostCard } from "./PostCard";
 import { Posts } from "../posts/Posts";
 
@@ -32,9 +33,9 @@ export const TabMenu: VFC = () => {
           {/* {posts.length === 0 ? (
             <p className="text-gray-700">質問はまだありません</p>
           ) : ( */}
-            <PostCard />
-            <PostCard />
-            <PostCard />
+          <PostCard />
+          <PostCard />
+          <PostCard />
           {/* )} */}
         </TabPanel>
       </TabPanels>

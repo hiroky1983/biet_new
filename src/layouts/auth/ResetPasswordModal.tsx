@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from "react";
+import type { VFC } from "react";
+
 import { IconButton, Modal, TextField } from "@material-ui/core";
-import { Dispatch, SetStateAction, VFC } from "react";
 import { RiSendPlane2Fill } from "react-icons/ri";
 
 function getModalStyle() {
@@ -19,10 +21,11 @@ type PROPS = {
   resetEmail: string;
   setResetEmail: Dispatch<SetStateAction<string>>;
   sendResetEmail: (e: React.MouseEvent<HTMLElement>) => Promise<void>;
-}
+};
 
 export const ResetPasswordModal: VFC<PROPS> = (props) => {
-  const { openModal,setOpenModal,resetEmail,setResetEmail,sendResetEmail} = props;
+  const { openModal, setOpenModal, resetEmail, setResetEmail, sendResetEmail } =
+    props;
   return (
     <div>
       <Modal open={openModal} onClose={() => setOpenModal(false)}>

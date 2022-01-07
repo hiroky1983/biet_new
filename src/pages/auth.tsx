@@ -1,15 +1,16 @@
 import { InputHTMLAttributes, useCallback, useState } from "react";
-import { useRouter } from "next/router";
-import { Header } from "../layouts/header/Header";
-import { auth, db, provider } from "../../firebase";
 import Head from "next/head";
-import { NextPage } from "next";
-import { updateUserProfile } from "../lib/auth";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { Button } from "@chakra-ui/button";
+
+import { Header } from "../layouts/header/Header";
+import { auth, db } from "../../firebase";
+import { updateUserProfile } from "../lib/auth";
 import { LockIcon } from "../components/svg/LockIcon";
 import { AuthInput } from "../components/input/AuthInput";
 import { ResetPasswordModal } from "../layouts/auth/ResetPasswordModal";
-import { Button } from "@chakra-ui/button";
 import { useAlert } from "../hooks/useAlert";
 
 const Auth: NextPage = () => {
@@ -37,7 +38,7 @@ const Auth: NextPage = () => {
     useCallback((e) => {
       setUsername(e.target.value);
     }, []);
-    
+
   const login = async () => {
     await auth.signInWithEmailAndPassword(email, password);
     router.push("/");
@@ -45,7 +46,7 @@ const Auth: NextPage = () => {
 
   const userRegister = async () => {
     const authUser = await auth.createUserWithEmailAndPassword(email, password);
-    
+
     await authUser.user?.updateProfile({
       displayName: username,
       photoURL: "",

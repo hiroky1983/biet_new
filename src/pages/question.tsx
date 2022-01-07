@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Layout } from "../layouts/Layout";
-import { TabMenu } from "../layouts/contents/TabMenu";
 import { NextPage } from "next";
 import { useDispatch, useSelector } from "react-redux";
+
+import { Layout } from "../layouts/Layout";
+import { TabMenu } from "../layouts/contents/TabMenu";
 import { login, logout, selectUser } from "../lib/auth";
 import { auth } from "../../firebase";
 import Auth from "./auth";

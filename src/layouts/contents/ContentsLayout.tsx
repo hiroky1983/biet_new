@@ -1,5 +1,7 @@
+import React from "react";
+import type { VFC } from "react";
 import Link from "next/link";
-import React, { VFC } from "react";
+
 import { SecondaryButton } from "../../components/button/SecondaryButton";
 import { ContentsCard } from "./ContentsCard";
 

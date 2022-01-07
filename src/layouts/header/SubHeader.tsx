@@ -1,5 +1,5 @@
-import React, { Children, VFC } from "react";
-import { ReactNode } from "react";
+import React from "react";
+import type { VFC } from "react";
 import "tailwindcss/tailwind.css";
 
 type Props = {

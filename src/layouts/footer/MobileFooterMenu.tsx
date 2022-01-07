@@ -1,4 +1,5 @@
-import React, { VFC } from "react";
+import React from "react";
+import type { VFC } from "react";
 import "tailwindcss/tailwind.css";
 import Link from "next/link";
 
@@ -28,8 +29,8 @@ export const FOOTERITEMS = [
     element: <BiLogIn className=" w-8 h-8 m-auto" />,
     description: "ログアウト",
     onclick: () => {
-        auth.signOut();
-      }
+      auth.signOut();
+    },
   },
 ];
 const THIS_YEAR = new Date().getFullYear();

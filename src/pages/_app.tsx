@@ -1,11 +1,11 @@
-import "tailwindcss/tailwind.css";
 import React from "react";
 import Head from "next/head";
-
-import { AppProps } from "next/app";
+import type { AppProps } from "next/app";
+import "tailwindcss/tailwind.css";
 import { Provider } from "react-redux";
-import { store } from "../lib/store";
 import { ChakraProvider } from "@chakra-ui/react";
+
+import { store } from "../lib/store";
 import { theme } from "../../theme";
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -1,6 +1,7 @@
-import React, { VFC } from "react";
-import "tailwindcss/tailwind.css";
+import React from "react";
+import type { VFC } from "react";
 import Image from "next/image";
+import "tailwindcss/tailwind.css";
 
 export const ContentsCard: VFC = () => {
   return (

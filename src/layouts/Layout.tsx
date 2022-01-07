@@ -1,5 +1,7 @@
+import React, { ReactNode } from "react";
+import type { VFC } from "react";
 import { useRouter } from "next/router";
-import React, { ReactNode, VFC } from "react";
+
 import { BrowserFooterMenu } from "./footer/BrowserFooterMenu";
 import { MobileFooterMenu } from "./footer/MobileFooterMenu";
 import { Header } from "./header/Header";
