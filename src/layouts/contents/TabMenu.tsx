@@ -7,7 +7,7 @@ import { Posts } from "../posts/Posts";
 export const TabMenu: VFC = () => {
   const [posts, setPosts] = useState<Array<any>>([]);
   return (
-    <div className="lg:mr-8">
+    <div className="lg:mr-8 mb-24">
       <Tabs isFitted variant="enclosed">
         <TabList>
           <Tab

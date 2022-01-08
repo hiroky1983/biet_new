@@ -37,7 +37,7 @@ export const Posts: VFC = () => {
   }, []);
 
   return (
-    <div className="w-full h-full bg-white p-4 relative lg:h-5/6 lg:p-8">
+    <div className="w-full h-full bg-white p-4 pt-10 relative lg:h-5/6 lg:p-8">
       <div className="items-center flex ">
         <AiFillQuestionCircle className="text-blue-500 text-3xl mr-2" />
         <Input

@@ -37,9 +37,9 @@ const THIS_YEAR = new Date().getFullYear();
 
 export const MobileFooterMenu: VFC = () => {
   return (
-    <>
+    <div className="fixed bottom-0 z-10 w-full bg-white bg-opacity-60">
       <div className="border border-gray-300"></div>
-      <div className="flex  justify-between mx-10 my-4 z-50">
+      <div className="flex  justify-between mx-6 my-4 z-50">
         {FOOTERITEMS.map((item) => {
           return (
             <Link href={item.href} key={item.href}>
@@ -61,6 +61,6 @@ export const MobileFooterMenu: VFC = () => {
           &copy; {THIS_YEAR} hirocky1983 All Rights Reserved.
         </small>
       </div>
-    </>
+    </div>
   );
 };
