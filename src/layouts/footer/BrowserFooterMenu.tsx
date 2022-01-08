@@ -10,7 +10,7 @@ const THIS_YEAR = new Date().getFullYear();
 export const BrowserFooterMenu: VFC = () => {
   return (
     <>
-      <div className="flex-col mx-8 sm:mx-14 h-auto">
+      <div className="flex-col mx-4 sm:mx-14 h-auto">
         {FOOTERITEMS.map((item) => {
           return (
             <Link href={item.href} key={item.href}>
