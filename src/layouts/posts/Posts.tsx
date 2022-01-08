@@ -37,9 +37,9 @@ export const Posts: VFC = () => {
   }, []);
 
   return (
-    <div className="w-full h-5/6 bg-white p-16 ">
+    <div className="w-full h-full bg-white p-4 relative lg:h-5/6 lg:p-8">
       <div className="items-center flex ">
-        <AiFillQuestionCircle className="text-blue-500 text-3xl mr-6" />
+        <AiFillQuestionCircle className="text-blue-500 text-3xl mr-2" />
         <Input
           p="2"
           placeholder="質問の件名"
@@ -51,7 +51,7 @@ export const Posts: VFC = () => {
       </div>
       {userData ? (
         <div className="flex item-center my-10">
-          <ImEarth className=" text-3xl mr-6 text-blue-500" />
+          <ImEarth className=" text-3xl mr-2 text-blue-500" />
           <Input
             p="2"
             readOnly
@@ -67,7 +67,7 @@ export const Posts: VFC = () => {
         </Center>
       )}
       <div className="flex item-center my-10">
-        <FaQuora className="text-blue-500 text-3xl mr-6" />
+        <FaQuora className="text-blue-500 text-3xl mr-2" />
         <Textarea
           placeholder="質問内容"
           rows={14}
@@ -75,8 +75,9 @@ export const Posts: VFC = () => {
           fontSize="lg"
         />
       </div>
+
       <Flex>
-        <FaTag className="text-blue-500 text-3xl mr-6" />
+        <FaTag className="text-blue-500 text-3xl mr-2 " />
 
         <Spacer />
         <Button
@@ -86,6 +87,7 @@ export const Posts: VFC = () => {
           bg="#3C82F6"
           color="white"
           borderRadius="xl"
+          className="absolute right-4 bottom-1"
         >
           +
         </Button>
