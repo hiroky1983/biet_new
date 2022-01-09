@@ -7,12 +7,12 @@ import { MobileFooterMenu } from "./footer/MobileFooterMenu";
 import { Header } from "./header/Header";
 import { SubHeader } from "./header/SubHeader";
 
-type PROPS = {
+type Props = {
   children: ReactNode;
   title: string;
 };
 
-export const Layout: VFC<PROPS> = (props) => {
+export const Layout: VFC<Props> = (props) => {
   const router = useRouter();
   return (
     <div className="h-screen">
