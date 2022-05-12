@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { VFC } from "react";
 import { Button } from "@chakra-ui/button";
 import { ImEarth } from "react-icons/im";
@@ -15,8 +15,9 @@ import { useSelector } from "react-redux";
 import { db } from "../../../firebase";
 
 export const Posts: VFC = () => {
-  const [userData, setUserData] =
-    React.useState<React.SetStateAction<any> | null>(null);
+  const [userData, setUserData] = useState<React.SetStateAction<any> | null>(
+    null
+  );
   const user = useSelector(selectUser);
   const { handleSubmit, register, setValue, formState } = useForm({
     mode: "onSubmit",
